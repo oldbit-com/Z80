@@ -119,6 +119,21 @@ partial class Z80
             AddCycles(1);
             WriteByte(address, SLA(value));
         };
+
+        _opCodes[SRA_A] = () => { Registers.A = SRA(Registers.A); };
+        _opCodes[SRA_B] = () => { Registers.B = SRA(Registers.B); };
+        _opCodes[SRA_C] = () => { Registers.C = SRA(Registers.C); };
+        _opCodes[SRA_D] = () => { Registers.D = SRA(Registers.D); };
+        _opCodes[SRA_E] = () => { Registers.E = SRA(Registers.E); };
+        _opCodes[SRA_H] = () => { Registers.H = SRA(Registers.H); };
+        _opCodes[SRA_L] = () => { Registers.L = SRA(Registers.L); };
+        _opCodes[SRA_HL] = () =>
+        {
+            var address = (ushort)(Registers.XHL + _indexOffset);
+            var value = ReadByte(address);
+            AddCycles(1);
+            WriteByte(address, SRA(value));
+        };
     }
 
     private byte RLC(byte value)
@@ -184,5 +199,26 @@ partial class Z80
         Registers.F |= Parity.Lookup[result];
 
         return result;
+    }
+
+    private byte SRA(byte value)
+    {
+        var bit0 = value & 1;
+        var result = (byte)(value & 0x80 | value >> 1);
+
+        Registers.F = (S | Y | X) & (Flags)result;
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)bit0 & C;
+        Registers.F |= Parity.Lookup[result];
+
+        return result;
+    }
+
+    private void UpdateFlagsForShiftAndRotate(byte result, byte carry)
+    {
+        Registers.F = (S | Y | X) & (Flags)result;
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)carry & C;
+        Registers.F |= Parity.Lookup[result];
     }
 }

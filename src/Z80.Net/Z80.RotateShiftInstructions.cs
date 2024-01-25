@@ -123,10 +123,7 @@ partial class Z80
         var bit7 = value >> 7;
         var result = (byte)(value << 1 | bit7);
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit7 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit7);
 
         return result;
     }
@@ -136,10 +133,7 @@ partial class Z80
         var bit7 = value >> 7;
         var result = (byte)(value << 1 | (byte)(Registers.F & C));
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit7 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit7);
 
         return result;
     }
@@ -149,10 +143,7 @@ partial class Z80
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | bit0 << 7);
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit0 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit0);
 
         return result;
     }
@@ -162,10 +153,7 @@ partial class Z80
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | (byte)(Registers.F & C) << 7);
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit0 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit0);
 
         return result;
     }
@@ -175,10 +163,7 @@ partial class Z80
         var bit7 = value >> 7;
         var result = (byte)(value << 1);
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit7 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit7);
 
         return result;
     }
@@ -188,10 +173,7 @@ partial class Z80
         var bit0 = value & 1;
         var result = (byte)(value & 0x80 | value >> 1);
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit0 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit0);
 
         return result;
     }
@@ -201,17 +183,14 @@ partial class Z80
         var bit0 = value & 1;
         var result = (byte)(value >> 1);
 
-        Registers.F = (S | Y | X) & (Flags)result;
-        Registers.F |= result == 0 ? Z : 0;
-        Registers.F |= (Flags)bit0 & C;
-        Registers.F |= Parity.Lookup[result];
+        UpdateFlagsForShiftAndRotate(result, bit0);
 
         return result;
     }
 
     private byte SLL(byte value) => (byte)(SLA(value) | 1);
 
-    private void UpdateFlagsForShiftAndRotate(byte result, byte carry)
+    private void UpdateFlagsForShiftAndRotate(byte result, int carry)
     {
         Registers.F = (S | Y | X) & (Flags)result;
         Registers.F |= result == 0 ? Z : 0;

@@ -45,68 +45,68 @@ partial class Z80
             Registers.F |= (Y | X) & (Flags)Registers.A;
         };
 
-        _opCodes[RLC_A] = () => { Registers.A = Rlc(Registers.A); };
-        _opCodes[RLC_B] = () => { Registers.B = Rlc(Registers.B); };
-        _opCodes[RLC_C] = () => { Registers.C = Rlc(Registers.C); };
-        _opCodes[RLC_D] = () => { Registers.D = Rlc(Registers.D); };
-        _opCodes[RLC_E] = () => { Registers.E = Rlc(Registers.E); };
-        _opCodes[RLC_H] = () => { Registers.H = Rlc(Registers.H); };
-        _opCodes[RLC_L] = () => { Registers.L = Rlc(Registers.L); };
+        _opCodes[RLC_A] = () => { Registers.A = RLC(Registers.A); };
+        _opCodes[RLC_B] = () => { Registers.B = RLC(Registers.B); };
+        _opCodes[RLC_C] = () => { Registers.C = RLC(Registers.C); };
+        _opCodes[RLC_D] = () => { Registers.D = RLC(Registers.D); };
+        _opCodes[RLC_E] = () => { Registers.E = RLC(Registers.E); };
+        _opCodes[RLC_H] = () => { Registers.H = RLC(Registers.H); };
+        _opCodes[RLC_L] = () => { Registers.L = RLC(Registers.L); };
         _opCodes[RLC_HL] = () =>
         {
             var address = (ushort)(Registers.XHL + _indexOffset);
             var value = ReadByte(address);
             AddCycles(1);
-            WriteByte(address, Rlc(value));
+            WriteByte(address, RLC(value));
         };
 
-        _opCodes[RL_A] = () => { Registers.A = Rl(Registers.A); };
-        _opCodes[RL_B] = () => { Registers.B = Rl(Registers.B); };
-        _opCodes[RL_C] = () => { Registers.C = Rl(Registers.C); };
-        _opCodes[RL_D] = () => { Registers.D = Rl(Registers.D); };
-        _opCodes[RL_E] = () => { Registers.E = Rl(Registers.E); };
-        _opCodes[RL_H] = () => { Registers.H = Rl(Registers.H); };
-        _opCodes[RL_L] = () => { Registers.L = Rl(Registers.L); };
+        _opCodes[RL_A] = () => { Registers.A = RL(Registers.A); };
+        _opCodes[RL_B] = () => { Registers.B = RL(Registers.B); };
+        _opCodes[RL_C] = () => { Registers.C = RL(Registers.C); };
+        _opCodes[RL_D] = () => { Registers.D = RL(Registers.D); };
+        _opCodes[RL_E] = () => { Registers.E = RL(Registers.E); };
+        _opCodes[RL_H] = () => { Registers.H = RL(Registers.H); };
+        _opCodes[RL_L] = () => { Registers.L = RL(Registers.L); };
         _opCodes[RL_HL] = () =>
         {
             var address = (ushort)(Registers.XHL + _indexOffset);
             var value = ReadByte(address);
             AddCycles(1);
-            WriteByte(address, Rl(value));
+            WriteByte(address, RL(value));
         };
 
-        _opCodes[RRC_A] = () => { Registers.A = Rrc(Registers.A); };
-        _opCodes[RRC_B] = () => { Registers.B = Rrc(Registers.B); };
-        _opCodes[RRC_C] = () => { Registers.C = Rrc(Registers.C); };
-        _opCodes[RRC_D] = () => { Registers.D = Rrc(Registers.D); };
-        _opCodes[RRC_E] = () => { Registers.E = Rrc(Registers.E); };
-        _opCodes[RRC_H] = () => { Registers.H = Rrc(Registers.H); };
-        _opCodes[RRC_L] = () => { Registers.L = Rrc(Registers.L); };
+        _opCodes[RRC_A] = () => { Registers.A = RRC(Registers.A); };
+        _opCodes[RRC_B] = () => { Registers.B = RRC(Registers.B); };
+        _opCodes[RRC_C] = () => { Registers.C = RRC(Registers.C); };
+        _opCodes[RRC_D] = () => { Registers.D = RRC(Registers.D); };
+        _opCodes[RRC_E] = () => { Registers.E = RRC(Registers.E); };
+        _opCodes[RRC_H] = () => { Registers.H = RRC(Registers.H); };
+        _opCodes[RRC_L] = () => { Registers.L = RRC(Registers.L); };
         _opCodes[RRC_HL] = () =>
         {
             var address = (ushort)(Registers.XHL + _indexOffset);
             var value = ReadByte(address);
             AddCycles(1);
-            WriteByte(address, Rrc(value));
+            WriteByte(address, RRC(value));
         };
 
-        _opCodes[RR_A] = () => { Registers.A = Rr(Registers.A); };
-        _opCodes[RR_B] = () => { Registers.B = Rr(Registers.B); };
-        _opCodes[RR_C] = () => { Registers.C = Rr(Registers.C); };
-        _opCodes[RR_D] = () => { Registers.D = Rr(Registers.D); };
-        _opCodes[RR_E] = () => { Registers.E = Rr(Registers.E); };
-        _opCodes[RR_H] = () => { Registers.H = Rr(Registers.H); };
-        _opCodes[RR_L] = () => { Registers.L = Rr(Registers.L); };
+        _opCodes[RR_A] = () => { Registers.A = RR(Registers.A); };
+        _opCodes[RR_B] = () => { Registers.B = RR(Registers.B); };
+        _opCodes[RR_C] = () => { Registers.C = RR(Registers.C); };
+        _opCodes[RR_D] = () => { Registers.D = RR(Registers.D); };
+        _opCodes[RR_E] = () => { Registers.E = RR(Registers.E); };
+        _opCodes[RR_H] = () => { Registers.H = RR(Registers.H); };
+        _opCodes[RR_L] = () => { Registers.L = RR(Registers.L); };
         _opCodes[RR_HL] = () =>
         {
             var address = (ushort)(Registers.XHL + _indexOffset);
             var value = ReadByte(address);
             AddCycles(1);
-            WriteByte(address, Rr(value));
+            WriteByte(address, RR(value));
         };
     }
 
-    private byte Rlc(byte value)
+    private byte RLC(byte value)
     {
         var bit7 = value >> 7;
         var result = (byte)(value << 1 | bit7);
@@ -119,7 +119,7 @@ partial class Z80
         return result;
     }
 
-    private byte Rl(byte value)
+    private byte RL(byte value)
     {
         var bit7 = value >> 7;
         var result = (byte)(value << 1 | (byte)(Registers.F & C));
@@ -132,7 +132,7 @@ partial class Z80
         return result;
     }
 
-    private byte Rrc(byte value)
+    private byte RRC(byte value)
     {
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | bit0 << 7);
@@ -145,7 +145,7 @@ partial class Z80
         return result;
     }
 
-    private byte Rr(byte value)
+    private byte RR(byte value)
     {
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | (byte)(Registers.F & C) << 7);

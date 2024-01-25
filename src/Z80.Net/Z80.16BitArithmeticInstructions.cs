@@ -8,33 +8,33 @@ partial class Z80
 {
     private void Add16BitArithmeticInstructions()
     {
-        _opCodes[ADD_HL_BC] = () => { Add(Registers.BC); };
-        _opCodes[ADD_HL_DE] = () => { Add(Registers.DE); };
-        _opCodes[ADD_HL_HL] = () => { Add(Registers.XHL); };
-        _opCodes[ADD_HL_SP] = () => { Add(Registers.SP); };
+        _opCodes[ADD_HL_BC] = () => { ADD(Registers.BC); };
+        _opCodes[ADD_HL_DE] = () => { ADD(Registers.DE); };
+        _opCodes[ADD_HL_HL] = () => { ADD(Registers.XHL); };
+        _opCodes[ADD_HL_SP] = () => { ADD(Registers.SP); };
 
-        _opCodes[ADC_HL_BC] = () => { Adc(Registers.BC); };
-        _opCodes[ADC_HL_DE] = () => { Adc(Registers.DE); };
-        _opCodes[ADC_HL_HL] = () => { Adc(Registers.HL); };
-        _opCodes[ADC_HL_SP] = () => { Adc(Registers.SP); };
+        _opCodes[ADC_HL_BC] = () => { ADC(Registers.BC); };
+        _opCodes[ADC_HL_DE] = () => { ADC(Registers.DE); };
+        _opCodes[ADC_HL_HL] = () => { ADC(Registers.HL); };
+        _opCodes[ADC_HL_SP] = () => { ADC(Registers.SP); };
 
-        _opCodes[SBC_HL_BC] = () => { Sbc(Registers.BC); };
-        _opCodes[SBC_HL_DE] = () => { Sbc(Registers.DE); };
-        _opCodes[SBC_HL_HL] = () => { Sbc(Registers.HL); };
-        _opCodes[SBC_HL_SP] = () => { Sbc(Registers.SP); };
+        _opCodes[SBC_HL_BC] = () => { SBC(Registers.BC); };
+        _opCodes[SBC_HL_DE] = () => { SBC(Registers.DE); };
+        _opCodes[SBC_HL_HL] = () => { SBC(Registers.HL); };
+        _opCodes[SBC_HL_SP] = () => { SBC(Registers.SP); };
 
-        _opCodes[INC_BC] = () => { Registers.BC = Inc(Registers.BC); };
-        _opCodes[INC_DE] = () => { Registers.DE = Inc(Registers.DE); };
-        _opCodes[INC_HL] = () => { Registers.XHL = Inc(Registers.XHL); };
-        _opCodes[INC_SP] = () => { Registers.SP = Inc(Registers.SP); };
+        _opCodes[INC_BC] = () => { Registers.BC = INC(Registers.BC); };
+        _opCodes[INC_DE] = () => { Registers.DE = INC(Registers.DE); };
+        _opCodes[INC_HL] = () => { Registers.XHL = INC(Registers.XHL); };
+        _opCodes[INC_SP] = () => { Registers.SP = INC(Registers.SP); };
 
-        _opCodes[DEC_BC] = () => { Registers.BC = Dec(Registers.BC); };
-        _opCodes[DEC_DE] = () => { Registers.DE = Dec(Registers.DE); };
-        _opCodes[DEC_HL] = () => { Registers.XHL = Dec(Registers.XHL); };
-        _opCodes[DEC_SP] = () => { Registers.SP = Dec(Registers.SP); };
+        _opCodes[DEC_BC] = () => { Registers.BC = DEC(Registers.BC); };
+        _opCodes[DEC_DE] = () => { Registers.DE = DEC(Registers.DE); };
+        _opCodes[DEC_HL] = () => { Registers.XHL = DEC(Registers.XHL); };
+        _opCodes[DEC_SP] = () => { Registers.SP = DEC(Registers.SP); };
     }
 
-    private void Add(ushort value)
+    private void ADD(ushort value)
     {
         AddCycles(7);
 
@@ -50,7 +50,7 @@ partial class Z80
         Registers.XHL = result;
     }
 
-    private void Adc(ushort value)
+    private void ADC(ushort value)
     {
         AddCycles(7);
 
@@ -68,7 +68,7 @@ partial class Z80
         Registers.HL = result;
     }
 
-    private void Sbc(ushort value)
+    private void SBC(ushort value)
     {
         AddCycles(7);
 
@@ -87,13 +87,13 @@ partial class Z80
         Registers.HL = result;
     }
 
-    private ushort Inc(ushort value)
+    private ushort INC(ushort value)
     {
         AddCycles(2);
         return (ushort)(value + 1);
     }
 
-    private ushort Dec(ushort value)
+    private ushort DEC(ushort value)
     {
         AddCycles(2);
         return (ushort)(value - 1);

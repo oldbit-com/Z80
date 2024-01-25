@@ -1,3 +1,4 @@
+using Z80.Net.Instructions;
 using static Z80.Net.Instructions.OpCodes;
 using static Z80.Net.Registers.Flags;
 
@@ -7,21 +8,21 @@ partial class Z80
 {
     private void AddJumpInstructions()
     {
-        _opCodes[JP] = () => JumpAbsolute();
-        _opCodes[JP_C] = () => JumpAbsolute( (Registers.F & C) != 0);
-        _opCodes[JP_NC] = () => JumpAbsolute( (Registers.F & C) == 0);
-        _opCodes[JP_Z] = () => JumpAbsolute( (Registers.F & Z) != 0);
-        _opCodes[JP_NZ] = () => JumpAbsolute( (Registers.F & Z) == 0);
-        _opCodes[JP_PE] = () => JumpAbsolute( (Registers.F & P) != 0);
-        _opCodes[JP_PO] = () => JumpAbsolute( (Registers.F & P) == 0);
-        _opCodes[JP_M] = () => JumpAbsolute( (Registers.F & S) != 0);
-        _opCodes[JP_P] = () => JumpAbsolute( (Registers.F & S) == 0);
+        _opCodes[OpCodes.JP] = () => JP();
+        _opCodes[JP_C] = () => JP( (Registers.F & C) != 0);
+        _opCodes[JP_NC] = () => JP( (Registers.F & C) == 0);
+        _opCodes[JP_Z] = () => JP( (Registers.F & Z) != 0);
+        _opCodes[JP_NZ] = () => JP( (Registers.F & Z) == 0);
+        _opCodes[JP_PE] = () => JP( (Registers.F & P) != 0);
+        _opCodes[JP_PO] = () => JP( (Registers.F & P) == 0);
+        _opCodes[JP_M] = () => JP( (Registers.F & S) != 0);
+        _opCodes[JP_P] = () => JP( (Registers.F & S) == 0);
 
-        _opCodes[JR] = () => JumpRelative();
-        _opCodes[JR_C] = () => JumpRelative( (Registers.F & C) != 0);
-        _opCodes[JR_NC] = () => JumpRelative( (Registers.F & C) == 0);
-        _opCodes[JR_Z] = () => JumpRelative( (Registers.F & Z) != 0);
-        _opCodes[JR_NZ] = () => JumpRelative( (Registers.F & Z) == 0);
+        _opCodes[OpCodes.JR] = () => JR();
+        _opCodes[JR_C] = () => JR( (Registers.F & C) != 0);
+        _opCodes[JR_NC] = () => JR( (Registers.F & C) == 0);
+        _opCodes[JR_Z] = () => JR( (Registers.F & Z) != 0);
+        _opCodes[JR_NZ] = () => JR( (Registers.F & Z) == 0);
 
         _opCodes[JP_HL] = () => { Registers.PC = Registers.XHL; };
 
@@ -38,7 +39,7 @@ partial class Z80
         };
     }
 
-    private void JumpAbsolute(bool shouldJump = true)
+    private void JP(bool shouldJump = true)
     {
         var pc = ReadNextWord();
         if (!shouldJump)
@@ -49,7 +50,7 @@ partial class Z80
         Registers.PC = pc;
     }
 
-    private void JumpRelative(bool shouldJump = true)
+    private void JR(bool shouldJump = true)
     {
         var offset = ReadNextByte();
         if (!shouldJump)

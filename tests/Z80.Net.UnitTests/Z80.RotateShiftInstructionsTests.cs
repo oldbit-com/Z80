@@ -576,6 +576,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData(0x7A, 0x31, All, 0x73, 0x1A, Y | C)]
     [InlineData(0x0F, 0x0A, All, 0x00, 0xAF, Z | P | C)]
+    [InlineData(0x55, 0xAA, None, 0x5A, 0xA5, X | P)]
     public void When_RLD_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte a, byte mem, Flags flags, byte expectedA, byte expectedMem, Flags expectedFlags)
     {

@@ -209,7 +209,7 @@ partial class Z80
         return result;
     }
 
-    private byte SLL(byte value) => 0;
+    private byte SLL(byte value) => (byte)(SLA(value) | 1);
 
     private void UpdateFlagsForShiftAndRotate(byte result, byte carry)
     {

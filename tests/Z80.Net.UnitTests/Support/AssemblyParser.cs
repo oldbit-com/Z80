@@ -237,6 +237,7 @@ internal class AssemblyParser
             case "SLA":
             case "SRA":
             case "SRL":
+            case "SLL":
                 operand1 = Operand.Parse(instruction.Operands[0]);
 
                 if (operand1.Is8BitRegister)
@@ -249,7 +250,8 @@ internal class AssemblyParser
                         "RR" => 0b00011000,
                         "SLA" => 0b00100000,
                         "SRA" => 0b00101000,
-                        "SRL" => 0b00111000
+                        "SRL" => 0b00111000,
+                        "SLL" => 0b00110000
                     };
                     return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, opCode | RegisterCodes[operand1.OperandType]);
                 }
@@ -262,7 +264,8 @@ internal class AssemblyParser
                     "RR" => 0x1E,
                     "SLA" => 0x26,
                     "SRA" => 0x2E,
-                    "SRL" => 0x3E
+                    "SRL" => 0x3E,
+                    "SLL" => 0x36
                 };
 
                 switch (operand1.OperandType)

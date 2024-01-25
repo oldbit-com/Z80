@@ -89,6 +89,21 @@ partial class Z80
             AddCycles(1);
             WriteByte(address, Rrc(value));
         };
+
+        _opCodes[RR_A] = () => { Registers.A = Rr(Registers.A); };
+        _opCodes[RR_B] = () => { Registers.B = Rr(Registers.B); };
+        _opCodes[RR_C] = () => { Registers.C = Rr(Registers.C); };
+        _opCodes[RR_D] = () => { Registers.D = Rr(Registers.D); };
+        _opCodes[RR_E] = () => { Registers.E = Rr(Registers.E); };
+        _opCodes[RR_H] = () => { Registers.H = Rr(Registers.H); };
+        _opCodes[RR_L] = () => { Registers.L = Rr(Registers.L); };
+        _opCodes[RR_HL] = () =>
+        {
+            var address = (ushort)(Registers.XHL + _indexOffset);
+            var value = ReadByte(address);
+            AddCycles(1);
+            WriteByte(address, Rr(value));
+        };
     }
 
     private byte Rlc(byte value)
@@ -121,6 +136,19 @@ partial class Z80
     {
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | bit0 << 7);
+
+        Registers.F = (S | Y | X) & (Flags)result;
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)bit0 & C;
+        Registers.F |= Parity.Lookup[result];
+
+        return result;
+    }
+
+    private byte Rr(byte value)
+    {
+        var bit0 = value & 1;
+        var result = (byte)(value >> 1 | (byte)(Registers.F & C) << 7);
 
         Registers.F = (S | Y | X) & (Flags)result;
         Registers.F |= result == 0 ? Z : 0;

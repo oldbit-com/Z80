@@ -52,13 +52,7 @@ partial class Z80
         _opCodes[RLC_E] = () => { Registers.E = RLC(Registers.E); };
         _opCodes[RLC_H] = () => { Registers.H = RLC(Registers.H); };
         _opCodes[RLC_L] = () => { Registers.L = RLC(Registers.L); };
-        _opCodes[RLC_HL] = () =>
-        {
-            var address = (ushort)(Registers.XHL + _indexOffset);
-            var value = ReadByte(address);
-            AddCycles(1);
-            WriteByte(address, RLC(value));
-        };
+        _opCodes[RLC_HL] = () => ShiftRotateMemory(RLC);
 
         _opCodes[RL_A] = () => { Registers.A = RL(Registers.A); };
         _opCodes[RL_B] = () => { Registers.B = RL(Registers.B); };
@@ -67,13 +61,7 @@ partial class Z80
         _opCodes[RL_E] = () => { Registers.E = RL(Registers.E); };
         _opCodes[RL_H] = () => { Registers.H = RL(Registers.H); };
         _opCodes[RL_L] = () => { Registers.L = RL(Registers.L); };
-        _opCodes[RL_HL] = () =>
-        {
-            var address = (ushort)(Registers.XHL + _indexOffset);
-            var value = ReadByte(address);
-            AddCycles(1);
-            WriteByte(address, RL(value));
-        };
+        _opCodes[RL_HL] = () => ShiftRotateMemory(RL);
 
         _opCodes[RRC_A] = () => { Registers.A = RRC(Registers.A); };
         _opCodes[RRC_B] = () => { Registers.B = RRC(Registers.B); };
@@ -82,13 +70,7 @@ partial class Z80
         _opCodes[RRC_E] = () => { Registers.E = RRC(Registers.E); };
         _opCodes[RRC_H] = () => { Registers.H = RRC(Registers.H); };
         _opCodes[RRC_L] = () => { Registers.L = RRC(Registers.L); };
-        _opCodes[RRC_HL] = () =>
-        {
-            var address = (ushort)(Registers.XHL + _indexOffset);
-            var value = ReadByte(address);
-            AddCycles(1);
-            WriteByte(address, RRC(value));
-        };
+        _opCodes[RRC_HL] = () => ShiftRotateMemory(RRC);
 
         _opCodes[RR_A] = () => { Registers.A = RR(Registers.A); };
         _opCodes[RR_B] = () => { Registers.B = RR(Registers.B); };
@@ -97,13 +79,7 @@ partial class Z80
         _opCodes[RR_E] = () => { Registers.E = RR(Registers.E); };
         _opCodes[RR_H] = () => { Registers.H = RR(Registers.H); };
         _opCodes[RR_L] = () => { Registers.L = RR(Registers.L); };
-        _opCodes[RR_HL] = () =>
-        {
-            var address = (ushort)(Registers.XHL + _indexOffset);
-            var value = ReadByte(address);
-            AddCycles(1);
-            WriteByte(address, RR(value));
-        };
+        _opCodes[RR_HL] = () => ShiftRotateMemory(RR);
 
         _opCodes[SLA_A] = () => { Registers.A = SLA(Registers.A); };
         _opCodes[SLA_B] = () => { Registers.B = SLA(Registers.B); };
@@ -112,13 +88,7 @@ partial class Z80
         _opCodes[SLA_E] = () => { Registers.E = SLA(Registers.E); };
         _opCodes[SLA_H] = () => { Registers.H = SLA(Registers.H); };
         _opCodes[SLA_L] = () => { Registers.L = SLA(Registers.L); };
-        _opCodes[SLA_HL] = () =>
-        {
-            var address = (ushort)(Registers.XHL + _indexOffset);
-            var value = ReadByte(address);
-            AddCycles(1);
-            WriteByte(address, SLA(value));
-        };
+        _opCodes[SLA_HL] = () => ShiftRotateMemory(SLA);
 
         _opCodes[SRA_A] = () => { Registers.A = SRA(Registers.A); };
         _opCodes[SRA_B] = () => { Registers.B = SRA(Registers.B); };
@@ -127,13 +97,25 @@ partial class Z80
         _opCodes[SRA_E] = () => { Registers.E = SRA(Registers.E); };
         _opCodes[SRA_H] = () => { Registers.H = SRA(Registers.H); };
         _opCodes[SRA_L] = () => { Registers.L = SRA(Registers.L); };
-        _opCodes[SRA_HL] = () =>
-        {
-            var address = (ushort)(Registers.XHL + _indexOffset);
-            var value = ReadByte(address);
-            AddCycles(1);
-            WriteByte(address, SRA(value));
-        };
+        _opCodes[SRA_HL] = () => ShiftRotateMemory(SRA);
+
+        _opCodes[SRL_A] = () => { Registers.A = SRL(Registers.A); };
+        _opCodes[SRL_B] = () => { Registers.B = SRL(Registers.B); };
+        _opCodes[SRL_C] = () => { Registers.C = SRL(Registers.C); };
+        _opCodes[SRL_D] = () => { Registers.D = SRL(Registers.D); };
+        _opCodes[SRL_E] = () => { Registers.E = SRL(Registers.E); };
+        _opCodes[SRL_H] = () => { Registers.H = SRL(Registers.H); };
+        _opCodes[SRL_L] = () => { Registers.L = SRL(Registers.L); };
+        _opCodes[SRL_HL] = () => ShiftRotateMemory(SRL);
+
+        _opCodes[SLL_A] = () => { Registers.A = SLL(Registers.A); };
+        _opCodes[SLL_B] = () => { Registers.B = SLL(Registers.B); };
+        _opCodes[SLL_C] = () => { Registers.C = SLL(Registers.C); };
+        _opCodes[SLL_D] = () => { Registers.D = SLL(Registers.D); };
+        _opCodes[SLL_E] = () => { Registers.E = SLL(Registers.E); };
+        _opCodes[SLL_H] = () => { Registers.H = SLL(Registers.H); };
+        _opCodes[SLL_L] = () => { Registers.L = SLL(Registers.L); };
+        _opCodes[SLL_HL] = () => ShiftRotateMemory(SLL);
     }
 
     private byte RLC(byte value)
@@ -214,11 +196,35 @@ partial class Z80
         return result;
     }
 
+    private byte SRL(byte value)
+    {
+        var bit0 = value & 1;
+        var result = (byte)(value >> 1);
+
+        Registers.F = (S | Y | X) & (Flags)result;
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)bit0 & C;
+        Registers.F |= Parity.Lookup[result];
+
+        return result;
+    }
+
+    private byte SLL(byte value) => 0;
+
     private void UpdateFlagsForShiftAndRotate(byte result, byte carry)
     {
         Registers.F = (S | Y | X) & (Flags)result;
         Registers.F |= result == 0 ? Z : 0;
         Registers.F |= (Flags)carry & C;
         Registers.F |= Parity.Lookup[result];
+    }
+
+    private void ShiftRotateMemory(Func<byte, byte> calculate)
+    {
+        var address = (ushort)(Registers.XHL + _indexOffset);
+        var value = ReadByte(address);
+        AddCycles(1);
+        var result = calculate(value);
+        WriteByte(address, result);
     }
 }

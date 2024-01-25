@@ -104,6 +104,21 @@ partial class Z80
             AddCycles(1);
             WriteByte(address, RR(value));
         };
+
+        _opCodes[SLA_A] = () => { Registers.A = SLA(Registers.A); };
+        _opCodes[SLA_B] = () => { Registers.B = SLA(Registers.B); };
+        _opCodes[SLA_C] = () => { Registers.C = SLA(Registers.C); };
+        _opCodes[SLA_D] = () => { Registers.D = SLA(Registers.D); };
+        _opCodes[SLA_E] = () => { Registers.E = SLA(Registers.E); };
+        _opCodes[SLA_H] = () => { Registers.H = SLA(Registers.H); };
+        _opCodes[SLA_L] = () => { Registers.L = SLA(Registers.L); };
+        _opCodes[SLA_HL] = () =>
+        {
+            var address = (ushort)(Registers.XHL + _indexOffset);
+            var value = ReadByte(address);
+            AddCycles(1);
+            WriteByte(address, SLA(value));
+        };
     }
 
     private byte RLC(byte value)
@@ -153,6 +168,19 @@ partial class Z80
         Registers.F = (S | Y | X) & (Flags)result;
         Registers.F |= result == 0 ? Z : 0;
         Registers.F |= (Flags)bit0 & C;
+        Registers.F |= Parity.Lookup[result];
+
+        return result;
+    }
+
+    private byte SLA(byte value)
+    {
+        var bit7 = value >> 7;
+        var result = (byte)(value << 1);
+
+        Registers.F = (S | Y | X) & (Flags)result;
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)bit7 & C;
         Registers.F |= Parity.Lookup[result];
 
         return result;

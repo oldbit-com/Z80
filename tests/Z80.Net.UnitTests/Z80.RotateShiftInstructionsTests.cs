@@ -154,4 +154,64 @@ public class Z80RotateShiftInstructionsTests
         z80.Registers.F.Should().Be(None);
         z80.CycleCounter.TotalCycles.Should().Be(37);
     }
+
+    [Theory]
+    [InlineData(0x55, Z | H | N | C, 0xAB, S | Y | X)]
+    [InlineData(0xAA, Z | H | N | C, 0x55, P | C)]
+    [InlineData(0x80, None, 0x00, Z | P | C)]
+    [InlineData(0x80, C, 0x01, C)]
+    public void When_RL_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
+        byte value, Flags flags, byte expectedValue, Flags expectedFlags)
+    {
+        var z80 = new CodeBuilder()
+            .Flags(flags)
+            .Code(
+                $"LD D,{value}",
+                "RL D")
+            .Build();
+
+        z80.Run(7 + 8);
+
+        z80.Registers.D.Should().Be(expectedValue);
+        z80.Registers.F.Should().Be(expectedFlags);
+        z80.CycleCounter.TotalCycles.Should().Be(15);
+    }
+
+    [Fact]
+    public void When_RL_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
+    {
+        var builder = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD HL,0x06",
+                "RL (HL)",
+                "db 0,0x81");
+        var z80 = builder.Build();
+
+        z80.Run(10 + 15);
+
+        builder.Memory![0x06].Should().Be(0x02);
+        z80.Registers.F.Should().Be(C);
+        z80.CycleCounter.TotalCycles.Should().Be(25);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_RL_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new CodeBuilder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"RL ({register}+5)",
+                "db 0,2");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0x05);
+        z80.Registers.F.Should().Be(P);
+        z80.CycleCounter.TotalCycles.Should().Be(37);
+    }
 }

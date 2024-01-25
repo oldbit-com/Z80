@@ -91,6 +91,14 @@ partial class Z80
 
     private byte Rl(byte value)
     {
-        return 0;
+        var bit7 = value >> 7;
+        var result = (byte)(value << 1 | (byte)(Registers.F & C));
+
+        Registers.F = (S | Y | X) & (Flags)result;
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)bit7;
+        Registers.F |= Parity.Lookup[result];
+
+        return result;
     }
 }

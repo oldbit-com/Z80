@@ -250,6 +250,26 @@ internal class AssemblyParser
 
                 break;
 
+            case "RL":
+                operand1 = Operand.Parse(instruction.Operands[0]);
+
+                if (operand1.Is8BitRegister)
+                {
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, 0b00010000 | RegisterCodes[operand1.OperandType]);
+                }
+
+                switch (operand1.OperandType)
+                {
+                    case OperandType.MemoryHL:
+                        return [0xCB, 0x16];
+
+                    case OperandType.MemoryIXd:
+                    case OperandType.MemoryIYd:
+                        return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, 0x16];
+                }
+
+                break;
+
             case "CALL":
                 if (instruction.Operands.Length > 1)
                 {

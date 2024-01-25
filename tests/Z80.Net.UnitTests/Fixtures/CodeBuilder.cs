@@ -1,7 +1,7 @@
 using Z80.Net.Helpers;
 using Z80.Net.Instructions;
 using Z80.Net.Registers;
-using Z80.Net.UnitTests.Parser;
+using Z80.Net.UnitTests.Support;
 using static Z80.Net.Instructions.OpCodes;
 
 namespace Z80.Net.UnitTests.Fixtures;

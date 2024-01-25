@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Z80.Net.UnitTests.Parser;
+namespace Z80.Net.UnitTests.Support;
 
 internal class Operand
 {

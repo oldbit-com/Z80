@@ -1,3 +1,4 @@
+using Z80.Net.Extensions;
 using Z80.Net.Helpers;
 
 namespace Z80.Net.Registers;
@@ -40,7 +41,7 @@ public sealed class CpuRegisters : CommonRegisters
     public ushort IX
     {
         get => TypeConverter.ToWord(IXH, IXL);
-        set => (IXH, IXL) = TypeConverter.ToBytes(value);
+        set => (IXH, IXL) = value;
     }
 
     /// <summary>
@@ -49,7 +50,7 @@ public sealed class CpuRegisters : CommonRegisters
     public ushort IY
     {
         get => TypeConverter.ToWord(IYH, IYL);
-        set => (IYH, IYL) = TypeConverter.ToBytes(value);
+        set => (IYH, IYL) = value;
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using Z80.Net.Extensions;
 using Z80.Net.Helpers;
 
 namespace Z80.Net.Registers;
@@ -58,7 +59,7 @@ public class CommonRegisters
     public ushort BC
     {
         get => TypeConverter.ToWord(B, C);
-        set => (B, C) = TypeConverter.ToBytes(value);
+        set => (B, C) = value;
     }
 
     /// <summary>
@@ -67,7 +68,7 @@ public class CommonRegisters
     public ushort DE
     {
         get => TypeConverter.ToWord(D, E);
-        set => (D, E) = TypeConverter.ToBytes(value);
+        set => (D, E) = value;
     }
 
     /// <summary>
@@ -76,6 +77,6 @@ public class CommonRegisters
     public ushort HL
     {
         get => TypeConverter.ToWord(H, L);
-        set => (H, L) = TypeConverter.ToBytes(value);
+        set => (H, L) = value;
     }
 }

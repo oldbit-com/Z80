@@ -1,3 +1,4 @@
+using Z80.Net.Extensions;
 using Z80.Net.Helpers;
 using Z80.Net.Instructions;
 using static Z80.Net.Instructions.OpCodes;
@@ -50,11 +51,13 @@ partial class Z80
             return;
         }
 
+        var (hiPC, loPC) = Registers.PC;
+
         AddCycles(1);
         Registers.SP -= 1;
-        WriteByte(Registers.SP, TypeConverter.High(Registers.PC));
+        WriteByte(Registers.SP, hiPC);
         Registers.SP -= 1;
-        WriteByte(Registers.SP, TypeConverter.Low(Registers.PC));
+        WriteByte(Registers.SP, loPC);
         Registers.PC = pc;
     }
 
@@ -81,11 +84,13 @@ partial class Z80
 
     private void RST(byte pc)
     {
+        var (hiPC, loPC) = Registers.PC;
+
         AddCycles(1);
         Registers.SP -= 1;
-        WriteByte(Registers.SP, TypeConverter.High(Registers.PC));
+        WriteByte(Registers.SP, hiPC);
         Registers.SP -= 1;
-        WriteByte(Registers.SP, TypeConverter.Low(Registers.PC));
+        WriteByte(Registers.SP, loPC);
         Registers.PC = pc;
     }
 }

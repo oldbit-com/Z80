@@ -11,8 +11,4 @@
             <_Parameter1>Z80.Net.UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
 </Project>

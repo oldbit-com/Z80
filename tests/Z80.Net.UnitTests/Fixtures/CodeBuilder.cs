@@ -1,3 +1,4 @@
+using Z80.Net.Extensions;
 using Z80.Net.Helpers;
 using Z80.Net.Instructions;
 using Z80.Net.Registers;
@@ -86,9 +87,9 @@ public class CodeBuilder
                     break;
                 case 2:
                 {
-                    var bytes = TypeConverter.ToBytes((ushort)arg.Value);
-                    _code.Add(bytes.Low);
-                    _code.Add(bytes.High);
+                    var (highByte, lowByte) = (ushort)arg.Value;
+                    _code.Add(lowByte);
+                    _code.Add(highByte);
                     break;
                 }
             }
@@ -160,14 +161,14 @@ public class CodeBuilder
 
         if (_af != null)
         {
-            var (a, f) = TypeConverter.ToBytes(_af.Value);
+            var (a, f) = _af.Value;
             z80.Registers.A = a;
             z80.Registers.F = (Flags)f;
         }
 
         if (_afPrime != null)
         {
-            var (a, f) = TypeConverter.ToBytes(_afPrime.Value);
+            var (a, f) = _afPrime.Value;
             z80.Registers.Alternative.A = a;
             z80.Registers.Alternative.F = (Flags)f;
         }

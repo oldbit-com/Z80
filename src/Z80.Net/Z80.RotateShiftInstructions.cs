@@ -45,6 +45,31 @@ partial class Z80
             Registers.F |= (Y | X) & (Flags)Registers.A;
         };
 
+        _opCodes[RLD] = () =>
+        {   // A                        (HL)
+            // a7 a6 a5 a4 a3 a2 a1 a0  m7 m6 m5 m4 m3 m2 m1 m0  Before
+            // a7 a6 a5 a4 m7 m6 m5 m4  m3 m2 m1 m0 a3 a2 a1 a0  After
+            // A = (HL) >> 4 | A & 0xF0
+            // (HL) = (HL) << 4 | A & 0x0F
+            AddCycles(4);
+
+            var value = ReadByte(Registers.HL);
+            var newValue = (byte)((value << 4) | (Registers.A & 0x0F));
+            Registers.A = (byte)((value >> 4) | (Registers.A & 0xF0));
+
+            WriteByte(Registers.HL, newValue);
+
+            Registers.F &= C;
+            Registers.F |= Registers.A == 0 ? Z : 0;
+            Registers.F |= (S | Y | X) & (Flags)Registers.A;
+            Registers.F |= Parity.Lookup[Registers.A];
+        };
+
+        _opCodes[RRD] = () =>
+        {
+
+        };
+
         _opCodes[RLC_A] = () => { Registers.A = RLC(Registers.A); };
         _opCodes[RLC_B] = () => { Registers.B = RLC(Registers.B); };
         _opCodes[RLC_C] = () => { Registers.C = RLC(Registers.C); };

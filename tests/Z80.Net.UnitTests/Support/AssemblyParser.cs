@@ -231,41 +231,39 @@ internal class AssemblyParser
                 break;
 
             case "RLC":
-                operand1 = Operand.Parse(instruction.Operands[0]);
-
-                if (operand1.Is8BitRegister)
-                {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, RegisterCodes[operand1.OperandType]);
-                }
-
-                switch (operand1.OperandType)
-                {
-                    case OperandType.MemoryHL:
-                        return [0xCB, 0x06];
-
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
-                        return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, 0x06];
-                }
-
-                break;
-
             case "RL":
+            case "RRC":
+            case "RR":
                 operand1 = Operand.Parse(instruction.Operands[0]);
 
                 if (operand1.Is8BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, 0b00010000 | RegisterCodes[operand1.OperandType]);
+                    opCode = instruction.Mnemonic switch
+                    {
+                        "RLC" => 0b00000000,
+                        "RL" => 0b00010000,
+                        "RRC" => 0b00001000,
+                        "RR" => 0b00011000,
+                    };
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, opCode | RegisterCodes[operand1.OperandType]);
                 }
+
+                opCode = instruction.Mnemonic switch
+                {
+                    "RLC" => 0x06,
+                    "RL" => 0x16,
+                    "RRC" => 0x0E,
+                    "RR" => 0x1E,
+                };
 
                 switch (operand1.OperandType)
                 {
                     case OperandType.MemoryHL:
-                        return [0xCB, 0x16];
+                        return [0xCB, opCode];
 
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
-                        return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, 0x16];
+                        return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, opCode];
                 }
 
                 break;

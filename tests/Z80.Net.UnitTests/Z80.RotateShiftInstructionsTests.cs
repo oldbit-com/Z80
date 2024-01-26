@@ -596,4 +596,28 @@ public class Z80RotateShiftInstructionsTests
         z80.Registers.F.Should().Be(expectedFlags);
         z80.CycleCounter.TotalCycles.Should().Be(35);
     }
+
+    [Theory]
+    [InlineData(0x84, 0x20, All, 0x80, 0x42, S | C)]
+    [InlineData(0x03, 0x60, All, 0x00, 0x36, Z | P | C)]
+    [InlineData(0x55, 0xAA, None, 0x5A, 0x5A, X | P)]
+    public void When_RRD_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
+        byte a, byte mem, Flags flags, byte expectedA, byte expectedMem, Flags expectedFlags)
+    {
+        var builder = new CodeBuilder()
+            .Flags(flags)
+            .Code(
+                $"LD A,{a}",
+                "LD HL,8",
+                "RRD",
+                $"db 0,{mem}");
+        var z80 = builder.Build();
+
+        z80.Run(7 + 10 + 18);
+
+        z80.Registers.A.Should().Be(expectedA);
+        builder.Memory![0x08].Should().Be(expectedMem);
+        z80.Registers.F.Should().Be(expectedFlags);
+        z80.CycleCounter.TotalCycles.Should().Be(35);
+    }
 }

@@ -38,6 +38,7 @@ public partial class Z80
         Add16BitLoadInstructions();
         Add16BitArithmeticInstructions();
         AddRotateShiftInstructions();
+        AddBitSetResetTestInstructions();
         AddUndocumentedInstructions();
     }
 

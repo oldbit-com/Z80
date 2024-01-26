@@ -449,6 +449,31 @@ internal class AssemblyParser
                     return [0b11000111 | RstCodes[rst] << 3];
                 }
                 break;
+
+            case "BIT":
+            case "SET":
+            case "RES":
+                operand1 = Operand.Parse(instruction.Operands[0]);
+                operand2 = Operand.Parse(instruction.Operands[1]);
+
+                var prefix = instruction.Mnemonic switch
+                {
+                    "BIT" => 0b01000000,
+                    "SET" => 0b11000000,
+                    "RES" => 0b10000000
+                };
+
+                switch (operand2.OperandType)
+                {
+                    case OperandType.MemoryHL:
+                        return [0xCB, prefix | 0b00000110 | operand1.Value << 3];
+
+                    case OperandType.MemoryIXd:
+                    case OperandType.MemoryIYd:
+                        return [operand2.CodePrefix!.Value, 0xCB, operand2.Offset, prefix | 0b00000110 | operand1.Value << 3];
+                }
+
+                return [0xCB, prefix | operand1.Value << 3 | RegisterCodes[operand2.OperandType]];
         }
 
         throw new ArgumentException($"Instruction not supported: {code}");

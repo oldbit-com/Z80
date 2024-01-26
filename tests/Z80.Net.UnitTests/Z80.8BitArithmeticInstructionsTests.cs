@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using FluentAssertions;
 using Z80.Net.Instructions;
 using Z80.Net.Registers;

@@ -274,7 +274,8 @@ public static class OpCodes
 	public static readonly OpCode IY          = new(0xFD, "IY INSTRUCTION PREFIX");
 	public static readonly OpCode CP_n        = new(0xFE, "CP N");
 	public static readonly OpCode RST_38      = new(0xFF, "RST 38H");
-    // Extended op codes with ED prefix
+
+	// Extended op codes with ED prefix
     public static readonly OpCode IN_B_C      = new(0x40, 0xED, "IN B,(C)");
 	public static readonly OpCode OUT_C_B     = new(0x41, 0xED, "OUT (C),B");
 	public static readonly OpCode SBC_HL_BC   = new(0x42, 0xED, "SBC HL,BC");
@@ -405,5 +406,31 @@ public static class OpCodes
     public static readonly OpCode SRL_HL      = new(0x3E, 0xCB, "SRL (HL)");
     public static readonly OpCode SRL_A       = new(0x3F, 0xCB, "SRL A");
 
+    public static readonly OpCode BIT_b_B     = new(0x40, 0xCB, "BIT {bit},B");
+    public static readonly OpCode BIT_b_C     = new(0x41, 0xCB, "BIT {bit},C");
+    public static readonly OpCode BIT_b_D     = new(0x42, 0xCB, "BIT {bit},D");
+    public static readonly OpCode BIT_b_E     = new(0x43, 0xCB, "BIT {bit},E");
+    public static readonly OpCode BIT_b_H     = new(0x44, 0xCB, "BIT {bit},H");
+    public static readonly OpCode BIT_b_L     = new(0x45, 0xCB, "BIT {bit},L");
+    public static readonly OpCode BIT_b_HL    = new(0x46, 0xCB, "BIT {bit},(HL)");
+    public static readonly OpCode BIT_b_A     = new(0x47, 0xCB, "BIT {bit},A");
+
+    public static readonly OpCode RES_b_B     = new(0x80, 0xCB, "RES {bit},B");
+    public static readonly OpCode RES_b_C     = new(0x81, 0xCB, "RES {bit},C");
+    public static readonly OpCode RES_b_D     = new(0x82, 0xCB, "RES {bit},D");
+    public static readonly OpCode RES_b_E     = new(0x83, 0xCB, "RES {bit},E");
+    public static readonly OpCode RES_b_H     = new(0x84, 0xCB, "RES {bit},H");
+    public static readonly OpCode RES_b_L     = new(0x85, 0xCB, "RES {bit},L");
+    public static readonly OpCode RES_b_HL    = new(0x86, 0xCB, "RES {bit},(HL)");
+    public static readonly OpCode RES_b_A     = new(0x87, 0xCB, "RES {bit},A");
+
+    public static readonly OpCode SET_b_B     = new(0xC0, 0xCB, "SET {bit},B");
+    public static readonly OpCode SET_b_C     = new(0xC1, 0xCB, "SET {bit},C");
+    public static readonly OpCode SET_b_D     = new(0xC2, 0xCB, "SET {bit},D");
+    public static readonly OpCode SET_b_E     = new(0xC3, 0xCB, "SET {bit},E");
+    public static readonly OpCode SET_b_H     = new(0xC4, 0xCB, "SET {bit},H");
+    public static readonly OpCode SET_b_L     = new(0xC5, 0xCB, "SET {bit},L");
+    public static readonly OpCode SET_b_HL    = new(0xC6, 0xCB, "SET {bit},(HL)");
+    public static readonly OpCode SET_b_A     = new(0xC7, 0xCB, "SET {bit},A");
 
 }

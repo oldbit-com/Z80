@@ -82,80 +82,80 @@ partial class Z80
             Registers.F |= Parity.Lookup[Registers.A];
         };
 
-        _opCodes[RLC_A] = () => { Registers.A = RLC(Registers.A); };
-        _opCodes[RLC_B] = () => { Registers.B = RLC(Registers.B); };
-        _opCodes[RLC_C] = () => { Registers.C = RLC(Registers.C); };
-        _opCodes[RLC_D] = () => { Registers.D = RLC(Registers.D); };
-        _opCodes[RLC_E] = () => { Registers.E = RLC(Registers.E); };
-        _opCodes[RLC_H] = () => { Registers.H = RLC(Registers.H); };
-        _opCodes[RLC_L] = () => { Registers.L = RLC(Registers.L); };
-        _opCodes[RLC_HL] = () => ShiftRotateMemory(RLC);
+        _opCodes[RLC_A] = () => { Registers.A = ExecuteRLC(Registers.A); };
+        _opCodes[RLC_B] = () => { Registers.B = ExecuteRLC(Registers.B); };
+        _opCodes[RLC_C] = () => { Registers.C = ExecuteRLC(Registers.C); };
+        _opCodes[RLC_D] = () => { Registers.D = ExecuteRLC(Registers.D); };
+        _opCodes[RLC_E] = () => { Registers.E = ExecuteRLC(Registers.E); };
+        _opCodes[RLC_H] = () => { Registers.H = ExecuteRLC(Registers.H); };
+        _opCodes[RLC_L] = () => { Registers.L = ExecuteRLC(Registers.L); };
+        _opCodes[RLC_HL] = () => ShiftRotateMemory(ExecuteRLC);
 
-        _opCodes[RL_A] = () => { Registers.A = RL(Registers.A); };
-        _opCodes[RL_B] = () => { Registers.B = RL(Registers.B); };
-        _opCodes[RL_C] = () => { Registers.C = RL(Registers.C); };
-        _opCodes[RL_D] = () => { Registers.D = RL(Registers.D); };
-        _opCodes[RL_E] = () => { Registers.E = RL(Registers.E); };
-        _opCodes[RL_H] = () => { Registers.H = RL(Registers.H); };
-        _opCodes[RL_L] = () => { Registers.L = RL(Registers.L); };
-        _opCodes[RL_HL] = () => ShiftRotateMemory(RL);
+        _opCodes[RL_A] = () => { Registers.A = ExecuteRL(Registers.A); };
+        _opCodes[RL_B] = () => { Registers.B = ExecuteRL(Registers.B); };
+        _opCodes[RL_C] = () => { Registers.C = ExecuteRL(Registers.C); };
+        _opCodes[RL_D] = () => { Registers.D = ExecuteRL(Registers.D); };
+        _opCodes[RL_E] = () => { Registers.E = ExecuteRL(Registers.E); };
+        _opCodes[RL_H] = () => { Registers.H = ExecuteRL(Registers.H); };
+        _opCodes[RL_L] = () => { Registers.L = ExecuteRL(Registers.L); };
+        _opCodes[RL_HL] = () => ShiftRotateMemory(ExecuteRL);
 
-        _opCodes[RRC_A] = () => { Registers.A = RRC(Registers.A); };
-        _opCodes[RRC_B] = () => { Registers.B = RRC(Registers.B); };
-        _opCodes[RRC_C] = () => { Registers.C = RRC(Registers.C); };
-        _opCodes[RRC_D] = () => { Registers.D = RRC(Registers.D); };
-        _opCodes[RRC_E] = () => { Registers.E = RRC(Registers.E); };
-        _opCodes[RRC_H] = () => { Registers.H = RRC(Registers.H); };
-        _opCodes[RRC_L] = () => { Registers.L = RRC(Registers.L); };
-        _opCodes[RRC_HL] = () => ShiftRotateMemory(RRC);
+        _opCodes[RRC_A] = () => { Registers.A = ExecuteRRC(Registers.A); };
+        _opCodes[RRC_B] = () => { Registers.B = ExecuteRRC(Registers.B); };
+        _opCodes[RRC_C] = () => { Registers.C = ExecuteRRC(Registers.C); };
+        _opCodes[RRC_D] = () => { Registers.D = ExecuteRRC(Registers.D); };
+        _opCodes[RRC_E] = () => { Registers.E = ExecuteRRC(Registers.E); };
+        _opCodes[RRC_H] = () => { Registers.H = ExecuteRRC(Registers.H); };
+        _opCodes[RRC_L] = () => { Registers.L = ExecuteRRC(Registers.L); };
+        _opCodes[RRC_HL] = () => ShiftRotateMemory(ExecuteRRC);
 
-        _opCodes[RR_A] = () => { Registers.A = RR(Registers.A); };
-        _opCodes[RR_B] = () => { Registers.B = RR(Registers.B); };
-        _opCodes[RR_C] = () => { Registers.C = RR(Registers.C); };
-        _opCodes[RR_D] = () => { Registers.D = RR(Registers.D); };
-        _opCodes[RR_E] = () => { Registers.E = RR(Registers.E); };
-        _opCodes[RR_H] = () => { Registers.H = RR(Registers.H); };
-        _opCodes[RR_L] = () => { Registers.L = RR(Registers.L); };
-        _opCodes[RR_HL] = () => ShiftRotateMemory(RR);
+        _opCodes[RR_A] = () => { Registers.A = ExecuteRR(Registers.A); };
+        _opCodes[RR_B] = () => { Registers.B = ExecuteRR(Registers.B); };
+        _opCodes[RR_C] = () => { Registers.C = ExecuteRR(Registers.C); };
+        _opCodes[RR_D] = () => { Registers.D = ExecuteRR(Registers.D); };
+        _opCodes[RR_E] = () => { Registers.E = ExecuteRR(Registers.E); };
+        _opCodes[RR_H] = () => { Registers.H = ExecuteRR(Registers.H); };
+        _opCodes[RR_L] = () => { Registers.L = ExecuteRR(Registers.L); };
+        _opCodes[RR_HL] = () => ShiftRotateMemory(ExecuteRR);
 
-        _opCodes[SLA_A] = () => { Registers.A = SLA(Registers.A); };
-        _opCodes[SLA_B] = () => { Registers.B = SLA(Registers.B); };
-        _opCodes[SLA_C] = () => { Registers.C = SLA(Registers.C); };
-        _opCodes[SLA_D] = () => { Registers.D = SLA(Registers.D); };
-        _opCodes[SLA_E] = () => { Registers.E = SLA(Registers.E); };
-        _opCodes[SLA_H] = () => { Registers.H = SLA(Registers.H); };
-        _opCodes[SLA_L] = () => { Registers.L = SLA(Registers.L); };
-        _opCodes[SLA_HL] = () => ShiftRotateMemory(SLA);
+        _opCodes[SLA_A] = () => { Registers.A = ExecuteSLA(Registers.A); };
+        _opCodes[SLA_B] = () => { Registers.B = ExecuteSLA(Registers.B); };
+        _opCodes[SLA_C] = () => { Registers.C = ExecuteSLA(Registers.C); };
+        _opCodes[SLA_D] = () => { Registers.D = ExecuteSLA(Registers.D); };
+        _opCodes[SLA_E] = () => { Registers.E = ExecuteSLA(Registers.E); };
+        _opCodes[SLA_H] = () => { Registers.H = ExecuteSLA(Registers.H); };
+        _opCodes[SLA_L] = () => { Registers.L = ExecuteSLA(Registers.L); };
+        _opCodes[SLA_HL] = () => ShiftRotateMemory(ExecuteSLA);
 
-        _opCodes[SRA_A] = () => { Registers.A = SRA(Registers.A); };
-        _opCodes[SRA_B] = () => { Registers.B = SRA(Registers.B); };
-        _opCodes[SRA_C] = () => { Registers.C = SRA(Registers.C); };
-        _opCodes[SRA_D] = () => { Registers.D = SRA(Registers.D); };
-        _opCodes[SRA_E] = () => { Registers.E = SRA(Registers.E); };
-        _opCodes[SRA_H] = () => { Registers.H = SRA(Registers.H); };
-        _opCodes[SRA_L] = () => { Registers.L = SRA(Registers.L); };
-        _opCodes[SRA_HL] = () => ShiftRotateMemory(SRA);
+        _opCodes[SRA_A] = () => { Registers.A = ExecuteSRA(Registers.A); };
+        _opCodes[SRA_B] = () => { Registers.B = ExecuteSRA(Registers.B); };
+        _opCodes[SRA_C] = () => { Registers.C = ExecuteSRA(Registers.C); };
+        _opCodes[SRA_D] = () => { Registers.D = ExecuteSRA(Registers.D); };
+        _opCodes[SRA_E] = () => { Registers.E = ExecuteSRA(Registers.E); };
+        _opCodes[SRA_H] = () => { Registers.H = ExecuteSRA(Registers.H); };
+        _opCodes[SRA_L] = () => { Registers.L = ExecuteSRA(Registers.L); };
+        _opCodes[SRA_HL] = () => ShiftRotateMemory(ExecuteSRA);
 
-        _opCodes[SRL_A] = () => { Registers.A = SRL(Registers.A); };
-        _opCodes[SRL_B] = () => { Registers.B = SRL(Registers.B); };
-        _opCodes[SRL_C] = () => { Registers.C = SRL(Registers.C); };
-        _opCodes[SRL_D] = () => { Registers.D = SRL(Registers.D); };
-        _opCodes[SRL_E] = () => { Registers.E = SRL(Registers.E); };
-        _opCodes[SRL_H] = () => { Registers.H = SRL(Registers.H); };
-        _opCodes[SRL_L] = () => { Registers.L = SRL(Registers.L); };
-        _opCodes[SRL_HL] = () => ShiftRotateMemory(SRL);
+        _opCodes[SRL_A] = () => { Registers.A = ExecuteSRL(Registers.A); };
+        _opCodes[SRL_B] = () => { Registers.B = ExecuteSRL(Registers.B); };
+        _opCodes[SRL_C] = () => { Registers.C = ExecuteSRL(Registers.C); };
+        _opCodes[SRL_D] = () => { Registers.D = ExecuteSRL(Registers.D); };
+        _opCodes[SRL_E] = () => { Registers.E = ExecuteSRL(Registers.E); };
+        _opCodes[SRL_H] = () => { Registers.H = ExecuteSRL(Registers.H); };
+        _opCodes[SRL_L] = () => { Registers.L = ExecuteSRL(Registers.L); };
+        _opCodes[SRL_HL] = () => ShiftRotateMemory(ExecuteSRL);
 
-        _opCodes[SLL_A] = () => { Registers.A = SLL(Registers.A); };
-        _opCodes[SLL_B] = () => { Registers.B = SLL(Registers.B); };
-        _opCodes[SLL_C] = () => { Registers.C = SLL(Registers.C); };
-        _opCodes[SLL_D] = () => { Registers.D = SLL(Registers.D); };
-        _opCodes[SLL_E] = () => { Registers.E = SLL(Registers.E); };
-        _opCodes[SLL_H] = () => { Registers.H = SLL(Registers.H); };
-        _opCodes[SLL_L] = () => { Registers.L = SLL(Registers.L); };
-        _opCodes[SLL_HL] = () => ShiftRotateMemory(SLL);
+        _opCodes[SLL_A] = () => { Registers.A = ExecuteSLL(Registers.A); };
+        _opCodes[SLL_B] = () => { Registers.B = ExecuteSLL(Registers.B); };
+        _opCodes[SLL_C] = () => { Registers.C = ExecuteSLL(Registers.C); };
+        _opCodes[SLL_D] = () => { Registers.D = ExecuteSLL(Registers.D); };
+        _opCodes[SLL_E] = () => { Registers.E = ExecuteSLL(Registers.E); };
+        _opCodes[SLL_H] = () => { Registers.H = ExecuteSLL(Registers.H); };
+        _opCodes[SLL_L] = () => { Registers.L = ExecuteSLL(Registers.L); };
+        _opCodes[SLL_HL] = () => ShiftRotateMemory(ExecuteSLL);
     }
 
-    private byte RLC(byte value)
+    private byte ExecuteRLC(byte value)
     {
         var bit7 = value >> 7;
         var result = (byte)(value << 1 | bit7);
@@ -165,7 +165,7 @@ partial class Z80
         return result;
     }
 
-    private byte RL(byte value)
+    private byte ExecuteRL(byte value)
     {
         var bit7 = value >> 7;
         var result = (byte)(value << 1 | (byte)(Registers.F & C));
@@ -175,7 +175,7 @@ partial class Z80
         return result;
     }
 
-    private byte RRC(byte value)
+    private byte ExecuteRRC(byte value)
     {
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | bit0 << 7);
@@ -185,7 +185,7 @@ partial class Z80
         return result;
     }
 
-    private byte RR(byte value)
+    private byte ExecuteRR(byte value)
     {
         var bit0 = value & 1;
         var result = (byte)(value >> 1 | (byte)(Registers.F & C) << 7);
@@ -195,7 +195,7 @@ partial class Z80
         return result;
     }
 
-    private byte SLA(byte value)
+    private byte ExecuteSLA(byte value)
     {
         var bit7 = value >> 7;
         var result = (byte)(value << 1);
@@ -205,7 +205,7 @@ partial class Z80
         return result;
     }
 
-    private byte SRA(byte value)
+    private byte ExecuteSRA(byte value)
     {
         var bit0 = value & 1;
         var result = (byte)(value & 0x80 | value >> 1);
@@ -215,7 +215,7 @@ partial class Z80
         return result;
     }
 
-    private byte SRL(byte value)
+    private byte ExecuteSRL(byte value)
     {
         var bit0 = value & 1;
         var result = (byte)(value >> 1);
@@ -225,7 +225,7 @@ partial class Z80
         return result;
     }
 
-    private byte SLL(byte value) => (byte)(SLA(value) | 1);
+    private byte ExecuteSLL(byte value) => (byte)(ExecuteSLA(value) | 1);
 
     private void UpdateFlagsForShiftAndRotate(byte result, int carry)
     {

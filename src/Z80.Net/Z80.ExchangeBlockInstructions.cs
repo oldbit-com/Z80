@@ -33,18 +33,18 @@ partial class Z80
             (Registers.XH, Registers.XL) = (y, x);
         };
 
-        _opCodes[LDI] = () => BlockLoadInstruction(LDI);
-        _opCodes[LDIR] = () => BlockLoadInstruction(LDIR);
-        _opCodes[LDD] = () => BlockLoadInstruction(LDD);
-        _opCodes[LDDR] = () => BlockLoadInstruction(LDDR);
+        _opCodes[LDI] = () => ExecuteBlockLoad(LDI);
+        _opCodes[LDIR] = () => ExecuteBlockLoad(LDIR);
+        _opCodes[LDD] = () => ExecuteBlockLoad(LDD);
+        _opCodes[LDDR] = () => ExecuteBlockLoad(LDDR);
 
-        _opCodes[CPI] = () => BlockCompareInstruction(CPI);
-        _opCodes[CPIR] = () => BlockCompareInstruction(CPIR);
-        _opCodes[CPD] = () => BlockCompareInstruction(CPD);
-        _opCodes[CPDR] = () => BlockCompareInstruction(CPDR);
+        _opCodes[CPI] = () => ExecuteBlockCompare(CPI);
+        _opCodes[CPIR] = () => ExecuteBlockCompare(CPIR);
+        _opCodes[CPD] = () => ExecuteBlockCompare(CPD);
+        _opCodes[CPDR] = () => ExecuteBlockCompare(CPDR);
     }
 
-    private void BlockLoadInstruction(int opCode)
+    private void ExecuteBlockLoad(int opCode)
     {
         var hl = Registers.XHL;
         var de = Registers.DE;
@@ -70,7 +70,7 @@ partial class Z80
         }
     }
 
-    private void BlockCompareInstruction(int opCode)
+    private void ExecuteBlockCompare(int opCode)
     {
         var hl = Registers.XHL;
         var bc = Registers.BC - 1;

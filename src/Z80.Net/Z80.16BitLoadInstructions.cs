@@ -21,22 +21,22 @@ partial class Z80
         _opCodes[LD_mm_HL] = () => { };
         _opCodes[LD_mm_BC] = () => { };
 
-        _opCodes[PUSH_AF] = () => PUSH(Registers.A, (byte)Registers.F);
-        _opCodes[PUSH_BC] = () => PUSH(Registers.B, Registers.C);
-        _opCodes[PUSH_DE] = () => PUSH(Registers.D, Registers.E);
-        _opCodes[PUSH_HL] = () => PUSH(Registers.XH, Registers.XL);
+        _opCodes[PUSH_AF] = () => ExecutePUSH(Registers.A, (byte)Registers.F);
+        _opCodes[PUSH_BC] = () => ExecutePUSH(Registers.B, Registers.C);
+        _opCodes[PUSH_DE] = () => ExecutePUSH(Registers.D, Registers.E);
+        _opCodes[PUSH_HL] = () => ExecutePUSH(Registers.XH, Registers.XL);
 
         _opCodes[POP_AF] = () =>
         {
-            var (a, f) = POP();
+            var (a, f) = ExecutePOP();
             (Registers.A, Registers.F) = (a, (Flags)f);
         };
-        _opCodes[POP_BC] = () => (Registers.B, Registers.C) = POP();
-        _opCodes[POP_DE] = () => (Registers.D, Registers.E) = POP();
-        _opCodes[POP_HL] = () => (Registers.XH, Registers.XL) = POP();
+        _opCodes[POP_BC] = () => (Registers.B, Registers.C) = ExecutePOP();
+        _opCodes[POP_DE] = () => (Registers.D, Registers.E) = ExecutePOP();
+        _opCodes[POP_HL] = () => (Registers.XH, Registers.XL) = ExecutePOP();
     }
 
-    private void PUSH(byte highByte, byte lowByte)
+    private void ExecutePUSH(byte highByte, byte lowByte)
     {
         AddCycles(1);
         Registers.SP -= 1;
@@ -45,7 +45,7 @@ partial class Z80
         WriteByte(Registers.SP, lowByte);
     }
 
-    private (byte highByte, byte lowByte) POP()
+    private (byte highByte, byte lowByte) ExecutePOP()
     {
         var highByte = ReadByte(Registers.SP + 1);
         var lowByte = ReadByte(Registers.SP);

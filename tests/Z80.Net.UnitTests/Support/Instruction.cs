@@ -14,15 +14,12 @@ internal class Instruction
             .ToImmutableArray();
     }
 
-    private (string Mnemonic, string Operand) GetMnemonic(string code)
+    private static (string Mnemonic, string Operand) GetMnemonic(string code)
     {
         var spacePos = code.Trim().IndexOf(' ');
-        if (spacePos == -1)
-        {
-            return (code, string.Empty);
-        }
-
-        return (code[0..spacePos], code[spacePos..].Trim());
+        return spacePos == -1 ?
+            (code, string.Empty) :
+            (code[0..spacePos], code[spacePos..].Trim());
     }
 
     public string Mnemonic { get; }

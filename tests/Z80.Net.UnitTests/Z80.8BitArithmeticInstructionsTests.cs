@@ -1,7 +1,5 @@
-using FluentAssertions;
 using Z80.Net.Instructions;
 using Z80.Net.Registers;
-using Z80.Net.UnitTests.Fixtures;
 using static Z80.Net.Instructions.OpCodes;
 using static Z80.Net.Registers.Flags;
 

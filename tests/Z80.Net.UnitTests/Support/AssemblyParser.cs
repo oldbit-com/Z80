@@ -3,7 +3,7 @@ using Z80.Net.Extensions;
 namespace Z80.Net.UnitTests.Support;
 
 /// <summary>
-/// This is very simple assembly parser for building test code. It only
+/// This is a very simple assembly parser for compiling test code. It only
 /// provides basic functionality needed, nothing else.
 /// </summary>
 internal class AssemblyParser
@@ -19,16 +19,14 @@ internal class AssemblyParser
         return code;
     }
 
-    private IEnumerable<int> ParseLine(string code)
+    private static IEnumerable<int> ParseLine(string code)
     {
         var instruction = new Instruction(code);
-
-        List<int> result;
 
         // DB pseudo instruction (define byte)
         if (instruction.Mnemonic.Equals("DB"))
         {
-            result = new List<int>();
+            var result = new List<int>();
             foreach (var number in instruction.Operands)
             {
                 if (Operand.TryParseNumber(number, out var value))

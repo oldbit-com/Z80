@@ -41,5 +41,4 @@ public class CycleCounter
     /// Gets the number of T-states executed in the current run.
     /// </summary>
     public int CurrentCycles { get; private set; }
-
 }

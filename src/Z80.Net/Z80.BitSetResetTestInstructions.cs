@@ -1,4 +1,3 @@
-using Z80.Net.Registers;
 using static Z80.Net.Registers.Flags;
 using static Z80.Net.Instructions.OpCodes;
 
@@ -14,13 +13,13 @@ partial class Z80
         {
             var bit = i;
             _opCodes[BIT_b_A | bit << 3] = () => { ExecuteBIT(bit, Registers.A); };
-            _opCodes[BIT_b_B| bit << 3] = () => { ExecuteBIT(bit, Registers.B); };
-            _opCodes[BIT_b_C| bit << 3] = () => { ExecuteBIT(bit, Registers.C); };
-            _opCodes[BIT_b_D| bit << 3] = () => { ExecuteBIT(bit, Registers.D); };
-            _opCodes[BIT_b_E| bit << 3] = () => { ExecuteBIT(bit, Registers.E); };
-            _opCodes[BIT_b_H| bit << 3] = () => { ExecuteBIT(bit, Registers.H); };
-            _opCodes[BIT_b_L| bit << 3] = () => { ExecuteBIT(bit, Registers.L); };
-            _opCodes[BIT_b_HL| bit << 3] = () => { ExecuteMemoryBIT(bit); };
+            _opCodes[BIT_b_B | bit << 3] = () => { ExecuteBIT(bit, Registers.B); };
+            _opCodes[BIT_b_C | bit << 3] = () => { ExecuteBIT(bit, Registers.C); };
+            _opCodes[BIT_b_D | bit << 3] = () => { ExecuteBIT(bit, Registers.D); };
+            _opCodes[BIT_b_E | bit << 3] = () => { ExecuteBIT(bit, Registers.E); };
+            _opCodes[BIT_b_H | bit << 3] = () => { ExecuteBIT(bit, Registers.H); };
+            _opCodes[BIT_b_L | bit << 3] = () => { ExecuteBIT(bit, Registers.L); };
+            _opCodes[BIT_b_HL | bit << 3] = () => { ExecuteMemoryBIT(bit); };
         }
     }
 
@@ -37,6 +36,16 @@ partial class Z80
 
     private void ExecuteMemoryBIT(int bit)
     {
+        var address = (ushort)(Registers.XHL + _indexOffset);
+        var value = ReadByte(address);
+        AddCycles(1);
 
+        var result = value & BitMasks[bit];
+        Registers.F &= C;
+        Registers.F |= H;
+        Registers.F |= result == 0 ? Z | P : 0;
+        Registers.F |= bit == 7 && result != 0 ? S : 0;
+        Registers.F |= bit == 5 && Registers.H != 0 ? Y : 0;
+        Registers.F |= bit == 3 && Registers.H != 0 ? X : 0;
     }
 }

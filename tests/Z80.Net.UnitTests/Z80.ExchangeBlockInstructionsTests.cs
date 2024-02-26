@@ -1,5 +1,3 @@
-using static Z80.Net.Registers.Flags;
-
 namespace Z80.Net.UnitTests;
 
 public class Z80ExchangeBlockInstructionsTests

@@ -104,7 +104,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_ADD_IXY_IXY_InstructionIsExecuted_IXIsUpdatedAndFlagsSet(string register)
+    public void When_ADD_IXY_InstructionIsExecuted_IXIsUpdatedAndFlagsSet(string register)
     {
         var z80 = new CodeBuilder()
             .Flags(None)

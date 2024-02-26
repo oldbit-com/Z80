@@ -90,7 +90,7 @@ public class Z808BitArithmeticInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_ADD_A_IndexRegister_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
+    public void When_ADD_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
         var z80 = new CodeBuilder()
@@ -222,7 +222,7 @@ public class Z808BitArithmeticInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_ADC_A_IndexRegister_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string  register)
+    public void When_ADC_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
         var z80 = new CodeBuilder()
@@ -348,7 +348,7 @@ public class Z808BitArithmeticInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_SUB_IndexRegister_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
+    public void When_SUB_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
         var z80 = new CodeBuilder()

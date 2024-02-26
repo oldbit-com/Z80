@@ -127,7 +127,7 @@ public class Z808BitLoadInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_LD_R_IndexRegister_InstructionIsExecuted_RegisterValueIsUpdated(string register)
+    public void When_LD_R_IXY_InstructionIsExecuted_RegisterValueIsUpdated(string register)
     {
         var z80 = new CodeBuilder()
             .Code(

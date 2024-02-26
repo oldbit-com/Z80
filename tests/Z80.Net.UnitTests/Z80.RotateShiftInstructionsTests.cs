@@ -136,7 +136,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_RLC_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_RLC_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -196,7 +196,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_RL_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_RL_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -256,7 +256,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_RRC_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_RRC_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -316,7 +316,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_RR_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_RR_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -376,7 +376,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_SLA_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_SLA_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -435,7 +435,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_SRA_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_SRA_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -494,7 +494,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_SRL_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_SRL_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)
@@ -554,7 +554,7 @@ public class Z80RotateShiftInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_SLL_IX_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    public void When_SLL_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
         var builder = new CodeBuilder()
             .Flags(All)

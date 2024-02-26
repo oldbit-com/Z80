@@ -69,6 +69,26 @@ public class Z80BitSetResetTestInstructionsTests
         z80.CycleCounter.TotalCycles.Should().Be(22);
     }
 
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_BIT_n_IXY_InstructionIsExecuted_FlagsSet(string register)
+    {
+        var z80 = new CodeBuilder()
+            .Flags(Z | N)
+            .Code(
+                $"LD {register},0x07",
+                $"BIT 2,({register}+2)",
+                "NOP",
+                "db 0xFD")
+            .Build();
+
+        z80.Run(14 + 20);
+
+        z80.Registers.F.Should().Be(H);
+        z80.CycleCounter.TotalCycles.Should().Be(34);
+    }
+
     public static IEnumerable<object[]> EightBitRegistersTestData()
     {
         var bits = Enumerable.Range(0, 8);

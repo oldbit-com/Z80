@@ -172,62 +172,75 @@ internal class AssemblyParser
 
             case "SBC":
                 operand1 = Operand.Parse(instruction.Operands[0]);
+                operand2 = Operand.Parse(instruction.Operands[1]);
 
-                if (operand1.Is8BitRegister)
+                if (operand1.OperandType == OperandType.RegisterHL)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b10011000 | RegisterCodes[operand1.OperandType]);
+                    return [0xED, 0b01000010 | RegisterCodes[operand2.OperandType] << 4];
                 }
 
-                switch (operand1.OperandType)
+                if (operand2.Is8BitRegister)
+                {
+                    return CodeWithOptionalPrefix(operand2.CodePrefix, 0b10011000 | RegisterCodes[operand2.OperandType]);
+                }
+
+                switch (operand2.OperandType)
                 {
                     case OperandType.Value:
-                        return [0xDE, operand1.Value];
+                        return [0xDE, operand2.Value];
 
                     case OperandType.MemoryHL:
                         return [0x9E];
 
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
-                        return [operand1.CodePrefix!.Value, 0x9E];
-
-                    case OperandType.RegisterHL:
-                        operand2 = Operand.Parse(instruction.Operands[1]);
-                        return [0xED, 0b01000010 | RegisterCodes[operand2.OperandType] << 4];
+                        return [operand2.CodePrefix!.Value, 0x9E, operand2.Offset];
                 }
 
                 break;
 
             case "INC":
+            case "DEC":
                 operand1 = Operand.Parse(instruction.Operands[0]);
 
                 if (operand1.Is8BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000100 | RegisterCodes[operand1.OperandType] << 3);
+                    opCode = instruction.Mnemonic switch
+                    {
+                        "INC" => 0b00000100,
+                        "DEC" => 0b00000101
+                    };
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType] << 3);
                 }
 
                 if (operand1.Is16BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000011 | RegisterCodes[operand1.OperandType] << 4);
+                    opCode = instruction.Mnemonic switch
+                    {
+                        "INC" => 0b00000011,
+                        "DEC" => 0b00001011
+                    };
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType] << 4);
                 }
 
                 switch (operand1.OperandType)
                 {
                     case OperandType.MemoryHL:
-                        return [0x34];
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "INC" => 0x34,
+                            "DEC" => 0x35
+                        };
+                        return [opCode];
 
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
-                        return [operand1.CodePrefix!.Value, 0x34];
-                }
-
-                break;
-
-            case "DEC":
-                operand1 = Operand.Parse(instruction.Operands[0]);
-
-                if (operand1.Is16BitRegister)
-                {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00001011 | RegisterCodes[operand1.OperandType] << 4);
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "INC" => 0x34,
+                            "DEC" => 0x35
+                        };
+                        return [operand1.CodePrefix!.Value, opCode, operand1.Offset];
                 }
 
                 break;
@@ -278,6 +291,55 @@ internal class AssemblyParser
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
                         return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, opCode];
+                }
+
+                break;
+
+            case "AND":
+            case "OR":
+            case "XOR":
+                operand1 = Operand.Parse(instruction.Operands[0]);
+
+                if (operand1.Is8BitRegister)
+                {
+                    opCode = instruction.Mnemonic switch
+                    {
+                        "AND" => 0b10100000,
+                        "OR" => 0b10110000,
+                        "XOR" => 0b10101000
+                    };
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType]);
+                }
+
+                switch (operand1.OperandType)
+                {
+                    case OperandType.Value:
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "AND" => 0xE6,
+                            "OR" => 0xF6,
+                            "XOR" => 0xEE
+                        };
+                        return [opCode, operand1.Value];
+
+                    case OperandType.MemoryHL:
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "AND" => 0xA6,
+                            "OR" => 0xB6,
+                            "XOR" => 0xAE
+                        };
+                        return [opCode];
+
+                    case OperandType.MemoryIXd:
+                    case OperandType.MemoryIYd:
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "AND" => 0xA6,
+                            "OR" => 0xB6,
+                            "XOR" => 0xAE
+                        };
+                        return [operand1.CodePrefix!.Value, opCode, operand1.Offset];
                 }
 
                 break;

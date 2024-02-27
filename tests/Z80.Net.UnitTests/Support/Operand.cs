@@ -20,7 +20,7 @@ internal class Operand
 
     private void ParsePrivate(string s)
     {
-        OperandType =  s.ToUpperInvariant() switch
+        OperandType = s.ToUpperInvariant() switch
         {
             "A" => OperandType.RegisterA,
             "B" => OperandType.RegisterB,

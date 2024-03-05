@@ -1,13 +1,10 @@
 using Z80.Net.Extensions;
-using Z80.Net.Helpers;
-using Z80.Net.Instructions;
 using Z80.Net.Registers;
 using Z80.Net.UnitTests.Support;
-using static Z80.Net.Instructions.OpCodes;
 
 namespace Z80.Net.UnitTests.Fixtures;
 
-public class CodeBuilder
+public sealed class CodeBuilder
 {
     private readonly List<byte> _code = [];
     private Flags _flags;
@@ -63,59 +60,6 @@ public class CodeBuilder
         var parser = new AssemblyParser();
         _code.AddRange(parser.Parse(lines));
 
-        return this;
-    }
-
-    private CodeBuilder OpCode(OpCode opCode, int? arg, bool argFirst)
-    {
-        if (opCode > 0xFF)
-        {
-            _code.Add((byte)(opCode >> 8));
-        }
-
-        if (!argFirst)
-        {
-            _code.Add(opCode);
-        }
-
-        if (arg != null)
-        {
-            switch (opCode.ArgSize)
-            {
-                case 1:
-                    _code.Add((byte)arg);
-                    break;
-                case 2:
-                {
-                    var (highByte, lowByte) = (ushort)arg.Value;
-                    _code.Add(lowByte);
-                    _code.Add(highByte);
-                    break;
-                }
-            }
-        }
-
-        if (argFirst)
-        {
-            _code.Add(opCode);
-        }
-
-        return this;
-    }
-
-    public CodeBuilder OpCode(OpCode opCode, int? arg = null) => OpCode(opCode, arg, false);
-
-    public CodeBuilder OpCode(OpCode prefix, OpCode opCode, int? arg = null)
-    {
-        _code.Add(prefix);
-        OpCode(opCode, arg, IsCBPrefixed(opCode) && IsIndexRegister(prefix));
-
-        return this;
-    }
-
-    public CodeBuilder Data(byte value)
-    {
-        _code.Add(value);
         return this;
     }
 
@@ -215,7 +159,4 @@ public class CodeBuilder
 
         return z80;
     }
-
-    private bool IsCBPrefixed(OpCode opCode) => (opCode & 0xFF00) >> 8 == CB;
-    private bool IsIndexRegister(OpCode opCode) => opCode == IX || opCode == IY;
 }

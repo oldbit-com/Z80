@@ -108,7 +108,7 @@ internal class AssemblyParser
 
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
-                        return [operand2.CodePrefix!.Value, 0x86];
+                        return [operand2.CodePrefix!.Value, 0x86, operand2.Offset];
                 }
 
                 break;
@@ -142,30 +142,51 @@ internal class AssemblyParser
 
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
-                        return [operand2.CodePrefix!.Value, 0x8E];
+                        return [operand2.CodePrefix!.Value, 0x8E, operand2.Offset];
                 }
 
                 break;
 
             case "SUB":
+            case "CP":
                 operand1 = Operand.Parse(instruction.Operands[0]);
 
                 if (operand1.Is8BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b10010000 | RegisterCodes[operand1.OperandType]);
+                    opCode = instruction.Mnemonic switch
+                    {
+                        "SUB" => 0b10010000,
+                        "CP" => 0b10111000
+                    };
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType]);
                 }
 
                 switch (operand1.OperandType)
                 {
                     case OperandType.Value:
-                        return [0xD6, operand1.Value];
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "SUB" => 0xD6,
+                            "CP" => 0xFE
+                        };
+                        return [opCode, operand1.Value];
 
                     case OperandType.MemoryHL:
-                        return [0x96];
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "SUB" => 0x96,
+                            "CP" => 0xBE
+                        };
+                        return [opCode];
 
                     case OperandType.MemoryIXd:
                     case OperandType.MemoryIYd:
-                        return [operand1.CodePrefix!.Value, 0x96];
+                        opCode = instruction.Mnemonic switch
+                        {
+                            "SUB" => 0x96,
+                            "CP" => 0xBE
+                        };
+                        return [operand1.CodePrefix!.Value, opCode, operand1.Offset];
                 }
 
                 break;

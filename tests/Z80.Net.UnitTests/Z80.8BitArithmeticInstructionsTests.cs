@@ -1,4 +1,3 @@
-using Z80.Net.Instructions;
 using Z80.Net.Registers;
 using static Z80.Net.Instructions.OpCodes;
 
@@ -96,8 +95,8 @@ public class Z808BitArithmeticInstructionsTests
             .Flags(All ^ Z)
             .Code(
                 "LD A,0x22",
-                $"LD {register},0x09",
-                $"ADD A,({register}+0x01)",
+                $"LD {register},0x04",
+                $"ADD A,({register}+0x06)",
                 "NOP",
                 "db 0x13")
             .Build();
@@ -228,8 +227,8 @@ public class Z808BitArithmeticInstructionsTests
             .Flags(C)
             .Code(
                 "LD A,0x22",
-                $"LD {register},0x09",
-                $"ADC A,({register}+1)",
+                $"LD {register},0x06",
+                $"ADC A,({register}+4)",
                 "NOP",
                 "db 0x13")
             .Build();
@@ -354,8 +353,8 @@ public class Z808BitArithmeticInstructionsTests
             .Flags(None)
             .Code(
                 "LD A,0x12",
-                $"LD {register},0x09",
-                $"SUB ({register})",
+                $"LD {register},4",
+                $"SUB ({register}+6)",
                 "NOP",
                 "db 0x02")
             .Build();
@@ -862,16 +861,27 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_CP_r_InstructionIsExecuted_FlagsAreSet()
     {
-        var memory = new TestMemory(LD_A_n, 0x20, CP_A);
-        var z80 = new Z80(memory) { Registers = { F = None } };
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD A,0x20",
+                "CP A")
+            .Build();
+
         z80.Run(7 + 4);
 
         z80.Registers.A.Should().Be(0x20);
         z80.Registers.F.Should().Be(Z | Y | N);
         z80.CycleCounter.TotalCycles.Should().Be(11);
 
-        memory = new TestMemory(LD_A_n, 0x00, LD_B_n, 0x01, CP_B);
-        z80 = new Z80(memory) { Registers = { F = Z } };
+        z80 = new CodeBuilder()
+            .Flags(Z)
+            .Code(
+                "LD A,0x00",
+                "LD B,0x01",
+                "CP B")
+            .Build();
+
         z80.Run(7 + 7 + 4);
 
         z80.Registers.A.Should().Be(0x00);
@@ -882,8 +892,13 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_CP_n_InstructionIsExecuted_FlagsAreSet()
     {
-        var memory = new TestMemory(LD_A_n, 0x90, CP_n, 0x20);
-        var z80 = new Z80(memory) { Registers = { F = Z} };
+        var z80 = new CodeBuilder()
+            .Flags(Z)
+            .Code(
+                "LD A,0x90",
+                "CP 0x20")
+            .Build();
+
         z80.Run(7 + 7);
 
         z80.Registers.A.Should().Be(0x90);
@@ -894,8 +909,17 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_CP_HL_InstructionIsExecuted_FlagsAreSet()
     {
-        var memory = new TestMemory(LD_A_n, 0x7F, LD_H_n, 0x00, LD_L_n, 0x08, CP_HL, NOP, 0x80);
-        var z80 = new Z80(memory) { Registers = { F = None } };
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD A,0x7F",
+                "LD H,0x00",
+                "LD L,0x08",
+                "CP (HL)",
+                "NOP",
+                "db 0x80")
+            .Build();
+
         z80.Run(7 + 7 + 7 + 7);
 
         z80.Registers.A.Should().Be(0x7F);
@@ -904,12 +928,21 @@ public class Z808BitArithmeticInstructionsTests
     }
 
     [Theory]
-    [MemberData(nameof(IndexRegisterPrefix))]
-    public void When_CP_A_IndexRegister_InstructionIsExecuted_FlagsAreSet(OpCode prefix)
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_CP_A_IndexRegister_InstructionIsExecuted_FlagsAreSet(string register)
     {
         // IX or IY
-        var memory = new TestMemory(LD_A_n, 0x7F, prefix, LD_HL_nn, 0x00, 0x00, prefix, CP_HL, 0x0A, NOP, 0x80);
-        var z80 = new Z80(memory) { Registers = { F = None } };
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD A,0x7F",
+                $"LD {register},0x04",
+                $"CP ({register}+0x06)",
+                "NOP",
+                "db 0x80")
+            .Build();
+
         z80.Run(7 + 14 + 19);
 
         z80.Registers.A.Should().Be(0x7F);
@@ -917,8 +950,14 @@ public class Z808BitArithmeticInstructionsTests
         z80.CycleCounter.TotalCycles.Should().Be(40);
 
         // IXL or IYL
-        memory = new TestMemory(LD_A_n, 0x7F, prefix, LD_HL_nn, 0x80, 0x00, prefix, CP_L);
-        z80 = new Z80(memory) { Registers = { F = None } };
+        z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD A,0x7F",
+                $"LD {register},0x0080",
+                $"CP {register}L")
+            .Build();
+
         z80.Run(7 + 14 + 8);
 
         z80.Registers.A.Should().Be(0x7F);
@@ -926,8 +965,14 @@ public class Z808BitArithmeticInstructionsTests
         z80.CycleCounter.TotalCycles.Should().Be(29);
 
         // IXH or IYH
-        memory = new TestMemory(LD_A_n, 0x7F, prefix, LD_HL_nn, 0x00, 0x80, prefix, CP_H);
-        z80 = new Z80(memory) { Registers = { F = None } };
+        z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD A,0x7F",
+                $"LD {register},0x8000",
+                $"CP {register}H")
+            .Build();
+
         z80.Run(7 + 14 + 8);
 
         z80.Registers.A.Should().Be(0x7F);
@@ -938,40 +983,65 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_INC_r_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var memory = new TestMemory(LD_A_n, 0x00, INC_A);
-        var z80 = new Z80(memory) { Registers = { F = All } };
+        var z80 = new CodeBuilder()
+            .Flags(All)
+            .Code(
+                "LD A,0x00",
+                "INC A")
+            .Build();
+
         z80.Run(7 + 4);
 
         z80.Registers.A.Should().Be(0x01);
         z80.Registers.F.Should().Be(C);
         z80.CycleCounter.TotalCycles.Should().Be(11);
 
-        memory = new TestMemory(LD_C_n, 0xFF, INC_C);
-        z80 = new Z80(memory) { Registers = { F = All ^ Z } };
+        z80 = new CodeBuilder()
+            .Flags(All ^ Z)
+            .Code(
+                "LD C,0xFF",
+                "INC C")
+            .Build();
+
         z80.Run(7 + 4);
 
         z80.Registers.C.Should().Be(0x00);
         z80.Registers.F.Should().Be(Z | H | C);
         z80.CycleCounter.TotalCycles.Should().Be(11);
 
-        memory = new TestMemory(LD_D_n, 0x7F, INC_D);
-        z80 = new Z80(memory) { Registers = { F = N } };
+        z80 = new CodeBuilder()
+            .Flags(N)
+            .Code(
+                "LD D,0x7F",
+                "INC D")
+            .Build();
+
         z80.Run(7 + 4);
 
         z80.Registers.D.Should().Be(0x80);
         z80.Registers.F.Should().Be(S | H | P);
         z80.CycleCounter.TotalCycles.Should().Be(11);
 
-        memory = new TestMemory(LD_B_n, 0x92, INC_B);
-        z80 = new Z80(memory) { Registers = { F = None } };
+        z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD B,0x92",
+                "INC B")
+            .Build();
+
         z80.Run(7 + 4);
 
         z80.Registers.B.Should().Be(0x93);
         z80.Registers.F.Should().Be(S);
         z80.CycleCounter.TotalCycles.Should().Be(11);
 
-        memory = new TestMemory(LD_E_n, 0x10, INC_E);
-        z80 = new Z80(memory) { Registers = { F = None } };
+        z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD E,0x10",
+                "INC E")
+            .Build();
+
         z80.Run(7 + 4);
 
         z80.Registers.E.Should().Be(0x11);
@@ -980,18 +1050,32 @@ public class Z808BitArithmeticInstructionsTests
     }
 
     [Fact]
-    public void When_INC_rXY_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
+    public void When_INC_IXH_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var memory = new TestMemory(IX, LD_H_n, 0x99, IX, INC_H);
-        var z80 = new Z80(memory) { Registers = { F = None } };
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD IXH,0x99",
+                "INC IXH")
+            .Build();
+
         z80.Run(11 + 8);
 
         z80.Registers.IXH.Should().Be(0x9A);
         z80.Registers.F.Should().Be(S | X);
         z80.CycleCounter.TotalCycles.Should().Be(19);
+    }
 
-        memory = new TestMemory(IY, LD_L_n, 0xAB, IY, INC_L);
-        z80 = new Z80(memory) { Registers = { F = None } };
+    [Fact]
+    public void When_INC_IYL_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
+    {
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Code(
+                "LD IYL,0xAB",
+                "INC IYL")
+            .Build();
+
         z80.Run(11 + 8);
 
         z80.Registers.IYL.Should().Be(0xAC);

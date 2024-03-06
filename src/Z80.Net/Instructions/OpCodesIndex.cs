@@ -1,6 +1,6 @@
 namespace Z80.Net.Instructions;
 
-public class OpCodesIndex
+public sealed class OpCodesIndex
 {
     private readonly Dictionary<int, Action> _opCodeIndex = new();
 
@@ -18,6 +18,7 @@ public class OpCodesIndex
         }
 
         executeCode();
+
         return true;
     }
 }

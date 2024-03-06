@@ -155,6 +155,8 @@ internal class Operand
 
     public bool IsHLorIXorIYRegister => OperandType is OperandType.RegisterHL or OperandType.RegisterIX or OperandType.RegisterIY;
 
+    public bool IsHLorIXorIYMemory => OperandType is OperandType.MemoryHL or OperandType.MemoryIXd or OperandType.MemoryIYd;
+
     public byte? CodePrefix => OperandType switch
     {
         OperandType.RegisterIXH

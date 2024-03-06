@@ -78,5 +78,13 @@ partial class Z80
         _opCodes[LD_E_HL] = () => Registers.E = ReadByte(CalculateHLAddress());
         _opCodes[LD_H_HL] = () => Registers.H = ReadByte(CalculateHLAddress());
         _opCodes[LD_L_HL] = () => Registers.L = ReadByte(CalculateHLAddress());
+
+        _opCodes[LD_HL_A] = () => { WriteByte(CalculateHLAddress(), Registers.A); };
+        _opCodes[LD_HL_B] = () => { WriteByte(CalculateHLAddress(), Registers.B); };
+        _opCodes[LD_HL_C] = () => { WriteByte(CalculateHLAddress(), Registers.C); };
+        _opCodes[LD_HL_D] = () => { WriteByte(CalculateHLAddress(), Registers.D); };
+        _opCodes[LD_HL_E] = () => { WriteByte(CalculateHLAddress(), Registers.E); };
+        _opCodes[LD_HL_H] = () => { WriteByte(CalculateHLAddress(), Registers.H); };
+        _opCodes[LD_HL_L] = () => { WriteByte(CalculateHLAddress(), Registers.L); };
     }
 }

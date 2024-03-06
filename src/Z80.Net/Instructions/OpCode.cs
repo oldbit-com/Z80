@@ -5,22 +5,19 @@ public readonly struct OpCode
     private readonly int _prefixedCode;
     private readonly byte _code;
 
-    public OpCode(byte code, string mnemonic, int argSize = 0)
+    public OpCode(byte code, string mnemonic)
     {
         _code = code;
         Mnemonic = mnemonic;
         _prefixedCode =  code;
-        ArgSize = argSize;
     }
 
-    public OpCode(byte code, byte prefix, string mnemonic, int argSize = 0) : this(code, mnemonic, argSize)
+    public OpCode(byte code, byte prefix, string mnemonic) : this(code, mnemonic)
     {
         _prefixedCode = prefix << 8 | code;
     }
 
     public string Mnemonic { get; }
-
-    public int ArgSize { get; }
 
     public static implicit operator int(OpCode opCode) => opCode._prefixedCode;
 

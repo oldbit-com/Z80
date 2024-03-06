@@ -26,10 +26,10 @@ partial class Z80
         {
             var (x, y) = (ReadByte(Registers.SP), ReadByte(Registers.SP + 1));
             var (h, l) = (HX: Registers.XH, LX: Registers.XL);
-            AddCycles(1);
+            AddStates(1);
             WriteByte(Registers.SP, l);
             WriteByte(Registers.SP + 1, h);
-            AddCycles(2);
+            AddStates(2);
             (Registers.XH, Registers.XL) = (y, x);
         };
 
@@ -52,7 +52,7 @@ partial class Z80
         var n = ReadByte(hl);
 
         WriteByte(de, n);
-        AddCycles(2);
+        AddStates(2);
 
         var offset = opCode == LDI || opCode == LDIR ? 1 : -1;
         Registers.XHL = (ushort)(hl + offset);
@@ -66,7 +66,7 @@ partial class Z80
         Registers.F |= P;
         if (opCode == LDIR || opCode == LDDR) {
             Registers.PC -= 2;
-            AddCycles(5);
+            AddStates(5);
         }
     }
 
@@ -80,7 +80,7 @@ partial class Z80
         Registers.BC = (ushort)bc;
 
         var n = ReadByte(hl);
-        AddCycles(5);
+        AddStates(5);
         var test = Registers.A - n;
         Registers.F = Registers.F & C | N | (Flags)(test & (int)S);
         if (test == 0) Registers.F |= Z;

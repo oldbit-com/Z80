@@ -36,7 +36,7 @@ partial class Z80
 
     private void ExecuteADD(ushort value)
     {
-        AddCycles(7);
+        AddStates(7);
 
         var oldValue = Registers.XHL;
         var newValue = oldValue + value;
@@ -52,7 +52,7 @@ partial class Z80
 
     private void ExecuteADC(ushort value)
     {
-        AddCycles(7);
+        AddStates(7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue + value + (byte)(Registers.F & C);
@@ -70,7 +70,7 @@ partial class Z80
 
     private void ExecuteSBC(ushort value)
     {
-        AddCycles(7);
+        AddStates(7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue - value - (byte)(Registers.F & C);
@@ -89,13 +89,13 @@ partial class Z80
 
     private ushort ExecuteINC(ushort value)
     {
-        AddCycles(2);
+        AddStates(2);
         return (ushort)(value + 1);
     }
 
     private ushort ExecuteDEC(ushort value)
     {
-        AddCycles(2);
+        AddStates(2);
         return (ushort)(value - 1);
     }
 }

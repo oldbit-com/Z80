@@ -11,8 +11,8 @@ partial class Z80
 
         _opCodes[CB] = () => _opCodePrefix = CB;
 
-        _opCodes[IX] = () => Registers.HLContext = HLContext.IX;
+        _opCodes[IX] = () => Registers.Context = RegisterContext.IX;
 
-        _opCodes[IY] = () => Registers.HLContext = HLContext.IY;
+        _opCodes[IY] = () => Registers.Context = RegisterContext.IY;
     }
 }

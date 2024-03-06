@@ -8,7 +8,7 @@ namespace Z80.Net.Registers;
 /// </summary>
 public sealed class CpuRegisters : CommonRegisters
 {
-    internal HLContext HLContext { get; set; }
+    internal RegisterContext Context { get; set; }
 
     /// <summary>
     /// Gets a alternative (prime) registers set.
@@ -68,20 +68,20 @@ public sealed class CpuRegisters : CommonRegisters
     /// </summary>
     internal ushort XHL
     {
-        get => HLContext switch
+        get => Context switch
         {
-            HLContext.IX => IX,
-            HLContext.IY => IY,
+            RegisterContext.IX => IX,
+            RegisterContext.IY => IY,
             _ => HL
         };
         set
         {
-            switch (HLContext)
+            switch (Context)
             {
-                case HLContext.IX:
+                case RegisterContext.IX:
                     IX = value;
                     break;
-                case HLContext.IY:
+                case RegisterContext.IY:
                     IY = value;
                     break;
                 default:
@@ -96,20 +96,20 @@ public sealed class CpuRegisters : CommonRegisters
     /// </summary>
     internal byte XH
     {
-        get => HLContext switch
+        get => Context switch
         {
-            HLContext.IX => IXH,
-            HLContext.IY => IYH,
+            RegisterContext.IX => IXH,
+            RegisterContext.IY => IYH,
             _ => H
         };
         set
         {
-            switch (HLContext)
+            switch (Context)
             {
-                case HLContext.IX:
+                case RegisterContext.IX:
                     IXH = value;
                     break;
-                case HLContext.IY:
+                case RegisterContext.IY:
                     IYH = value;
                     break;
                 default:
@@ -124,20 +124,20 @@ public sealed class CpuRegisters : CommonRegisters
     /// </summary>
     internal byte XL
     {
-        get => HLContext switch
+        get => Context switch
         {
-            HLContext.IX => IXL,
-            HLContext.IY => IYL,
+            RegisterContext.IX => IXL,
+            RegisterContext.IY => IYL,
             _ => L
         };
         set
         {
-            switch (HLContext)
+            switch (Context)
             {
-                case HLContext.IX:
+                case RegisterContext.IX:
                     IXL = value;
                     break;
-                case HLContext.IY:
+                case RegisterContext.IY:
                     IYL = value;
                     break;
                 default:
@@ -147,5 +147,5 @@ public sealed class CpuRegisters : CommonRegisters
         }
     }
 
-    internal bool UseIndexRegister => HLContext is HLContext.IX or HLContext.IY;
+    internal bool UseIndexRegister => Context is RegisterContext.IX or RegisterContext.IY;
 }

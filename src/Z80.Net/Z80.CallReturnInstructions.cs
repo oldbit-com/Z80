@@ -45,7 +45,7 @@ partial class Z80
 
     private void ExecuteCALL(bool shouldCall = true)
     {
-        var pc = ReadNextWord();
+        var pc = ReadWordAndMove();
         if (!shouldCall)
         {
             return;
@@ -53,7 +53,7 @@ partial class Z80
 
         var (hiPC, loPC) = Registers.PC;
 
-        AddCycles(1);
+        AddStates(1);
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);
         Registers.SP -= 1;
@@ -69,7 +69,7 @@ partial class Z80
 
     private void ExecuteRET(bool shouldReturn)
     {
-        AddCycles(1);
+        AddStates(1);
         if (shouldReturn)
         {
             ExecuteRET();
@@ -86,7 +86,7 @@ partial class Z80
     {
         var (hiPC, loPC) = Registers.PC;
 
-        AddCycles(1);
+        AddStates(1);
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);
         Registers.SP -= 1;

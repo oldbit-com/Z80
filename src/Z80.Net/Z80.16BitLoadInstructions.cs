@@ -7,16 +7,16 @@ partial class Z80
 {
     private void Add16BitLoadInstructions()
     {
-        _opCodes[LD_BC_nn] = () => Registers.BC = ReadNextWord();
-        _opCodes[LD_DE_nn] = () => Registers.DE = ReadNextWord();
-        _opCodes[LD_HL_nn] = () => Registers.XHL = ReadNextWord();
-        _opCodes[LD_SP_nn] = () => Registers.SP = ReadNextWord();
+        _opCodes[LD_BC_nn] = () => Registers.BC = ReadWordAndMove();
+        _opCodes[LD_DE_nn] = () => Registers.DE = ReadWordAndMove();
+        _opCodes[LD_HL_nn] = () => Registers.XHL = ReadWordAndMove();
+        _opCodes[LD_SP_nn] = () => Registers.SP = ReadWordAndMove();
 
-        _opCodes[LD_HL_mm] = () => Registers.XHL = PeekWord(ReadNextWord());
-        _opCodes[LD_BC_mm] = () => Registers.BC = PeekWord(ReadNextWord());
-        _opCodes[LD_DE_mm] = () => Registers.DE = PeekWord(ReadNextWord());
+        _opCodes[LD_HL_mm] = () => Registers.XHL = ReadWord(ReadWordAndMove());
+        _opCodes[LD_BC_mm] = () => Registers.BC = ReadWord(ReadWordAndMove());
+        _opCodes[LD_DE_mm] = () => Registers.DE = ReadWord(ReadWordAndMove());
         _opCodes[ED_LD_HL_mm] = _opCodes[LD_HL_mm];
-        _opCodes[LD_SP_mm] = () => Registers.SP = PeekWord(ReadNextWord());
+        _opCodes[LD_SP_mm] = () => Registers.SP = ReadWord(ReadWordAndMove());
 
         _opCodes[LD_mm_HL] = () => { };
         _opCodes[LD_mm_BC] = () => { };
@@ -38,7 +38,7 @@ partial class Z80
 
     private void ExecutePUSH(byte highByte, byte lowByte)
     {
-        AddCycles(1);
+        AddStates(1);
         Registers.SP -= 1;
         WriteByte(Registers.SP, highByte);
         Registers.SP -= 1;

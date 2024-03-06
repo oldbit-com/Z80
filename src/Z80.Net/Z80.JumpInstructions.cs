@@ -28,12 +28,12 @@ partial class Z80
 
         _opCodes[DJNZ] = () =>
         {
-            AddCycles(1);
-            var offset = (sbyte)ReadNextByte();
+            AddStates(1);
+            var offset = (sbyte)ReadByteAndMove();
             Registers.B -= 1;
             if (Registers.B != 0)
             {
-                AddCycles(5);
+                AddStates(5);
                 Registers.PC = (ushort)(Registers.PC + offset);
             }
         };
@@ -41,7 +41,7 @@ partial class Z80
 
     private void ExecuteJP(bool shouldJump = true)
     {
-        var pc = ReadNextWord();
+        var pc = ReadWordAndMove();
         if (!shouldJump)
         {
             return;
@@ -52,13 +52,13 @@ partial class Z80
 
     private void ExecuteJR(bool shouldJump = true)
     {
-        var offset = ReadNextByte();
+        var offset = ReadByteAndMove();
         if (!shouldJump)
         {
             return;
         }
 
-        AddCycles(5);
+        AddStates(5);
         Registers.PC += (ushort)(sbyte)offset;
     }
 }

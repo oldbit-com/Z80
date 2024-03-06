@@ -15,7 +15,7 @@ public partial class Z80
     public bool IFF1 { get; internal set; }
     public bool IFF2 { get; internal set; }
     public InterruptMode InterruptMode { get; private set; }
-    public CycleCounter CycleCounter { get; } = new();
+    public StatesCounter StatesCounter { get; } = new();
 
     public Z80(IMemory memory)
     {
@@ -42,11 +42,11 @@ public partial class Z80
         AddUndocumentedInstructions();
     }
 
-    public void Run(int maxCycles = 0)
+    public void Run(int maxStates = 0)
     {
-        CycleCounter.SetLimit(maxCycles);
+        StatesCounter.SetLimit(maxStates);
 
-        while (!CycleCounter.IsComplete)
+        while (!StatesCounter.IsComplete)
         {
             if (IsHalted)
             {
@@ -66,7 +66,7 @@ public partial class Z80
                 {
                     if (OpCodes.AllOpCodes.TryGetValue(prefixedOpCode, out var opCode1))
                     {
-                        Console.WriteLine($"{CycleCounter.TotalCycles} : {opCode1.Mnemonic}");
+                        Console.WriteLine($"{StatesCounter.TotalStates} : {opCode1.Mnemonic}");
                     }
 
                     if (IsPrefixOpCode(opCode))
@@ -76,7 +76,7 @@ public partial class Z80
                 }
             }
 
-            Registers.HLContext = HLContext.HL;
+            Registers.Context = RegisterContext.HL;
             _opCodePrefix = 0;
             _indexOffset = 0;
         }
@@ -92,9 +92,9 @@ public partial class Z80
         int opCode;
         if (Registers.UseIndexRegister)
         {
-            _indexOffset = (sbyte)ReadNextByte();
-            opCode = ReadNextByte();
-            AddCycles(2);
+            _indexOffset = (sbyte)ReadByteAndMove();
+            opCode = ReadByteAndMove();
+            AddStates(2);
         }
         else
         {
@@ -124,94 +124,98 @@ public partial class Z80
 
     /// <summary>
     /// Fetches an opcode of the next instruction to be executed.
-    /// The operation takes 4 cycles and PC is incremented by 1 afterwards.
+    /// The operation costs 4 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>An opcode value.</returns>
-    private byte FetchOpCode() => ReadNextByte(cycles: 4);
+    private byte FetchOpCode() => ReadByteAndMove(states: 4);
 
     /// <summary>
     /// Reads a byte from the memory located at the current PC address.
-    /// The operation takes 3 cycles and PC is incremented by 1 afterwards.
+    /// It costs 3 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>A data byte at the current PC address.</returns>
-    private byte ReadNextByte() => ReadNextByte(cycles: 3);
+    private byte ReadByteAndMove() => ReadByteAndMove(states: 3);
 
     /// <summary>
     /// Reads a byte from the memory located at the current PC address.
     /// PC is incremented by 1 afterwards.
     /// </summary>
-    /// <param name="cycles">The number of cycles to add. The default is 3.</param>
+    /// <param name="states">The number of T-states to add. The default is 3.</param>
     /// <returns>A data byte at the current PC address.</returns>
-    private byte ReadNextByte(int cycles)
+    private byte ReadByteAndMove(int states)
     {
         var value = _memory.Read(Registers.PC);
-        AddCycles(cycles);
+        AddStates(states);
         Registers.PC += 1;
         return value;
     }
 
     /// <summary>
     /// Reads a word from the memory located at the current PC address.
-    /// The operation takes 6 cycles and PC is incremented by 2 afterwards.
+    /// The operation takes 6 T-states and PC is incremented by 2.
     /// </summary>
-    private ushort ReadNextWord() => (ushort)(ReadNextByte() | (ReadNextByte() << 8));
+    private ushort ReadWordAndMove() => (ushort)(ReadByteAndMove() | (ReadByteAndMove() << 8));
 
     /// <summary>
-    /// Peeks a byte from the memory located at the specified address.
-    /// The operation takes 3 cycles. PC remains unchanged.
+    /// Reads a byte from the memory located at the specified address.
+    /// It costs 3 T-states. PC is not changed.
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A byte value.</returns>
     private byte ReadByte(int address)
     {
         var value = _memory.Read(address);
-        AddCycles(3);
+        AddStates(3);
         return value;
     }
 
     /// <summary>
-    /// Peeks a word from memory at the specified address. The operation takes 6 cycles. PC is not changed.
+    /// Reads a word from memory at the specified address.
+    /// It costs 6 T-states (2 byte reads). PC is not changed.
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A word value.</returns>
-    private ushort PeekWord(int address) => (ushort)(ReadByte(address) | ReadByte((ushort)(address + 1)) << 8);
+    private ushort ReadWord(int address) => (ushort)(ReadByte(address) | ReadByte((ushort)(address + 1)) << 8);
 
     /// <summary>
-    /// Writes a byte to the memory at the specified address. The operation takes 6 cycles.
+    /// Writes a byte to the memory at the specified address.
+    /// It costs 6 T-states.
     /// </summary>
     /// <param name="address">The address to write to.</param>
     /// <param name="value">The value to write to the memory.</param>
     private void WriteByte(int address, byte value)
     {
         _memory.Write(address, value);
-        AddCycles(3);
+        AddStates(3);
     }
 
     /// <summary>
-    /// Adds specified number of cycles to the current cycles counter.
+    /// Adds specified number of T-states to the current counter.
     /// </summary>
-    /// <param name="cycles">The number of cycles.</param>
-    private void AddCycles(int cycles) => CycleCounter.Add(cycles);
+    /// <param name="states">The number of T-states to add.</param>
+    private void AddStates(int states) => StatesCounter.Add(states);
 
     /// <summary>
     /// Reads a byte at the memory address provided in HL register. This method is aware
     /// of current HL context, e.g. will use IX / IY pair and offset if applicable.
     /// </summary>
     /// <returns>A byte value at the memory address provided in HL (or IX/IY).</returns>
-    private byte ReadMemoryAtHL() => ReadByte(CalculateHLAddress());
+    private byte ReadMemoryAtHL(int extraIndexStates) => ReadByte(CalculateHLAddress(extraIndexStates));
 
     /// <summary>
     /// Calculates the value of HL, IX+d or IY+d register value depending
     /// on the current context (offset will be read and added if needed).
     /// </summary>
+    /// <param name="extraIndexStates">Extra T-states to add when index register is used.</param>
     /// <returns>Value of HL, IX+d or IY+d register.</returns>
-    private ushort CalculateHLAddress()
+    private ushort CalculateHLAddress(int extraIndexStates)
     {
         sbyte offset = 0;
-        if (Registers.HLContext != HLContext.HL)
+
+        if (Registers.Context != RegisterContext.HL)
         {
-            offset = (sbyte)ReadNextByte();
-            AddCycles(5);
+            offset = (sbyte)ReadByteAndMove();
+            AddStates(extraIndexStates);
         }
 
         return (ushort)(Registers.XHL + offset);

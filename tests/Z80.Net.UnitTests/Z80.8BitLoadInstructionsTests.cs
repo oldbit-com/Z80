@@ -33,7 +33,7 @@ public class Z808BitLoadInstructionsTests
         z80.Registers.IXL.Should().Be(0x09);
         z80.Registers.IYH.Should().Be(0x0A);
         z80.Registers.IYL.Should().Be(0x0B);
-        z80.CycleCounter.TotalCycles.Should().Be(93);
+        z80.StatesCounter.TotalStates.Should().Be(93);
     }
 
     [Theory]
@@ -67,7 +67,7 @@ public class Z808BitLoadInstructionsTests
         z80.Registers.E.Should().Be(value);
         z80.Registers.H.Should().Be(value);
         z80.Registers.L.Should().Be(value);
-        z80.CycleCounter.TotalCycles.Should().Be(35);
+        z80.StatesCounter.TotalStates.Should().Be(35);
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class Z808BitLoadInstructionsTests
         z80.Registers.C.Should().Be(0x78);
         z80.Registers.D.Should().Be(0x78);
         z80.Registers.E.Should().Be(0x78);
-        z80.CycleCounter.TotalCycles.Should().Be(49);
+        z80.StatesCounter.TotalStates.Should().Be(49);
 
         // H register
         z80 = new CodeBuilder()
@@ -107,7 +107,7 @@ public class Z808BitLoadInstructionsTests
         z80.Run(21);
 
         z80.Registers.H.Should().Be(0x78);
-        z80.CycleCounter.TotalCycles.Should().Be(21);
+        z80.StatesCounter.TotalStates.Should().Be(21);
 
         // L register
         z80 = new CodeBuilder()
@@ -121,7 +121,7 @@ public class Z808BitLoadInstructionsTests
         z80.Run(21);
 
         z80.Registers.L.Should().Be(0x78);
-        z80.CycleCounter.TotalCycles.Should().Be(21);
+        z80.StatesCounter.TotalStates.Should().Be(21);
     }
 
     [Theory]
@@ -152,7 +152,7 @@ public class Z808BitLoadInstructionsTests
         z80.Registers.E.Should().Be(0x78);
         z80.Registers.H.Should().Be(0x78);
         z80.Registers.L.Should().Be(0x78);
-        z80.CycleCounter.TotalCycles.Should().Be(155);
+        z80.StatesCounter.TotalStates.Should().Be(155);
     }
 
     [Fact]
@@ -171,7 +171,7 @@ public class Z808BitLoadInstructionsTests
 
         z80.Run(7 + 10 + 7);
         memory[0x07].Should().Be(0x99);
-        z80.CycleCounter.TotalCycles.Should().Be(24);
+        z80.StatesCounter.TotalStates.Should().Be(24);
     }
 
     [Theory]
@@ -192,6 +192,44 @@ public class Z808BitLoadInstructionsTests
 
         z80.Run(7 + 14 + 19);
         memory[0x07].Should().Be(0x99);
-        z80.CycleCounter.TotalCycles.Should().Be(40);
+        z80.StatesCounter.TotalStates.Should().Be(40);
+    }
+
+    [Fact]
+    public void When_LD_MemoryHL_n_InstructionIsExecuted_MemoryValueIsUpdated()
+    {
+        var builder = new CodeBuilder()
+            .Code(
+                "LD HL,6",
+                "LD (HL),0x5A",
+                "NOP",
+                "db 0");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(10 + 10);
+        memory[0x06].Should().Be(0x5A);
+        z80.StatesCounter.TotalStates.Should().Be(20);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_LD_MemoryIXY_n_InstructionIsExecuted_MemoryValueIsUpdated(string register)
+    {
+        var builder = new CodeBuilder()
+            .Code(
+                $"LD {register},6",
+                $"LD ({register}+3),0x5A",
+                "NOP",
+                "db 0");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(14 + 19);
+        memory[0x09].Should().Be(0x5A);
+        z80.StatesCounter.TotalStates.Should().Be(33);
     }
 }

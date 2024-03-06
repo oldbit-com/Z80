@@ -20,7 +20,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(0x55);
         z80.Registers.PC.Should().Be(0x0008);
-        z80.CycleCounter.TotalCycles.Should().Be(17);
+        z80.StatesCounter.TotalStates.Should().Be(17);
     }
 
     [Theory]
@@ -55,7 +55,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(shouldJump ? 0x55 : 0xAA);
         z80.Registers.PC.Should().Be(shouldJump ? 0x0008 : 0x0005);
-        z80.CycleCounter.TotalCycles.Should().Be(17);
+        z80.StatesCounter.TotalStates.Should().Be(17);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class Z80JumpInstructionsTests
         z80.Registers.C.Should().Be(0x00);
         z80.Registers.D.Should().Be(0x22);
         z80.Registers.PC.Should().Be(0x07);
-        z80.CycleCounter.TotalCycles.Should().Be(19);
+        z80.StatesCounter.TotalStates.Should().Be(19);
     }
 
     [Theory]
@@ -103,7 +103,7 @@ public class Z80JumpInstructionsTests
         z80.Registers.B.Should().Be(shouldJump ? 0x00 : 0xAB);
         z80.Registers.C.Should().Be(shouldJump ? 0x54 : 0x00);
         z80.Registers.PC.Should().Be(shouldJump ? 0x0006 : 0x0004);
-        z80.CycleCounter.TotalCycles.Should().Be(cycles);
+        z80.StatesCounter.TotalStates.Should().Be(cycles);
 
         // Backward jump
         z80 = new CodeBuilder()
@@ -119,7 +119,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(shouldJump ? 0x47 : 0xFF);
         z80.Registers.PC.Should().Be(shouldJump ? 0x0002 : 0x0004);
-        z80.CycleCounter.TotalCycles.Should().Be(cycles);
+        z80.StatesCounter.TotalStates.Should().Be(cycles);
     }
 
     [Theory]
@@ -139,7 +139,7 @@ public class Z80JumpInstructionsTests
 
         z80.Run(cycles);
         z80.Registers.A.Should().Be(0x55);
-        z80.CycleCounter.TotalCycles.Should().Be(cycles);
+        z80.StatesCounter.TotalStates.Should().Be(cycles);
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(0x20);
         z80.Registers.B.Should().Be(0);
-        z80.CycleCounter.TotalCycles.Should().Be(553);
+        z80.StatesCounter.TotalStates.Should().Be(553);
 
         z80 = new CodeBuilder()
             .Code(
@@ -173,6 +173,6 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(0xFF);
         z80.Registers.B.Should().Be(0);
-        z80.CycleCounter.TotalCycles.Should().Be(7388);
+        z80.StatesCounter.TotalStates.Should().Be(7388);
     }
 }

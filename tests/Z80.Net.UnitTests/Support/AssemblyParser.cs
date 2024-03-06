@@ -506,14 +506,30 @@ internal class AssemblyParser
                     return [0xED, 0b01001011 | RegisterCodes[operand1.OperandType] << 4, lo, hi];
                 }
 
-                if (operand1.OperandType == OperandType.MemoryHL && operand2.Is8BitRegister)
+                if (operand1.OperandType == OperandType.MemoryHL)
                 {
-                    return [0b01110000 | RegisterCodes[operand2.OperandType]];
+                    if (operand2.Is8BitRegister)
+                    {
+                        return [0b01110000 | RegisterCodes[operand2.OperandType]];
+                    }
+
+                    if (operand2.OperandType == OperandType.Value)
+                    {
+                        return [0x36, operand2.Value];
+                    }
                 }
 
-                if (operand1.OperandType is OperandType.MemoryIXd or OperandType.MemoryIYd  && operand2.Is8BitRegister)
+                if (operand1.OperandType is OperandType.MemoryIXd or OperandType.MemoryIYd)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b01110000 | RegisterCodes[operand2.OperandType], operand2.Offset);
+                    if (operand2.Is8BitRegister)
+                    {
+                        return [operand1.CodePrefix!.Value, 0b01110000 | RegisterCodes[operand2.OperandType], operand2.Offset];
+                    }
+
+                    if (operand2.OperandType == OperandType.Value)
+                    {
+                        return [operand1.CodePrefix!.Value, 0x36, operand1.Offset, operand2.Value];
+                    }
                 }
 
                 break;

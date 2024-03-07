@@ -1,6 +1,6 @@
 namespace Z80.Net;
 
-public class StatesCounter
+public sealed class StatesCounter
 {
     private int _maxStates;
 
@@ -10,17 +10,17 @@ public class StatesCounter
         CurrentStates = 0;
     }
 
-    public void Add(int cycles)
+    public void Add(int states)
     {
-        TotalStates += cycles;
-        CurrentStates += cycles;
+        TotalStates += states;
+        CurrentStates += states;
     }
 
     /// <summary>
-    /// Limits the number of T-states that should run to the specified maximum.
+    /// Limits the number of T-states that should execute.
     /// </summary>
-    /// <param name="maxCycles">The maximum number of T-states to run.</param>
-    public void SetLimit(int maxCycles)
+    /// <param name="maxCycles">The maximum number of T-states to execute.</param>
+    public void Limit(int maxCycles)
     {
         var remaining = _maxStates - CurrentStates;
         _maxStates = maxCycles + remaining;

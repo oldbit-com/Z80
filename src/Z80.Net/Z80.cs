@@ -7,8 +7,8 @@ public partial class Z80
 {
     private readonly IMemory _memory;
     private readonly OpCodesIndex _opCodes = new();
-    private byte _opCodePrefix;
-    private sbyte _indexOffset;
+    private bool _isExtendedInstruction;
+    private sbyte _indexRegisterOffset;
 
     public CpuRegisters Registers { get; private set; } = new();
     public bool IsHalted { get; private set; }
@@ -31,7 +31,6 @@ public partial class Z80
         AddCallAndReturnInstructions();
         AddJumpInstructions();
         AddExchangeBlockInstructions();
-        AddSpecialInstructions();
         AddGeneralPurposeArithmeticInstructions();
         Add8BitLoadInstructions();
         Add8BitArithmeticInstructions();
@@ -44,7 +43,7 @@ public partial class Z80
 
     public void Run(int maxStates = 0)
     {
-        StatesCounter.SetLimit(maxStates);
+        StatesCounter.Limit(maxStates);
 
         while (!StatesCounter.IsComplete)
         {
@@ -54,31 +53,32 @@ public partial class Z80
             }
 
             var opCode = FetchOpCode();
-
-            if (opCode == OpCodes.CB)
+            switch (opCode)
             {
-                ProcessBitOpCodes();
-            }
-            else
-            {
-                var prefixedOpCode = _opCodePrefix << 8 | opCode;
-                if (_opCodes.Execute(prefixedOpCode))
-                {
-                    if (OpCodes.AllOpCodes.TryGetValue(prefixedOpCode, out var opCode1))
-                    {
-                        Console.WriteLine($"{StatesCounter.TotalStates} : {opCode1.Mnemonic}");
-                    }
+                case 0xCB:
+                    ExecuteBitOpCodes();
+                    break;
 
-                    if (IsPrefixOpCode(opCode))
-                    {
-                        continue;
-                    }
-                }
+                case 0xED:
+                    _isExtendedInstruction = true;
+                    continue;
+
+                case 0xDD:
+                    Registers.Context = RegisterContext.IX;
+                    continue;
+
+                case 0xFD:
+                    Registers.Context = RegisterContext.IY;
+                    continue;
+
+                default:
+                    _opCodes.Execute(_isExtendedInstruction ? 0xED00 | opCode : opCode);
+                    break;
             }
 
             Registers.Context = RegisterContext.HL;
-            _opCodePrefix = 0;
-            _indexOffset = 0;
+            _isExtendedInstruction = false;
+            _indexRegisterOffset = 0;
         }
     }
 
@@ -87,12 +87,12 @@ public partial class Z80
     /// because for IX and IY registers, offset precedes the actual op code. This
     /// is different than standard op codes where offset is after the op code.
     /// </summary>
-    private void ProcessBitOpCodes()
+    private void ExecuteBitOpCodes()
     {
         int opCode;
         if (Registers.UseIndexRegister)
         {
-            _indexOffset = (sbyte)ReadByteAndMove();
+            _indexRegisterOffset = (sbyte)ReadByteAndMove();
             opCode = ReadByteAndMove();
             AddStates(2);
         }
@@ -119,8 +119,8 @@ public partial class Z80
     }
 
     private bool IsPrefixOpCode(byte opCode) =>
-        (opCode == OpCodes.IX || opCode == OpCodes.IY ||
-         opCode == OpCodes.ED || opCode == OpCodes.CB);
+        (
+         opCode == OpCodes.ED);
 
     /// <summary>
     /// Fetches an opcode of the next instruction to be executed.

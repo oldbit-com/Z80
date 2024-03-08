@@ -4,9 +4,9 @@ using Z80.Net.Helpers;
 namespace Z80.Net.Registers;
 
 /// <summary>
-/// Represents the Z80 registers that have corresponding alternative.
+/// Represents the standard Z80 registers that have prime counterpart.
 /// </summary>
-public class CommonRegisters
+public class StandardRegisters
 {
     /// <summary>
     /// Gets or sets the value of the Accumulator register.

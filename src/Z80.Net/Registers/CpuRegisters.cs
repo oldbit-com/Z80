@@ -6,14 +6,14 @@ namespace Z80.Net.Registers;
 /// <summary>
 /// Represents Z80 CPU registers.
 /// </summary>
-public sealed class CpuRegisters : CommonRegisters
+public sealed class CpuRegisters : StandardRegisters
 {
     internal RegisterContext Context { get; set; }
 
     /// <summary>
     /// Gets a alternative (prime) registers set.
     /// </summary>
-    public CommonRegisters Alternative { get; } = new();
+    public StandardRegisters Alternative { get; } = new();
 
     /// <summary>
     /// Gets or sets undocumented IXL register which is a low byte of the IX register.

@@ -1,5 +1,4 @@
 using Z80.Net.Registers;
-using static Z80.Net.Instructions.OpCodes;
 
 namespace Z80.Net;
 
@@ -7,33 +6,39 @@ partial class Z80
 {
     private void Add16BitLoadInstructions()
     {
-        _opCodes[LD_BC_nn] = () => Registers.BC = ReadWordAndMove();
-        _opCodes[LD_DE_nn] = () => Registers.DE = ReadWordAndMove();
-        _opCodes[LD_HL_nn] = () => Registers.XHL = ReadWordAndMove();
-        _opCodes[LD_SP_nn] = () => Registers.SP = ReadWordAndMove();
+        _opCodes["LD BC,nn"] = () => Registers.BC = ReadWordAndMove();
+        _opCodes["LD DE,nn"] = () => Registers.DE = ReadWordAndMove();
+        _opCodes["LD HL,nn"] = () => Registers.XHL = ReadWordAndMove();
+        _opCodes["LD SP,nn"] = () => Registers.SP = ReadWordAndMove();
 
-        _opCodes[LD_HL_mm] = () => Registers.XHL = ReadWord(ReadWordAndMove());
-        _opCodes[LD_BC_mm] = () => Registers.BC = ReadWord(ReadWordAndMove());
-        _opCodes[LD_DE_mm] = () => Registers.DE = ReadWord(ReadWordAndMove());
-        _opCodes[ED_LD_HL_mm] = _opCodes[LD_HL_mm];
-        _opCodes[LD_SP_mm] = () => Registers.SP = ReadWord(ReadWordAndMove());
+        _opCodes["LD HL,(nn)"] = () => Registers.XHL = ReadWord(ReadWordAndMove());
+        _opCodes["LD BC,(nn)"] = () => Registers.BC = ReadWord(ReadWordAndMove());
+        _opCodes["LD DE,(nn)"] = () => Registers.DE = ReadWord(ReadWordAndMove());
+        _opCodes["LD SP,(nn)"] = () => Registers.SP = ReadWord(ReadWordAndMove());
 
-        _opCodes[LD_mm_HL] = () => { };
-        _opCodes[LD_mm_BC] = () => { };
+        _opCodes["LD (nn),HL"] = () => throw new NotImplementedException();
+        _opCodes["LD (nn),BC"] = () => throw new NotImplementedException();
+        _opCodes["LD (nn),DE"] = () => throw new NotImplementedException();
+        _opCodes["LD (nn),SP"] = () => throw new NotImplementedException();
 
-        _opCodes[PUSH_AF] = () => ExecutePUSH(Registers.A, (byte)Registers.F);
-        _opCodes[PUSH_BC] = () => ExecutePUSH(Registers.B, Registers.C);
-        _opCodes[PUSH_DE] = () => ExecutePUSH(Registers.D, Registers.E);
-        _opCodes[PUSH_HL] = () => ExecutePUSH(Registers.XH, Registers.XL);
+        _opCodes["LD SP,HL"] = () => throw new NotImplementedException();
 
-        _opCodes[POP_AF] = () =>
+        _opCodes["ED LD HL,(nn)"] = _opCodes["LD HL,(nn)"];
+        _opCodes["ED LD (nn),HL"] = _opCodes["LD (nn),HL"];
+
+        _opCodes["PUSH AF"] = () => ExecutePUSH(Registers.A, (byte)Registers.F);
+        _opCodes["PUSH BC"] = () => ExecutePUSH(Registers.B, Registers.C);
+        _opCodes["PUSH DE"] = () => ExecutePUSH(Registers.D, Registers.E);
+        _opCodes["PUSH HL"] = () => ExecutePUSH(Registers.XH, Registers.XL);
+
+        _opCodes["POP AF"] = () =>
         {
             var (a, f) = ExecutePOP();
             (Registers.A, Registers.F) = (a, (Flags)f);
         };
-        _opCodes[POP_BC] = () => (Registers.B, Registers.C) = ExecutePOP();
-        _opCodes[POP_DE] = () => (Registers.D, Registers.E) = ExecutePOP();
-        _opCodes[POP_HL] = () => (Registers.XH, Registers.XL) = ExecutePOP();
+        _opCodes["POP BC"] = () => (Registers.B, Registers.C) = ExecutePOP();
+        _opCodes["POP DE"] = () => (Registers.D, Registers.E) = ExecutePOP();
+        _opCodes["POP HL"] = () => (Registers.XH, Registers.XL) = ExecutePOP();
     }
 
     private void ExecutePUSH(byte highByte, byte lowByte)

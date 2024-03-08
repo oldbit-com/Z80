@@ -38,6 +38,7 @@ public partial class Z80
         Add16BitArithmeticInstructions();
         AddRotateShiftInstructions();
         AddBitSetResetTestInstructions();
+        AddInputOutputInstructions();
         AddUndocumentedInstructions();
     }
 
@@ -73,6 +74,7 @@ public partial class Z80
 
                 default:
                     _opCodes.Execute(_isExtendedInstruction ? 0xED00 | opCode : opCode);
+
                     break;
             }
 
@@ -101,7 +103,7 @@ public partial class Z80
             opCode = FetchOpCode();
         }
 
-        _opCodes.Execute(0xCB << 8 | opCode);
+        _opCodes.Execute(0xCB00 | opCode);
     }
 
     public void Reset()
@@ -117,10 +119,6 @@ public partial class Z80
         IFF2 = false;
         IsHalted = false;
     }
-
-    private bool IsPrefixOpCode(byte opCode) =>
-        (
-         opCode == OpCodes.ED);
 
     /// <summary>
     /// Fetches an opcode of the next instruction to be executed.

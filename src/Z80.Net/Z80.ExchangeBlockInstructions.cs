@@ -1,6 +1,5 @@
 using Z80.Net.Registers;
 using static Z80.Net.Registers.Flags;
-using static Z80.Net.Instructions.OpCodes;
 
 namespace Z80.Net;
 
@@ -8,21 +7,21 @@ partial class Z80
 {
     private void AddExchangeBlockInstructions()
     {
-        _opCodes[EX_DE_HL] = () =>
+        _opCodes["EX DE,HL"] = () =>
         {
             (Registers.HL, Registers.DE) = (Registers.DE, Registers.HL);
         };
 
-        _opCodes[EX_AF_AF] = () => (Registers.A, Registers.Alternative.A, Registers.F, Registers.Alternative.F) = (Registers.Alternative.A, Registers.A, Registers.Alternative.F, Registers.F);
+        _opCodes["EX AF,AF"] = () => (Registers.A, Registers.Alternative.A, Registers.F, Registers.Alternative.F) = (Registers.Alternative.A, Registers.A, Registers.Alternative.F, Registers.F);
 
-        _opCodes[EXX] = () =>
+        _opCodes["EXX"] = () =>
         {
             (Registers.B, Registers.Alternative.B, Registers.C, Registers.Alternative.C) = (Registers.Alternative.B, Registers.B, Registers.Alternative.C, Registers.C);
             (Registers.D, Registers.Alternative.D, Registers.E, Registers.Alternative.E) = (Registers.Alternative.D, Registers.D, Registers.Alternative.E, Registers.E);
             (Registers.H, Registers.Alternative.H, Registers.L, Registers.Alternative.L) = (Registers.Alternative.H, Registers.H, Registers.Alternative.L, Registers.L);
         };
 
-        _opCodes[EX_SP_HL] = () =>
+        _opCodes["EX (SP),HL"] = () =>
         {
             var (x, y) = (ReadByte(Registers.SP), ReadByte(Registers.SP + 1));
             var (h, l) = (HX: Registers.XH, LX: Registers.XL);
@@ -33,18 +32,18 @@ partial class Z80
             (Registers.XH, Registers.XL) = (y, x);
         };
 
-        _opCodes[LDI] = () => ExecuteBlockLoad(LDI);
-        _opCodes[LDIR] = () => ExecuteBlockLoad(LDIR);
-        _opCodes[LDD] = () => ExecuteBlockLoad(LDD);
-        _opCodes[LDDR] = () => ExecuteBlockLoad(LDDR);
+        _opCodes["LDI"] = () => ExecuteBlockLoad("LDI");
+        _opCodes["LDIR"] = () => ExecuteBlockLoad("LDIR");
+        _opCodes["LDD"] = () => ExecuteBlockLoad("LDD");
+        _opCodes["LDDR"] = () => ExecuteBlockLoad("LDDR");
 
-        _opCodes[CPI] = () => ExecuteBlockCompare(CPI);
-        _opCodes[CPIR] = () => ExecuteBlockCompare(CPIR);
-        _opCodes[CPD] = () => ExecuteBlockCompare(CPD);
-        _opCodes[CPDR] = () => ExecuteBlockCompare(CPDR);
+        _opCodes["CPI"] = () => ExecuteBlockCompare("CPI");
+        _opCodes["CPIR"] = () => ExecuteBlockCompare("CPIR");
+        _opCodes["CPD"] = () => ExecuteBlockCompare("CPD");
+        _opCodes["CPDR"] = () => ExecuteBlockCompare("CPDR");
     }
 
-    private void ExecuteBlockLoad(int opCode)
+    private void ExecuteBlockLoad(string opCode)
     {
         var hl = Registers.XHL;
         var de = Registers.DE;
@@ -54,7 +53,7 @@ partial class Z80
         WriteByte(de, n);
         AddStates(2);
 
-        var offset = opCode == LDI || opCode == LDIR ? 1 : -1;
+        var offset = opCode is "LDI" or "LDIR" ? 1 : -1;
         Registers.XHL = (ushort)(hl + offset);
         Registers.DE = (ushort)(de + offset);
         Registers.BC = (ushort)bc;
@@ -64,18 +63,18 @@ partial class Z80
         if ((n & 0b0001000) != 0) Registers.F |= X;
         if (bc == 0) return;
         Registers.F |= P;
-        if (opCode == LDIR || opCode == LDDR) {
+        if (opCode is "LDIR" or "LDDR") {
             Registers.PC -= 2;
             AddStates(5);
         }
     }
 
-    private void ExecuteBlockCompare(int opCode)
+    private void ExecuteBlockCompare(string opCode)
     {
         var hl = Registers.XHL;
         var bc = Registers.BC - 1;
 
-        var offset = opCode == CPI || opCode == CPIR ? 1 : -1;
+        var offset = opCode is "CPI" or "CPIR" ? 1 : -1;
         Registers.XHL = (ushort)(hl + offset);
         Registers.BC = (ushort)bc;
 

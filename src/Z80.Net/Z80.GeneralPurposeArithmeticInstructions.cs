@@ -1,6 +1,5 @@
 using Z80.Net.Helpers;
 using Z80.Net.Registers;
-using static Z80.Net.Instructions.OpCodes;
 using static Z80.Net.Registers.Flags;
 
 namespace Z80.Net;
@@ -9,7 +8,7 @@ partial class Z80
 {
     private void AddGeneralPurposeArithmeticInstructions()
     {
-        _opCodes[DAA] = () =>
+        _opCodes["DAA"] = () =>
         {
             var cf = Registers.F & C;
             var hf = Registers.F & H;
@@ -34,14 +33,14 @@ partial class Z80
             if (nf == 0 && low4Bits > 0x09 || nf != 0 && hf != 0 && low4Bits < 0x06) Registers.F |= H;
         };
 
-        _opCodes[CPL] = () =>
+        _opCodes["CPL"] = () =>
         {
             Registers.A = (byte)~Registers.A;
             Registers.F &= S | Z | P | C;
             Registers.F |= H | N | (Y | X) & (Flags)Registers.A;
         };
 
-        _opCodes[NEG] = () =>
+        _opCodes["NEG"] = () =>
         {
             var a = Registers.A;
             Registers.A = (byte)(~a + 1);
@@ -52,13 +51,13 @@ partial class Z80
             Registers.F |= (a != 0) ? C : 0;
         };
 
-        _opCodes[CCF] = () =>
+        _opCodes["CCF"] = () =>
         {
             var oldCarry = (Registers.F & C) == C;
             Registers.F = (Registers.F & (S | Z | P | C) | (Y | X) & (Flags)Registers.A) ^ C;
             Registers.F |= oldCarry ? H : 0;
         };
 
-        _opCodes[SCF] = () => Registers.F = Registers.F & (S | Z | P) | C | (Y | X) & (Flags)Registers.A;
+        _opCodes["SCF"] = () => Registers.F = Registers.F & (S | Z | P) | C | (Y | X) & (Flags)Registers.A;
     }
 }

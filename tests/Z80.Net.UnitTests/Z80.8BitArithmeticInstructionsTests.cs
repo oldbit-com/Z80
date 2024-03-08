@@ -1,5 +1,4 @@
 using Z80.Net.Registers;
-using static Z80.Net.Instructions.OpCodes;
 
 namespace Z80.Net.UnitTests;
 
@@ -1297,10 +1296,4 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(S | Y | H | X | N);
         z80.StatesCounter.TotalStates.Should().Be(37);
     }
-
-    public static IEnumerable<object[]> IndexRegisterPrefix => new List<object[]>
-    {
-        new object[] { IX },
-        new object[] { IY },
-    };
 }

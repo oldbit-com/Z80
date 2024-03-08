@@ -1,5 +1,4 @@
 using static Z80.Net.Registers.Flags;
-using static Z80.Net.Instructions.OpCodes;
 
 namespace Z80.Net;
 
@@ -13,32 +12,32 @@ partial class Z80
         {
             var bit = i;
 
-            _opCodes[BIT_b_A | bit << 3] = () => { ExecuteBIT(bit, Registers.A); };
-            _opCodes[BIT_b_B | bit << 3] = () => { ExecuteBIT(bit, Registers.B); };
-            _opCodes[BIT_b_C | bit << 3] = () => { ExecuteBIT(bit, Registers.C); };
-            _opCodes[BIT_b_D | bit << 3] = () => { ExecuteBIT(bit, Registers.D); };
-            _opCodes[BIT_b_E | bit << 3] = () => { ExecuteBIT(bit, Registers.E); };
-            _opCodes[BIT_b_H | bit << 3] = () => { ExecuteBIT(bit, Registers.H); };
-            _opCodes[BIT_b_L | bit << 3] = () => { ExecuteBIT(bit, Registers.L); };
-            _opCodes[BIT_b_HL | bit << 3] = () => { ExecuteMemoryBIT(bit); };
+            _opCodes[$"BIT {bit},A"] = () => { ExecuteBIT(bit, Registers.A); };
+            _opCodes[$"BIT {bit},B"] = () => { ExecuteBIT(bit, Registers.B); };
+            _opCodes[$"BIT {bit},C"] = () => { ExecuteBIT(bit, Registers.C); };
+            _opCodes[$"BIT {bit},D"] = () => { ExecuteBIT(bit, Registers.D); };
+            _opCodes[$"BIT {bit},E"] = () => { ExecuteBIT(bit, Registers.E); };
+            _opCodes[$"BIT {bit},H"] = () => { ExecuteBIT(bit, Registers.H); };
+            _opCodes[$"BIT {bit},L"] = () => { ExecuteBIT(bit, Registers.L); };
+            _opCodes[$"BIT {bit},(HL)"] = () => { ExecuteMemoryBIT(bit); };
 
-            _opCodes[SET_b_A | bit << 3] = () => { ExecuteSET(bit, Registers.A); };
-            _opCodes[SET_b_B | bit << 3] = () => { ExecuteSET(bit, Registers.B); };
-            _opCodes[SET_b_C | bit << 3] = () => { ExecuteSET(bit, Registers.C); };
-            _opCodes[SET_b_D | bit << 3] = () => { ExecuteSET(bit, Registers.D); };
-            _opCodes[SET_b_E | bit << 3] = () => { ExecuteSET(bit, Registers.E); };
-            _opCodes[SET_b_H | bit << 3] = () => { ExecuteSET(bit, Registers.H); };
-            _opCodes[SET_b_L | bit << 3] = () => { ExecuteSET(bit, Registers.L); };
-            _opCodes[SET_b_HL | bit << 3] = () => { ExecuteMemorySET(bit); };
+            _opCodes[$"SET {bit},A"] = () => { ExecuteSET(bit, Registers.A); };
+            _opCodes[$"SET {bit},B"] = () => { ExecuteSET(bit, Registers.B); };
+            _opCodes[$"SET {bit},C"] = () => { ExecuteSET(bit, Registers.C); };
+            _opCodes[$"SET {bit},D"] = () => { ExecuteSET(bit, Registers.D); };
+            _opCodes[$"SET {bit},E"] = () => { ExecuteSET(bit, Registers.E); };
+            _opCodes[$"SET {bit},H"] = () => { ExecuteSET(bit, Registers.H); };
+            _opCodes[$"SET {bit},L"] = () => { ExecuteSET(bit, Registers.L); };
+            _opCodes[$"SET {bit},(HL)"] = () => { ExecuteMemorySET(bit); };
 
-            _opCodes[RES_b_A | bit << 3] = () => { ExecuteRES(bit, Registers.A); };
-            _opCodes[RES_b_B | bit << 3] = () => { ExecuteRES(bit, Registers.B); };
-            _opCodes[RES_b_C | bit << 3] = () => { ExecuteRES(bit, Registers.C); };
-            _opCodes[RES_b_D | bit << 3] = () => { ExecuteRES(bit, Registers.D); };
-            _opCodes[RES_b_E | bit << 3] = () => { ExecuteRES(bit, Registers.E); };
-            _opCodes[RES_b_H | bit << 3] = () => { ExecuteRES(bit, Registers.H); };
-            _opCodes[RES_b_L | bit << 3] = () => { ExecuteRES(bit, Registers.L); };
-            _opCodes[RES_b_HL | bit << 3] = () => { ExecuteMemoryRES(bit); };
+            _opCodes[$"RES {bit},A"] = () => { ExecuteRES(bit, Registers.A); };
+            _opCodes[$"RES {bit},B"] = () => { ExecuteRES(bit, Registers.B); };
+            _opCodes[$"RES {bit},C"] = () => { ExecuteRES(bit, Registers.C); };
+            _opCodes[$"RES {bit},D"] = () => { ExecuteRES(bit, Registers.D); };
+            _opCodes[$"RES {bit},E"] = () => { ExecuteRES(bit, Registers.E); };
+            _opCodes[$"RES {bit},H"] = () => { ExecuteRES(bit, Registers.H); };
+            _opCodes[$"RES {bit},L"] = () => { ExecuteRES(bit, Registers.L); };
+            _opCodes[$"RES {bit},(HL)"] = () => { ExecuteMemoryRES(bit); };
         }
     }
 

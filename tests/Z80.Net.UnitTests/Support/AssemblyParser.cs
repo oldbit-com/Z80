@@ -2,6 +2,8 @@ using Z80.Net.Extensions;
 
 namespace Z80.Net.UnitTests.Support;
 
+#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
+
 /// <summary>
 /// This is a very simple assembly parser for compiling test code. It only
 /// provides basic functionality needed, nothing else.

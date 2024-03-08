@@ -1,8 +1,14 @@
 namespace Z80.Net.Instructions;
 
-public sealed class OpCodesIndex
+public class OpCodesIndex
 {
     private readonly Dictionary<int, Action> _opCodeIndex = new();
+
+    public Action this[string opCode]
+    {
+        get => _opCodeIndex[OpCodesMap.GetCode(opCode)];
+        set => _opCodeIndex[OpCodesMap.GetCode(opCode)] = value;
+    }
 
     public Action this[int opCode]
     {

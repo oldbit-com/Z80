@@ -22,7 +22,7 @@ internal class Instruction
             (code[0..spacePos], code[spacePos..].Trim());
     }
 
-    public string Mnemonic { get; }
+    internal string Mnemonic { get; }
 
-    public ImmutableArray<string> Operands { get; }
+    internal ImmutableArray<string> Operands { get; }
 }

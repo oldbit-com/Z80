@@ -1,22 +1,22 @@
-namespace Z80.Net.Instructions;
+namespace Z80.Net.OpCodes;
 
-public class OpCodesIndex
+internal sealed class OpCodesIndex
 {
     private readonly Dictionary<int, Action> _opCodeIndex = new();
 
-    public Action this[string opCode]
+    internal Action this[string opCode]
     {
-        get => _opCodeIndex[OpCodesMap.GetCode(opCode)];
-        set => _opCodeIndex[OpCodesMap.GetCode(opCode)] = value;
+        get => _opCodeIndex[OpCodesMapping.GetCode(opCode)];
+        set => _opCodeIndex[OpCodesMapping.GetCode(opCode)] = value;
     }
 
-    public Action this[int opCode]
+    internal Action this[int opCode]
     {
         get => _opCodeIndex[opCode];
         set => _opCodeIndex[opCode] = value;
     }
 
-    public bool Execute(int opCode)
+    internal bool Execute(int opCode)
     {
         if (!_opCodeIndex.TryGetValue(opCode, out var executeCode))
         {

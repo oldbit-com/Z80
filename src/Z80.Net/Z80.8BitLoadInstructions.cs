@@ -85,8 +85,8 @@ partial class Z80
         _opCodes["LD (HL),L"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 5), Registers.L); };
         _opCodes["LD (HL),n"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 2), ReadByteAndMove()); };
 
-        _opCodes["LD A,(BC)"] = () => throw new NotImplementedException();
-        _opCodes["LD A,(DE)"] = () => throw new NotImplementedException();
+        _opCodes["LD A,(BC)"] = () => Registers.A = ReadByte(Registers.BC);
+        _opCodes["LD A,(DE)"] = () => Registers.A = ReadByte(Registers.DE);
         _opCodes["LD A,(nn)"] = () => throw new NotImplementedException();
 
         _opCodes["LD (BC),A"] = () => throw new NotImplementedException();

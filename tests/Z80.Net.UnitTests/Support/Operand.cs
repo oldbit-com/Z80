@@ -83,6 +83,18 @@ internal class Operand
             Offset = ParseIndexRegisterOffset(s);
             return;
         }
+
+        if (s.Equals("(BC)", StringComparison.OrdinalIgnoreCase))
+        {
+            OperandType = OperandType.MemoryBC;
+            return;
+        }
+
+        if (s.Equals("(DE)", StringComparison.OrdinalIgnoreCase))
+        {
+            OperandType = OperandType.MemoryDE;
+            return;
+        }
     }
 
     private void ParsePrivate(string condition, string value)

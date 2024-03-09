@@ -29,6 +29,8 @@ internal enum OperandType
     MemoryHL,
     MemoryIXd,
     MemoryIYd,
+    MemoryBC,
+    MemoryDE,
 
     ConditionC,
     ConditionNC,

@@ -1,4 +1,4 @@
-using Z80.Net.Instructions;
+using Z80.Net.OpCodes;
 using Z80.Net.Registers;
 
 namespace Z80.Net;

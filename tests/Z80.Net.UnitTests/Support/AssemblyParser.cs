@@ -485,6 +485,14 @@ internal class AssemblyParser
                     // LD r,(IX+d) / LD r,(IY+d)
                     case true when operand2.OperandType is OperandType.MemoryIXd or OperandType.MemoryIYd:
                         return [operand2.CodePrefix!.Value, 0b01000110 | RegisterCodes[operand1.OperandType] << 3, operand2.Offset];
+
+                    // LD A,(BC)
+                    case true when operand2.OperandType == OperandType.MemoryBC:
+                        return [0x0A];
+
+                    // LD A,(DE)
+                    case true when operand2.OperandType == OperandType.MemoryDE:
+                        return [0x1A];
                 }
 
                 // LD rr,nn

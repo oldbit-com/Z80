@@ -1,7 +1,7 @@
 namespace Z80.Net.Registers;
 
 /// <summary>
-/// Specifies Z80 CPU flags.
+/// Specifies Z80 CPU flags. Includes two undocumented Y and X flags.
 /// </summary>
 [Flags]
 public enum Flags : byte

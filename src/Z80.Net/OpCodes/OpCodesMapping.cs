@@ -1,7 +1,9 @@
-namespace Z80.Net.Instructions;
+namespace Z80.Net.OpCodes;
 
-internal static class OpCodesMap
+internal static class OpCodesMapping
 {
+    internal static int GetCode(string opCode) => Map[opCode];
+
     private static readonly Dictionary<string, int> Map = new(StringComparer.OrdinalIgnoreCase)
     {
         // Primary instructions
@@ -583,6 +585,4 @@ internal static class OpCodesMap
         { "SET 7,(HL)",0xCBFE },
         { "SET 7,A",0xCBFF },
     };
-
-    internal static int GetCode(string opCode) => Map[opCode];
 }

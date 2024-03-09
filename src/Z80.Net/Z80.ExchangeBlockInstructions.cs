@@ -54,9 +54,9 @@ partial class Z80
         AddStates(2);
 
         var offset = opCode is "LDI" or "LDIR" ? 1 : -1;
-        Registers.XHL = (ushort)(hl + offset);
-        Registers.DE = (ushort)(de + offset);
-        Registers.BC = (ushort)bc;
+        Registers.XHL = (Word)(hl + offset);
+        Registers.DE = (Word)(de + offset);
+        Registers.BC = (Word)bc;
         Registers.F &= S | Z | C;
         n += Registers.A;
         if ((n & 0b0000010) != 0) Registers.F |= Y;
@@ -75,8 +75,8 @@ partial class Z80
         var bc = Registers.BC - 1;
 
         var offset = opCode is "CPI" or "CPIR" ? 1 : -1;
-        Registers.XHL = (ushort)(hl + offset);
-        Registers.BC = (ushort)bc;
+        Registers.XHL = (Word)(hl + offset);
+        Registers.BC = (Word)bc;
 
         var n = ReadByte(hl);
         AddStates(5);

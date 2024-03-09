@@ -42,7 +42,7 @@ partial class Z80
 
     private void ExecuteCALL(bool shouldCall = true)
     {
-        var pc = ReadWordAndMove();
+        var pc = FetchWord();
         if (!shouldCall)
         {
             return;
@@ -60,7 +60,7 @@ partial class Z80
 
     private void ExecuteRET()
     {
-        Registers.PC = (ushort)(ReadByte(Registers.SP + 1) << 8 | ReadByte(Registers.SP));
+        Registers.PC = (Word)(ReadByte(Registers.SP + 1) << 8 | ReadByte(Registers.SP));
         Registers.SP += 2;
     }
 

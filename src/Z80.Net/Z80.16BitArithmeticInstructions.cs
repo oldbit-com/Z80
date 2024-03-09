@@ -33,13 +33,13 @@ partial class Z80
         _opCodes["DEC SP"] = () => { Registers.SP = ExecuteDEC(Registers.SP); };
     }
 
-    private void ExecuteADD(ushort value)
+    private void ExecuteADD(Word value)
     {
         AddStates(7);
 
         var oldValue = Registers.XHL;
         var newValue = oldValue + value;
-        var result = (ushort)newValue;
+        var result = (Word)newValue;
 
         Registers.F &= (S | Z | P);
         Registers.F |= (Flags)((oldValue ^ value ^ result) >> 8) & H;
@@ -49,13 +49,13 @@ partial class Z80
         Registers.XHL = result;
     }
 
-    private void ExecuteADC(ushort value)
+    private void ExecuteADC(Word value)
     {
         AddStates(7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue + value + (byte)(Registers.F & C);
-        var result = (ushort)newValue;
+        var result = (Word)newValue;
 
         Registers.F = result > 0x7FFF ? S : 0;
         Registers.F |= result == 0 ? Z : 0;
@@ -67,13 +67,13 @@ partial class Z80
         Registers.HL = result;
     }
 
-    private void ExecuteSBC(ushort value)
+    private void ExecuteSBC(Word value)
     {
         AddStates(7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue - value - (byte)(Registers.F & C);
-        var result = (ushort)newValue;
+        var result = (Word)newValue;
 
         Registers.F = N;
         Registers.F |= result > 0x7FFF ? S : 0;
@@ -86,15 +86,15 @@ partial class Z80
         Registers.HL = result;
     }
 
-    private ushort ExecuteINC(ushort value)
+    private Word ExecuteINC(Word value)
     {
         AddStates(2);
-        return (ushort)(value + 1);
+        return (Word)(value + 1);
     }
 
-    private ushort ExecuteDEC(ushort value)
+    private Word ExecuteDEC(Word value)
     {
         AddStates(2);
-        return (ushort)(value - 1);
+        return (Word)(value - 1);
     }
 }

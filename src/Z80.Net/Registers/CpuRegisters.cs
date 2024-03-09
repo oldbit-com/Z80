@@ -38,7 +38,7 @@ public sealed class CpuRegisters : StandardRegisters
     /// <summary>
     /// Gets or sets the value of the IX index register.
     /// </summary>
-    public ushort IX
+    public Word IX
     {
         get => TypeConverter.ToWord(IXH, IXL);
         set => (IXH, IXL) = value;
@@ -47,7 +47,7 @@ public sealed class CpuRegisters : StandardRegisters
     /// <summary>
     /// Gets or sets the value of the IY index register.
     /// </summary>
-    public ushort IY
+    public Word IY
     {
         get => TypeConverter.ToWord(IYH, IYL);
         set => (IYH, IYL) = value;
@@ -56,17 +56,17 @@ public sealed class CpuRegisters : StandardRegisters
     /// <summary>
     /// Gets or sets the value of the Program Counter register.
     /// </summary>
-    public ushort PC { get; set; }
+    public Word PC { get; set; }
 
     /// <summary>
     /// Gets or sets the value of the Stack Pointer register.
     /// </summary>
-    public ushort SP { get; set; }
+    public Word SP { get; set; }
 
     /// <summary>
     /// Gets or sets a value of either HL, IX or IY register depending on the current context.
     /// </summary>
-    internal ushort XHL
+    internal Word XHL
     {
         get => Context switch
         {

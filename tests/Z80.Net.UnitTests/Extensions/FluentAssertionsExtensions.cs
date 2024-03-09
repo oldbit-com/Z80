@@ -12,10 +12,10 @@ public static class FluentAssertionsExtensions
         return new AndConstraint<NumericAssertions<byte>>(parent);
     }
 
-    public static AndConstraint<NumericAssertions<ushort>> Be(this NumericAssertions<ushort> parent, int expected, string because = "",
+    public static AndConstraint<NumericAssertions<Word>> Be(this NumericAssertions<Word> parent, int expected, string because = "",
         params object[] becauseArg)
     {
-        parent.Subject.Should().Be((ushort)expected);
-        return new AndConstraint<NumericAssertions<ushort>>(parent);
+        parent.Subject.Should().Be((Word)expected);
+        return new AndConstraint<NumericAssertions<Word>>(parent);
     }
 }

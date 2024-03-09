@@ -6,15 +6,15 @@ partial class Z80
 {
     private void Add16BitLoadInstructions()
     {
-        _opCodes["LD BC,nn"] = () => Registers.BC = ReadWordAndMove();
-        _opCodes["LD DE,nn"] = () => Registers.DE = ReadWordAndMove();
-        _opCodes["LD HL,nn"] = () => Registers.XHL = ReadWordAndMove();
-        _opCodes["LD SP,nn"] = () => Registers.SP = ReadWordAndMove();
+        _opCodes["LD BC,nn"] = () => Registers.BC = FetchWord();
+        _opCodes["LD DE,nn"] = () => Registers.DE = FetchWord();
+        _opCodes["LD HL,nn"] = () => Registers.XHL = FetchWord();
+        _opCodes["LD SP,nn"] = () => Registers.SP = FetchWord();
 
-        _opCodes["LD HL,(nn)"] = () => Registers.XHL = ReadWord(ReadWordAndMove());
-        _opCodes["LD BC,(nn)"] = () => Registers.BC = ReadWord(ReadWordAndMove());
-        _opCodes["LD DE,(nn)"] = () => Registers.DE = ReadWord(ReadWordAndMove());
-        _opCodes["LD SP,(nn)"] = () => Registers.SP = ReadWord(ReadWordAndMove());
+        _opCodes["LD HL,(nn)"] = () => Registers.XHL = ReadWord(FetchWord());
+        _opCodes["LD BC,(nn)"] = () => Registers.BC = ReadWord(FetchWord());
+        _opCodes["LD DE,(nn)"] = () => Registers.DE = ReadWord(FetchWord());
+        _opCodes["LD SP,(nn)"] = () => Registers.SP = ReadWord(FetchWord());
 
         _opCodes["LD (nn),HL"] = () => throw new NotImplementedException();
         _opCodes["LD (nn),BC"] = () => throw new NotImplementedException();

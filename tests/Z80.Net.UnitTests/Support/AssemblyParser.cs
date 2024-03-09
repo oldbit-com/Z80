@@ -371,13 +371,13 @@ internal class AssemblyParser
                 if (instruction.Operands.Length > 1)
                 {
                     operand1 = Operand.Parse(instruction.Operands[0], instruction.Operands[1]);
-                    (hi, lo) = (ushort)operand1.Value;
+                    (hi, lo) = (Word)operand1.Value;
 
                     return [0b11000100 | ConditionCodes[operand1.OperandType] << 3, lo, hi];
                 }
 
                 operand1 = Operand.Parse(instruction.Operands[0]);
-                (hi, lo) = (ushort)operand1.Value;
+                (hi, lo) = (Word)operand1.Value;
 
                 return [0xCD, lo, hi];
 
@@ -385,7 +385,7 @@ internal class AssemblyParser
                 if (instruction.Operands.Length > 1)
                 {
                     operand1 = Operand.Parse(instruction.Operands[0], instruction.Operands[1]);
-                    (hi, lo) = (ushort)operand1.Value;
+                    (hi, lo) = (Word)operand1.Value;
 
                     return [0b11000010 | ConditionCodes[operand1.OperandType] << 3, lo, hi];
                 }
@@ -401,7 +401,7 @@ internal class AssemblyParser
                         return [operand1.CodePrefix!.Value, 0xE9];
                 }
 
-                (hi, lo) = (ushort)operand1.Value;
+                (hi, lo) = (Word)operand1.Value;
                 return [0xC3, lo, hi];
 
             case "JR":
@@ -493,26 +493,31 @@ internal class AssemblyParser
                     // LD A,(DE)
                     case true when operand2.OperandType == OperandType.MemoryDE:
                         return [0x1A];
+
+                    // LD A,(nn)
+                    case true when operand2.OperandType == OperandType.Memory:
+                        (hi, lo) = (Word)operand2.Value;
+                        return [0x3A, lo, hi];
                 }
 
                 // LD rr,nn
                 if (operand1.Is16BitRegister && operand2.OperandType == OperandType.Value)
                 {
-                    (hi, lo) = (ushort)operand2.Value;
+                    (hi, lo) = (Word)operand2.Value;
                     return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000001 | RegisterCodes[operand1.OperandType] << 4, lo, hi);
                 }
 
                 // LD HL,(nn) / LD IX,(nn) / LD IY,(nn)
                 if (operand1.IsHLorIXorIYRegister && operand2.OperandType == OperandType.Memory)
                 {
-                    (hi, lo) = (ushort)operand2.Value;
+                    (hi, lo) = (Word)operand2.Value;
                     return CodeWithOptionalPrefix(operand1.CodePrefix, 0x2A | RegisterCodes[operand1.OperandType], lo, hi);
                 }
 
                 // LD rr,(nn)
                 if (operand1.Is16BitRegister && operand2.OperandType == OperandType.Memory)
                 {
-                    (hi, lo) = (ushort)operand2.Value;
+                    (hi, lo) = (Word)operand2.Value;
                     return [0xED, 0b01001011 | RegisterCodes[operand1.OperandType] << 4, lo, hi];
                 }
 

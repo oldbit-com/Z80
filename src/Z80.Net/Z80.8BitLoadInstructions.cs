@@ -4,13 +4,13 @@ partial class Z80
 {
     private void Add8BitLoadInstructions()
     {
-        _opCodes["LD A,n"] = () => Registers.A = ReadByteAndMove();
-        _opCodes["LD B,n"] = () => Registers.B = ReadByteAndMove();
-        _opCodes["LD C,n"] = () => Registers.C = ReadByteAndMove();
-        _opCodes["LD D,n"] = () => Registers.D = ReadByteAndMove();
-        _opCodes["LD E,n"] = () => Registers.E = ReadByteAndMove();
-        _opCodes["LD H,n"] = () => Registers.XH = ReadByteAndMove();
-        _opCodes["LD L,n"] = () => Registers.XL = ReadByteAndMove();
+        _opCodes["LD A,n"] = () => Registers.A = FetchByte();
+        _opCodes["LD B,n"] = () => Registers.B = FetchByte();
+        _opCodes["LD C,n"] = () => Registers.C = FetchByte();
+        _opCodes["LD D,n"] = () => Registers.D = FetchByte();
+        _opCodes["LD E,n"] = () => Registers.E = FetchByte();
+        _opCodes["LD H,n"] = () => Registers.XH = FetchByte();
+        _opCodes["LD L,n"] = () => Registers.XL = FetchByte();
 
         _opCodes["LD A,A"] = () => { };
         _opCodes["LD A,B"] = () => Registers.A = Registers.B;
@@ -83,11 +83,11 @@ partial class Z80
         _opCodes["LD (HL),E"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 5), Registers.E); };
         _opCodes["LD (HL),H"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 5), Registers.H); };
         _opCodes["LD (HL),L"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 5), Registers.L); };
-        _opCodes["LD (HL),n"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 2), ReadByteAndMove()); };
+        _opCodes["LD (HL),n"] = () => { WriteByte(CalculateHLAddress(extraIndexStates: 2), FetchByte()); };
 
         _opCodes["LD A,(BC)"] = () => Registers.A = ReadByte(Registers.BC);
         _opCodes["LD A,(DE)"] = () => Registers.A = ReadByte(Registers.DE);
-        _opCodes["LD A,(nn)"] = () => throw new NotImplementedException();
+        _opCodes["LD A,(nn)"] = () => Registers.A = ReadByte(FetchWord());
 
         _opCodes["LD (BC),A"] = () => throw new NotImplementedException();
         _opCodes["LD (DE),A"] = () => throw new NotImplementedException();

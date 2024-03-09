@@ -250,4 +250,19 @@ public class Z808BitLoadInstructionsTests
         z80.Registers.A.Should().Be(0x78);
         z80.StatesCounter.TotalStates.Should().Be(17);
     }
+
+    [Fact]
+    public void When_LD_A_MemoryAddress_InstructionIsExecuted_AccumulatorIsUpdated()
+    {
+        var z80 = new CodeBuilder()
+            .Code(
+                "LD A,(4)",
+                "NOP",
+                "db 0x78")
+            .Build();
+
+        z80.Run(13);
+        z80.Registers.A.Should().Be(0x78);
+        z80.StatesCounter.TotalStates.Should().Be(13);
+    }
 }

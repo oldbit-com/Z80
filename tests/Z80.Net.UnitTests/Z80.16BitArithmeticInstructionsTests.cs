@@ -28,7 +28,7 @@ public class Z8016BitArithmeticInstructionsTests
     [InlineData(All, 0xFEFF, 0x0100, S | Z | Y | X | P, 0xFFFF)]
     [InlineData(None, 0xFEFF, 0x0100, Y | X, 0xFFFF)]
     public void When_ADD_HL_DE_InstructionIsExecuted_HLIsUpdatedAndFlagsSet(
-        Flags flags, ushort hl, ushort de, Flags expectedFlags, ushort expectedHL)
+        Flags flags, Word hl, Word de, Flags expectedFlags, Word expectedHL)
     {
         var z80 = new CodeBuilder()
             .Flags(flags)

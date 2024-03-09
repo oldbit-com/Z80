@@ -236,7 +236,7 @@ partial class Z80
 
     private void ShiftRotateMemory(Func<byte, byte> calculate)
     {
-        var address = (ushort)(Registers.XHL + _indexRegisterOffset);
+        var address = (Word)(Registers.XHL + _indexRegisterOffset);
         var value = ReadByte(address);
         AddStates(1);
         var result = calculate(value);

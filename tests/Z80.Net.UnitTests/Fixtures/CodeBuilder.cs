@@ -8,17 +8,17 @@ public sealed class CodeBuilder
 {
     private readonly List<byte> _code = [];
     private Flags _flags;
-    private ushort _startAddress;
+    private Word _startAddress;
     private bool? _iff1;
     private bool? _iff2;
-    private ushort? _af;
-    private ushort? _afPrime;
-    private ushort? _bc;
-    private ushort? _bcPrime;
-    private ushort? _de;
-    private ushort? _dePrime;
-    private ushort? _hl;
-    private ushort? _hlPrime;
+    private Word? _af;
+    private Word? _afPrime;
+    private Word? _bc;
+    private Word? _bcPrime;
+    private Word? _de;
+    private Word? _dePrime;
+    private Word? _hl;
+    private Word? _hlPrime;
 
     public TestMemory? Memory { get; private set; }
 
@@ -40,7 +40,7 @@ public sealed class CodeBuilder
         return this;
     }
 
-    public CodeBuilder StartAddress(ushort startAddress)
+    public CodeBuilder StartAddress(Word startAddress)
     {
         _startAddress = startAddress;
         return this;
@@ -63,28 +63,28 @@ public sealed class CodeBuilder
         return this;
     }
 
-    public CodeBuilder SetAF(ushort af, ushort afPrime)
+    public CodeBuilder SetAF(Word af, Word afPrime)
     {
         _af = af;
         _afPrime = afPrime;
         return this;
     }
 
-    public CodeBuilder SetBC(ushort bc, ushort bcPrime)
+    public CodeBuilder SetBC(Word bc, Word bcPrime)
     {
         _bc = bc;
         _bcPrime = bcPrime;
         return this;
     }
 
-    public CodeBuilder SetDE(ushort de, ushort dePrime)
+    public CodeBuilder SetDE(Word de, Word dePrime)
     {
         _de = de;
         _dePrime = dePrime;
         return this;
     }
 
-    public CodeBuilder SetHL(ushort hl, ushort hlPrime)
+    public CodeBuilder SetHL(Word hl, Word hlPrime)
     {
         _hl = hl;
         _hlPrime = hlPrime;

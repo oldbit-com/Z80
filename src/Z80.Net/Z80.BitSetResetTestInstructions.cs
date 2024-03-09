@@ -54,7 +54,7 @@ partial class Z80
 
     private void ExecuteMemoryBIT(int bit)
     {
-        var address = (ushort)(Registers.XHL + _indexRegisterOffset);
+        var address = (Word)(Registers.XHL + _indexRegisterOffset);
         var value = ReadByte(address);
         AddStates(1);
 

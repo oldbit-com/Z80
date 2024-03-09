@@ -94,8 +94,8 @@ public partial class Z80
         int opCode;
         if (Registers.UseIndexRegister)
         {
-            _indexRegisterOffset = (sbyte)ReadByteAndMove();
-            opCode = ReadByteAndMove();
+            _indexRegisterOffset = (sbyte)FetchByte();
+            opCode = FetchByte();
             AddStates(2);
         }
         else
@@ -121,26 +121,26 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Fetches an opcode of the next instruction to be executed.
+    /// Fetches the next instruction to be executed.
     /// The operation costs 4 T-states and PC is incremented by 1.
     /// </summary>
-    /// <returns>An opcode value.</returns>
-    private byte FetchOpCode() => ReadByteAndMove(states: 4);
+    /// <returns>An 8-bit value representing the opcode.</returns>
+    private byte FetchOpCode() => FetchByte(states: 4);
 
     /// <summary>
-    /// Reads a byte from the memory located at the current PC address.
+    /// Reads an 8-bit value from the location specified by current PC value.
     /// It costs 3 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>A data byte at the current PC address.</returns>
-    private byte ReadByteAndMove() => ReadByteAndMove(states: 3);
+    private byte FetchByte() => FetchByte(states: 3);
 
     /// <summary>
-    /// Reads a byte from the memory located at the current PC address.
-    /// PC is incremented by 1 afterwards.
+    /// Reads an 8-bit value from the location specified by current PC value.
+    /// PC is incremented by 1.
     /// </summary>
     /// <param name="states">The number of T-states to add. The default is 3.</param>
     /// <returns>A data byte at the current PC address.</returns>
-    private byte ReadByteAndMove(int states)
+    private byte FetchByte(int states)
     {
         var value = _memory.Read(Registers.PC);
         AddStates(states);
@@ -149,13 +149,13 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Reads a word from the memory located at the current PC address.
+    /// Reads a 16-bit value from the location specified by current PC value.
     /// The operation takes 6 T-states and PC is incremented by 2.
     /// </summary>
-    private ushort ReadWordAndMove() => (ushort)(ReadByteAndMove() | (ReadByteAndMove() << 8));
+    private Word FetchWord() => (Word)(FetchByte() | (FetchByte() << 8));
 
     /// <summary>
-    /// Reads a byte from the memory located at the specified address.
+    /// Reads a 8-bit value from the location provided.
     /// It costs 3 T-states. PC is not changed.
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
@@ -168,15 +168,15 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Reads a word from memory at the specified address.
+    /// Reads a 16-bit value from the location provided.
     /// It costs 6 T-states (2 byte reads). PC is not changed.
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A word value.</returns>
-    private ushort ReadWord(int address) => (ushort)(ReadByte(address) | ReadByte((ushort)(address + 1)) << 8);
+    private Word ReadWord(int address) => (Word)(ReadByte(address) | ReadByte((Word)(address + 1)) << 8);
 
     /// <summary>
-    /// Writes a byte to the memory at the specified address.
+    /// Writes an 8-bit value to the specified location.
     /// It costs 6 T-states.
     /// </summary>
     /// <param name="address">The address to write to.</param>
@@ -194,10 +194,10 @@ public partial class Z80
     private void AddStates(int states) => StatesCounter.Add(states);
 
     /// <summary>
-    /// Reads a byte at the memory address provided in HL register. This method is aware
+    /// Reads an 8-bit value at the location provided in the HL register. This method is aware
     /// of current HL context, e.g. will use IX / IY pair and offset if applicable.
     /// </summary>
-    /// <returns>A byte value at the memory address provided in HL (or IX/IY).</returns>
+    /// <returns>A byte value located at the address provided in the HL (or IX/IY) register.</returns>
     private byte ReadMemoryAtHL(int extraIndexStates) => ReadByte(CalculateHLAddress(extraIndexStates));
 
     /// <summary>
@@ -206,16 +206,16 @@ public partial class Z80
     /// </summary>
     /// <param name="extraIndexStates">Extra T-states to add when index register is used.</param>
     /// <returns>Value of HL, IX+d or IY+d register.</returns>
-    private ushort CalculateHLAddress(int extraIndexStates)
+    private Word CalculateHLAddress(int extraIndexStates)
     {
         sbyte offset = 0;
 
         if (Registers.Context != RegisterContext.HL)
         {
-            offset = (sbyte)ReadByteAndMove();
+            offset = (sbyte)FetchByte();
             AddStates(extraIndexStates);
         }
 
-        return (ushort)(Registers.XHL + offset);
+        return (Word)(Registers.XHL + offset);
     }
 }

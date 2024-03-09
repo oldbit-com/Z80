@@ -51,12 +51,12 @@ public class StandardRegisters
     /// <summary>
     /// Gets the value of the AF register.
     /// </summary>
-    public ushort AF => TypeConverter.ToWord(A, (byte)F);
+    public Word AF => TypeConverter.ToWord(A, (byte)F);
 
     /// <summary>
     /// Gets or sets the value of the BC register.
     /// </summary>
-    public ushort BC
+    public Word BC
     {
         get => TypeConverter.ToWord(B, C);
         set => (B, C) = value;
@@ -65,7 +65,7 @@ public class StandardRegisters
     /// <summary>
     /// Gets or sets the value of the DE register.
     /// </summary>
-    public ushort DE
+    public Word DE
     {
         get => TypeConverter.ToWord(D, E);
         set => (D, E) = value;
@@ -74,7 +74,7 @@ public class StandardRegisters
     /// <summary>
     /// Gets or sets the value of the HL register.
     /// </summary>
-    public ushort HL
+    public Word HL
     {
         get => TypeConverter.ToWord(H, L);
         set => (H, L) = value;

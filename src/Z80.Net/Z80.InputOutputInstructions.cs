@@ -15,7 +15,7 @@ partial class Z80
         _opCodes["IN E,(C)"] = () => Registers.E = ExecuteIN();
         _opCodes["IN H,(C)"] = () => Registers.H = ExecuteIN();
         _opCodes["IN L,(C)"] = () => Registers.L = ExecuteIN();
-        _opCodes["IN F,(C)"] = () => throw new NotImplementedException();
+        _opCodes["IN F,(C)"] = () => ExecuteIN();
         _opCodes["IN A,(n)"] = () => Registers.A = ReadBus(Registers.A, FetchByte());
 
         _opCodes["OUT (C),A"] = () => throw new NotImplementedException();

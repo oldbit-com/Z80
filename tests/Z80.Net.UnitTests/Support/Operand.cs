@@ -29,6 +29,7 @@ internal class Operand
             "E" or "(E)" => OperandType.RegisterE,
             "H" or "(H)" => OperandType.RegisterH,
             "L" or "(L)" => OperandType.RegisterL,
+            "F" => OperandType.RegisterF,
             "IXH" => OperandType.RegisterIXH,
             "IXL" => OperandType.RegisterIXL,
             "IYH" => OperandType.RegisterIYH,

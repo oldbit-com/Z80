@@ -70,4 +70,23 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.F.Should().Be(expectedFlags);
         z80.StatesCounter.TotalStates.Should().Be(22);
     }
+
+    [Fact]
+    public void When_IN_F_C_InstructionIsExecuted_InputIsReturned()
+    {
+        _mockBus.Read(0x41, 0x49).Returns((byte)0x80);
+
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Bus(_mockBus)
+            .Code(
+                "LD BC,0x4149",
+                "IN F,(C)")
+            .Build();
+
+        z80.Run(10 + 12);
+
+        z80.Registers.F.Should().Be(S);
+        z80.StatesCounter.TotalStates.Should().Be(22);
+    }
 }

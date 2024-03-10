@@ -626,6 +626,7 @@ internal class AssemblyParser
         { OperandType.RegisterE, 0b011 },
         { OperandType.RegisterH, 0b100 },
         { OperandType.RegisterL, 0b101 },
+        { OperandType.RegisterF, 0b110 },
         { OperandType.RegisterIXH, 0b100 },
         { OperandType.RegisterIXL, 0b101 },
         { OperandType.RegisterIYH, 0b100 },

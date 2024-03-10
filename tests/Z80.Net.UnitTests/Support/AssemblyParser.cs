@@ -463,6 +463,22 @@ internal class AssemblyParser
                 return new[] { 0xED, mode };
             }
 
+            case "IN":
+                operand1 = Operand.Parse(instruction.Operands[0]);
+                operand2 = Operand.Parse(instruction.Operands[1]);
+
+                if (operand1.OperandType == OperandType.RegisterA && operand2.OperandType == OperandType.Value)
+                {
+                    return [0xDB, operand2.Value];
+                }
+
+                if (operand1.Is8BitRegister && operand2.OperandType == OperandType.RegisterC)
+                {
+                    return [0xED, 0b01000000 | RegisterCodes[operand1.OperandType] << 3];
+                }
+
+                break;
+
             case "LD":
             {
                 operand1 = Operand.Parse(instruction.Operands[0]);

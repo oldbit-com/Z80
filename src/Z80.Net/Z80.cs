@@ -6,6 +6,8 @@ namespace Z80.Net;
 public partial class Z80
 {
     private readonly IMemory _memory;
+    private readonly IBus? _bus;
+
     private readonly OpCodesIndex _opCodes = new();
     private bool _isExtendedInstruction;
     private sbyte _indexRegisterOffset;
@@ -17,9 +19,10 @@ public partial class Z80
     public InterruptMode InterruptMode { get; private set; }
     public StatesCounter StatesCounter { get; } = new();
 
-    public Z80(IMemory memory)
+    public Z80(IMemory memory, IBus? bus = null)
     {
         _memory = memory;
+        _bus = bus;
 
         Reset();
         SetupInstructions();
@@ -143,8 +146,10 @@ public partial class Z80
     private byte FetchByte(int states)
     {
         var value = _memory.Read(Registers.PC);
+
         AddStates(states);
         Registers.PC += 1;
+
         return value;
     }
 
@@ -163,7 +168,9 @@ public partial class Z80
     private byte ReadByte(int address)
     {
         var value = _memory.Read(address);
+
         AddStates(3);
+
         return value;
     }
 
@@ -184,7 +191,15 @@ public partial class Z80
     private void WriteByte(int address, byte value)
     {
         _memory.Write(address, value);
+
         AddStates(3);
+    }
+
+    private byte ReadBus(byte top, byte bottom)
+    {
+        AddStates(4);
+
+        return _bus?.Read(top, bottom) ?? 0xFF;
     }
 
     /// <summary>

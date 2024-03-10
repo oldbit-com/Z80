@@ -22,13 +22,13 @@ internal class Operand
     {
         OperandType = s.ToUpperInvariant() switch
         {
-            "A" => OperandType.RegisterA,
-            "B" => OperandType.RegisterB,
-            "C" => OperandType.RegisterC,
-            "D" => OperandType.RegisterD,
-            "E" => OperandType.RegisterE,
-            "H" => OperandType.RegisterH,
-            "L" => OperandType.RegisterL,
+            "A" or "(A)"=> OperandType.RegisterA,
+            "B" or "(B)" => OperandType.RegisterB,
+            "C" or "(C)" => OperandType.RegisterC,
+            "D" or "(D)" => OperandType.RegisterD,
+            "E" or "(E)" => OperandType.RegisterE,
+            "H" or "(H)" => OperandType.RegisterH,
+            "L" or "(L)" => OperandType.RegisterL,
             "IXH" => OperandType.RegisterIXH,
             "IXL" => OperandType.RegisterIXL,
             "IYH" => OperandType.RegisterIYH,

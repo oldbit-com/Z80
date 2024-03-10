@@ -1,10 +1,10 @@
 namespace Z80.Net.UnitTests.Fixtures;
 
-public class TestMemory : IMemory
+internal class TestMemory : IMemory
 {
     private readonly byte[] _memory;
 
-    public TestMemory(params byte[] memory)
+    internal TestMemory(params byte[] memory)
     {
         _memory = memory;
     }
@@ -19,5 +19,5 @@ public class TestMemory : IMemory
         _memory[address] = value;
     }
 
-    public byte this[int address] => _memory[address];
+    internal byte this[int address] => _memory[address];
 }

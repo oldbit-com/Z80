@@ -1,4 +1,5 @@
 using NSubstitute;
+using Z80.Net.Registers;
 using Z80.Net.UnitTests.Extensions;
 
 namespace Z80.Net.UnitTests;
@@ -43,19 +44,20 @@ public class Z80InputOutputInstructionsTests
     }
 
     [Theory]
-    [InlineData("A")]
-    [InlineData("B")]
-    [InlineData("C")]
-    [InlineData("D")]
-    [InlineData("E")]
-    [InlineData("H")]
-    [InlineData("L")]
-    public void When_IN_r_C_InstructionIsExecuted_InputIsReturned(string register)
+    [InlineData("A", 0xA5, All, S | P | C)]
+    [InlineData("B", 0xA5, All, S | P | C)]
+    [InlineData("C", 0xA5, All, S | P | C)]
+    [InlineData("D", 0xA5, All, S | P | C)]
+    [InlineData("E", 0x7E, None, P)]
+    [InlineData("H", 0x7F, None, None)]
+    [InlineData("L", 0, None, Z | P)]
+    public void When_IN_r_C_InstructionIsExecuted_InputIsReturned(
+        string register, byte value, Flags flags, Flags expectedFlags)
     {
-        _mockBus.Read(0x41, 0xA5).Returns((byte)0xA5);
+        _mockBus.Read(0x41, 0xA5).Returns(value);
 
         var z80 = new CodeBuilder()
-            .Flags(All)
+            .Flags(flags)
             .Bus(_mockBus)
             .Code(
                 "LD BC,0x41A5",
@@ -64,8 +66,8 @@ public class Z80InputOutputInstructionsTests
 
         z80.Run(10 + 12);
 
-        z80.Registers.ValueOf(register).Should().Be(0xA5);
-        z80.Registers.F.Should().Be(S | P | C);
+        z80.Registers.ValueOf(register).Should().Be(value);
+        z80.Registers.F.Should().Be(expectedFlags);
         z80.StatesCounter.TotalStates.Should().Be(22);
     }
 }

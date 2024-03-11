@@ -53,6 +53,7 @@ partial class Z80
     private void Execute_INI_IND(bool increment)
     {
         Delay(1);
+
         var result = ReadBus(Registers.B, Registers.C);
         WriteByte(Registers.HL, result);
 
@@ -73,6 +74,7 @@ partial class Z80
     private void Execute_OUTI_OUTD(bool increment)
     {
         Delay(1);
+
         var data = ReadByte(Registers.HL);
 
         Registers.B -= 1;
@@ -86,6 +88,7 @@ partial class Z80
         {
             Registers.HL -= 1;
         }
+
         Registers.F = (Registers.F & ~Z) | N;
         Registers.F |= Registers.B == 0 ? Z : 0;
     }

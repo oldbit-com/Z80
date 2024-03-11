@@ -91,7 +91,7 @@ public class Z80InputOutputInstructionsTests
     }
 
     [Fact]
-    public void When_OUT_A_n_InstructionIsExecuted_DataBusValueIsOutput()
+    public void When_OUT_A_n_InstructionIsExecuted_DataBusValueIsWritten()
     {
         var z80 = new CodeBuilder()
             .Flags(None)
@@ -103,8 +103,38 @@ public class Z80InputOutputInstructionsTests
 
         z80.Run(7 + 11);
 
-        _mockBus.Received().Write(0x23, 0x24, 0x23);
-
+        _mockBus.Received().Write(z80.Registers.A, 0x24, z80.Registers.A);
         z80.StatesCounter.TotalStates.Should().Be(18);
+    }
+
+    [Theory]
+    [InlineData("A")]
+    [InlineData("B")]
+    [InlineData("C")]
+    [InlineData("D")]
+    [InlineData("E")]
+    [InlineData("H")]
+    [InlineData("L")]
+    public void When_OUT_C_r_InstructionIsExecuted_DataBusValueIsWritten(string register)
+    {
+        var z80 = new CodeBuilder()
+            .Bus(_mockBus)
+            .Code(
+                $"LD {register},0xF1",
+                "LD BC,0x41A5",
+                $"OUT (C),{register}")
+            .Build();
+
+        z80.Run(7 + 10 + 12);
+
+        byte expectedData = register switch
+        {
+            "B" => z80.Registers.B,
+            "C" => z80.Registers.C,
+            _ => 0xF1
+        };
+
+        _mockBus.Received().Write(z80.Registers.B, z80.Registers.C, expectedData);
+        z80.StatesCounter.TotalStates.Should().Be(29);
     }
 }

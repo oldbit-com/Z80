@@ -488,6 +488,11 @@ internal class AssemblyParser
                     return [0xD3, operand1.Value];
                 }
 
+                if (operand1.OperandType == OperandType.RegisterC && operand2.Is8BitRegister)
+                {
+                    return [0xED, 0b01000001 | RegisterCodes[operand2.OperandType] << 3];
+                }
+
                 break;
 
             case "LD":

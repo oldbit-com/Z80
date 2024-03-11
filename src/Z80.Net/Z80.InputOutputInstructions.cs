@@ -18,13 +18,13 @@ partial class Z80
         _opCodes["IN F,(C)"] = () => ExecuteIN();
         _opCodes["IN A,(n)"] = () => Registers.A = ReadBus(Registers.A, FetchByte());
 
-        _opCodes["OUT (C),A"] = () => throw new NotImplementedException();
-        _opCodes["OUT (C),B"] = () => throw new NotImplementedException();
-        _opCodes["OUT (C),C"] = () => throw new NotImplementedException();
-        _opCodes["OUT (C),D"] = () => throw new NotImplementedException();
-        _opCodes["OUT (C),E"] = () => throw new NotImplementedException();
-        _opCodes["OUT (C),H"] = () => throw new NotImplementedException();
-        _opCodes["OUT (C),L"] = () => throw new NotImplementedException();
+        _opCodes["OUT (C),A"] = () => WriteBus(Registers.B, Registers.C, Registers.A);
+        _opCodes["OUT (C),B"] = () => WriteBus(Registers.B, Registers.C, Registers.B);
+        _opCodes["OUT (C),C"] = () => WriteBus(Registers.B, Registers.C, Registers.C);
+        _opCodes["OUT (C),D"] = () => WriteBus(Registers.B, Registers.C, Registers.D);
+        _opCodes["OUT (C),E"] = () => WriteBus(Registers.B, Registers.C, Registers.E);
+        _opCodes["OUT (C),H"] = () => WriteBus(Registers.B, Registers.C, Registers.H);
+        _opCodes["OUT (C),L"] = () => WriteBus(Registers.B, Registers.C, Registers.L);
         _opCodes["OUT (C),F"] = () => throw new NotImplementedException();
         _opCodes["OUT (n),A"] = () => WriteBus(Registers.A, FetchByte(), Registers.A);
 

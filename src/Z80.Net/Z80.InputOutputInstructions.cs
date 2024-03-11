@@ -8,14 +8,14 @@ partial class Z80
 {
     private void AddInputOutputInstructions()
     {
-        _opCodes["IN A,(C)"] = () => Registers.A = ExecuteIN();
-        _opCodes["IN B,(C)"] = () => Registers.B = ExecuteIN();
-        _opCodes["IN C,(C)"] = () => Registers.C = ExecuteIN();
-        _opCodes["IN D,(C)"] = () => Registers.D = ExecuteIN();
-        _opCodes["IN E,(C)"] = () => Registers.E = ExecuteIN();
-        _opCodes["IN H,(C)"] = () => Registers.H = ExecuteIN();
-        _opCodes["IN L,(C)"] = () => Registers.L = ExecuteIN();
-        _opCodes["IN F,(C)"] = () => ExecuteIN();
+        _opCodes["IN A,(C)"] = () => Registers.A = Execute_IN();
+        _opCodes["IN B,(C)"] = () => Registers.B = Execute_IN();
+        _opCodes["IN C,(C)"] = () => Registers.C = Execute_IN();
+        _opCodes["IN D,(C)"] = () => Registers.D = Execute_IN();
+        _opCodes["IN E,(C)"] = () => Registers.E = Execute_IN();
+        _opCodes["IN H,(C)"] = () => Registers.H = Execute_IN();
+        _opCodes["IN L,(C)"] = () => Registers.L = Execute_IN();
+        _opCodes["IN F,(C)"] = () => Execute_IN();
         _opCodes["IN A,(n)"] = () => Registers.A = ReadBus(Registers.A, FetchByte());
 
         _opCodes["OUT (C),A"] = () => WriteBus(Registers.B, Registers.C, Registers.A);
@@ -28,17 +28,17 @@ partial class Z80
         _opCodes["OUT (C),F"] = () => WriteBus(Registers.B, Registers.C, 0);
         _opCodes["OUT (n),A"] = () => WriteBus(Registers.A, FetchByte(), Registers.A);
 
-        _opCodes["INI"] = ExecuteINI;
+        _opCodes["INI"] = () => Execute_INI_IND(increment: true);
         _opCodes["OUTI"] = () => throw new NotImplementedException();
         _opCodes["IND"] = () => throw new NotImplementedException();
         _opCodes["OUTD"] = () => throw new NotImplementedException();
-        _opCodes["INIR"] = ExecuteINIR;
+        _opCodes["INIR"] = () => Execute_INIR(increment: true);
         _opCodes["OTIR"] = () => throw new NotImplementedException();
         _opCodes["INDR"] = () => throw new NotImplementedException();
         _opCodes["OTDR"] = () => throw new NotImplementedException();
     }
 
-    private byte ExecuteIN()
+    private byte Execute_IN()
     {
         var result = ReadBus(Registers.B, Registers.C);
 
@@ -50,31 +50,32 @@ partial class Z80
         return result;
     }
 
-    private void ExecuteINI()
+    private void Execute_INI_IND(bool increment)
     {
         AddStates(1);
         var result = ReadBus(Registers.B, Registers.C);
         WriteByte(Registers.HL, result);
 
         Registers.B -= 1;
-        Registers.HL += 1;
+        if (increment)
+        {
+            Registers.HL += 1;
+        }
+        else
+        {
+            Registers.HL -= 1;
+        }
+
         Registers.F = (Registers.F & ~Z) | N;
         Registers.F |= Registers.B == 0 ? Z : 0;
     }
 
-    private void ExecuteINIR()
+    private void Execute_INIR(bool increment)
     {
-        AddStates(1);
-        var result = ReadBus(Registers.B, Registers.C);
-        WriteByte(Registers.HL, result);
-
-        Registers.B -= 1;
-        Registers.HL += 1;
-        Registers.F = (Registers.F & ~Z) | N;
+        Execute_INI_IND(increment);
 
         if (Registers.B == 0)
         {
-            Registers.F |= Z;
             return;
         }
 

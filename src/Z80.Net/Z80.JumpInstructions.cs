@@ -6,38 +6,28 @@ partial class Z80
 {
     private void AddJumpInstructions()
     {
-        _opCodes["JP nn"] = () => ExecuteJP();
-        _opCodes["JP C,nn"] = () => ExecuteJP( (Registers.F & C) != 0);
-        _opCodes["JP NC,nn"] = () => ExecuteJP( (Registers.F & C) == 0);
-        _opCodes["JP Z,nn"] = () => ExecuteJP( (Registers.F & Z) != 0);
-        _opCodes["JP NZ,nn"] = () => ExecuteJP( (Registers.F & Z) == 0);
-        _opCodes["JP PE,nn"] = () => ExecuteJP( (Registers.F & P) != 0);
-        _opCodes["JP PO,nn"] = () => ExecuteJP( (Registers.F & P) == 0);
-        _opCodes["JP M,nn"] = () => ExecuteJP( (Registers.F & S) != 0);
-        _opCodes["JP P,nn"] = () => ExecuteJP( (Registers.F & S) == 0);
+        _opCodes["JP nn"] = () => Execute_JP();
+        _opCodes["JP C,nn"] = () => Execute_JP( (Registers.F & C) != 0);
+        _opCodes["JP NC,nn"] = () => Execute_JP( (Registers.F & C) == 0);
+        _opCodes["JP Z,nn"] = () => Execute_JP( (Registers.F & Z) != 0);
+        _opCodes["JP NZ,nn"] = () => Execute_JP( (Registers.F & Z) == 0);
+        _opCodes["JP PE,nn"] = () => Execute_JP( (Registers.F & P) != 0);
+        _opCodes["JP PO,nn"] = () => Execute_JP( (Registers.F & P) == 0);
+        _opCodes["JP M,nn"] = () => Execute_JP( (Registers.F & S) != 0);
+        _opCodes["JP P,nn"] = () => Execute_JP( (Registers.F & S) == 0);
 
-        _opCodes["JR e"] = () => ExecuteJR();
-        _opCodes["JR C,e"] = () => ExecuteJR( (Registers.F & C) != 0);
-        _opCodes["JR NC,e"] = () => ExecuteJR( (Registers.F & C) == 0);
-        _opCodes["JR Z,e"] = () => ExecuteJR( (Registers.F & Z) != 0);
-        _opCodes["JR NZ,e"] = () => ExecuteJR( (Registers.F & Z) == 0);
+        _opCodes["JR e"] = () => Execute_JR();
+        _opCodes["JR C,e"] = () => Execute_JR( (Registers.F & C) != 0);
+        _opCodes["JR NC,e"] = () => Execute_JR( (Registers.F & C) == 0);
+        _opCodes["JR Z,e"] = () => Execute_JR( (Registers.F & Z) != 0);
+        _opCodes["JR NZ,e"] = () => Execute_JR( (Registers.F & Z) == 0);
 
         _opCodes["JP (HL)"] = () => { Registers.PC = Registers.XHL; };
 
-        _opCodes["DJNZ"] = () =>
-        {
-            AddStates(1);
-            var offset = (sbyte)FetchByte();
-            Registers.B -= 1;
-            if (Registers.B != 0)
-            {
-                AddStates(5);
-                Registers.PC = (Word)(Registers.PC + offset);
-            }
-        };
+        _opCodes["DJNZ"] = Execute_DJNZ;
     }
 
-    private void ExecuteJP(bool shouldJump = true)
+    private void Execute_JP(bool shouldJump = true)
     {
         var pc = FetchWord();
         if (!shouldJump)
@@ -48,7 +38,7 @@ partial class Z80
         Registers.PC = pc;
     }
 
-    private void ExecuteJR(bool shouldJump = true)
+    private void Execute_JR(bool shouldJump = true)
     {
         var offset = FetchByte();
         if (!shouldJump)
@@ -58,5 +48,18 @@ partial class Z80
 
         AddStates(5);
         Registers.PC += (Word)(sbyte)offset;
+    }
+
+    private void Execute_DJNZ()
+    {
+        AddStates(1);
+        var offset = (sbyte)FetchByte();
+        Registers.B -= 1;
+
+        if (Registers.B != 0)
+        {
+            AddStates(5);
+            Registers.PC = (Word)(Registers.PC + offset);
+        }
     }
 }

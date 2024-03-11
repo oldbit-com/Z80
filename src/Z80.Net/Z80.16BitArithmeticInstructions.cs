@@ -7,33 +7,33 @@ partial class Z80
 {
     private void Add16BitArithmeticInstructions()
     {
-        _opCodes["ADD HL,BC"] = () => { ExecuteADD(Registers.BC); };
-        _opCodes["ADD HL,DE"] = () => { ExecuteADD(Registers.DE); };
-        _opCodes["ADD HL,HL"] = () => { ExecuteADD(Registers.XHL); };
-        _opCodes["ADD HL,SP"] = () => { ExecuteADD(Registers.SP); };
+        _opCodes["ADD HL,BC"] = () => { Execute_ADD(Registers.BC); };
+        _opCodes["ADD HL,DE"] = () => { Execute_ADD(Registers.DE); };
+        _opCodes["ADD HL,HL"] = () => { Execute_ADD(Registers.XHL); };
+        _opCodes["ADD HL,SP"] = () => { Execute_ADD(Registers.SP); };
 
-        _opCodes["ADC HL,BC"] = () => { ExecuteADC(Registers.BC); };
-        _opCodes["ADC HL,DE"] = () => { ExecuteADC(Registers.DE); };
-        _opCodes["ADC HL,HL"] = () => { ExecuteADC(Registers.HL); };
-        _opCodes["ADC HL,SP"] = () => { ExecuteADC(Registers.SP); };
+        _opCodes["ADC HL,BC"] = () => { Execute_ADC(Registers.BC); };
+        _opCodes["ADC HL,DE"] = () => { Execute_ADC(Registers.DE); };
+        _opCodes["ADC HL,HL"] = () => { Execute_ADC(Registers.HL); };
+        _opCodes["ADC HL,SP"] = () => { Execute_ADC(Registers.SP); };
 
-        _opCodes["SBC HL,BC"] = () => { ExecuteSBC(Registers.BC); };
-        _opCodes["SBC HL,DE"] = () => { ExecuteSBC(Registers.DE); };
-        _opCodes["SBC HL,HL"] = () => { ExecuteSBC(Registers.HL); };
-        _opCodes["SBC HL,SP"] = () => { ExecuteSBC(Registers.SP); };
+        _opCodes["SBC HL,BC"] = () => { Execute_SBC(Registers.BC); };
+        _opCodes["SBC HL,DE"] = () => { Execute_SBC(Registers.DE); };
+        _opCodes["SBC HL,HL"] = () => { Execute_SBC(Registers.HL); };
+        _opCodes["SBC HL,SP"] = () => { Execute_SBC(Registers.SP); };
 
-        _opCodes["INC BC"] = () => { Registers.BC = ExecuteINC(Registers.BC); };
-        _opCodes["INC DE"] = () => { Registers.DE = ExecuteINC(Registers.DE); };
-        _opCodes["INC HL"] = () => { Registers.XHL = ExecuteINC(Registers.XHL); };
-        _opCodes["INC SP"] = () => { Registers.SP = ExecuteINC(Registers.SP); };
+        _opCodes["INC BC"] = () => { Registers.BC = Execute_INC(Registers.BC); };
+        _opCodes["INC DE"] = () => { Registers.DE = Execute_INC(Registers.DE); };
+        _opCodes["INC HL"] = () => { Registers.XHL = Execute_INC(Registers.XHL); };
+        _opCodes["INC SP"] = () => { Registers.SP = Execute_INC(Registers.SP); };
 
-        _opCodes["DEC BC"] = () => { Registers.BC = ExecuteDEC(Registers.BC); };
-        _opCodes["DEC DE"] = () => { Registers.DE = ExecuteDEC(Registers.DE); };
-        _opCodes["DEC HL"] = () => { Registers.XHL = ExecuteDEC(Registers.XHL); };
-        _opCodes["DEC SP"] = () => { Registers.SP = ExecuteDEC(Registers.SP); };
+        _opCodes["DEC BC"] = () => { Registers.BC = Execute_DEC(Registers.BC); };
+        _opCodes["DEC DE"] = () => { Registers.DE = Execute_DEC(Registers.DE); };
+        _opCodes["DEC HL"] = () => { Registers.XHL = Execute_DEC(Registers.XHL); };
+        _opCodes["DEC SP"] = () => { Registers.SP = Execute_DEC(Registers.SP); };
     }
 
-    private void ExecuteADD(Word value)
+    private void Execute_ADD(Word value)
     {
         AddStates(7);
 
@@ -49,7 +49,7 @@ partial class Z80
         Registers.XHL = result;
     }
 
-    private void ExecuteADC(Word value)
+    private void Execute_ADC(Word value)
     {
         AddStates(7);
 
@@ -67,7 +67,7 @@ partial class Z80
         Registers.HL = result;
     }
 
-    private void ExecuteSBC(Word value)
+    private void Execute_SBC(Word value)
     {
         AddStates(7);
 
@@ -86,13 +86,13 @@ partial class Z80
         Registers.HL = result;
     }
 
-    private Word ExecuteINC(Word value)
+    private Word Execute_INC(Word value)
     {
         AddStates(2);
         return (Word)(value + 1);
     }
 
-    private Word ExecuteDEC(Word value)
+    private Word Execute_DEC(Word value)
     {
         AddStates(2);
         return (Word)(value - 1);

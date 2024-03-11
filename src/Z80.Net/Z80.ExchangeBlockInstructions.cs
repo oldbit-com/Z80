@@ -9,16 +9,23 @@ partial class Z80
     {
         _opCodes["EX DE,HL"] = () =>
         {
-            (Registers.HL, Registers.DE) = (Registers.DE, Registers.HL);
+            (Registers.HL, Registers.DE) =
+                (Registers.DE, Registers.HL);
         };
 
-        _opCodes["EX AF,AF"] = () => (Registers.A, Registers.Alternative.A, Registers.F, Registers.Alternative.F) = (Registers.Alternative.A, Registers.A, Registers.Alternative.F, Registers.F);
+        _opCodes["EX AF,AF"] = () => (Registers.A, Registers.Alternative.A, Registers.F, Registers.Alternative.F) =
+            (Registers.Alternative.A, Registers.A, Registers.Alternative.F, Registers.F);
 
         _opCodes["EXX"] = () =>
         {
-            (Registers.B, Registers.Alternative.B, Registers.C, Registers.Alternative.C) = (Registers.Alternative.B, Registers.B, Registers.Alternative.C, Registers.C);
-            (Registers.D, Registers.Alternative.D, Registers.E, Registers.Alternative.E) = (Registers.Alternative.D, Registers.D, Registers.Alternative.E, Registers.E);
-            (Registers.H, Registers.Alternative.H, Registers.L, Registers.Alternative.L) = (Registers.Alternative.H, Registers.H, Registers.Alternative.L, Registers.L);
+            (Registers.B, Registers.Alternative.B, Registers.C, Registers.Alternative.C) =
+                (Registers.Alternative.B, Registers.B, Registers.Alternative.C, Registers.C);
+
+            (Registers.D, Registers.Alternative.D, Registers.E, Registers.Alternative.E) =
+                (Registers.Alternative.D, Registers.D, Registers.Alternative.E, Registers.E);
+
+            (Registers.H, Registers.Alternative.H, Registers.L, Registers.Alternative.L) =
+                (Registers.Alternative.H, Registers.H, Registers.Alternative.L, Registers.L);
         };
 
         _opCodes["EX (SP),HL"] = () =>
@@ -63,10 +70,17 @@ partial class Z80
         if ((n & 0b0001000) != 0) Registers.F |= X;
         if (bc == 0) return;
         Registers.F |= P;
+
         if (opCode is "LDIR" or "LDDR") {
             Registers.PC -= 2;
             AddStates(5);
         }
+    }
+
+    private void Execute_LDIR_LDDR()
+    {
+        Registers.PC -= 2;
+        AddStates(5);
     }
 
     private void ExecuteBlockCompare(string opCode)
@@ -88,5 +102,7 @@ partial class Z80
         if (bc != 0) Registers.F |= P;
 
         n = (byte)(test - (int)(Registers.F & H) >> 4);
+
+        // TODO: Implement
     }
 }

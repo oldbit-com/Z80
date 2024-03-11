@@ -12,36 +12,36 @@ partial class Z80
         {
             var bit = i;
 
-            _opCodes[$"BIT {bit},A"] = () => { ExecuteBIT(bit, Registers.A); };
-            _opCodes[$"BIT {bit},B"] = () => { ExecuteBIT(bit, Registers.B); };
-            _opCodes[$"BIT {bit},C"] = () => { ExecuteBIT(bit, Registers.C); };
-            _opCodes[$"BIT {bit},D"] = () => { ExecuteBIT(bit, Registers.D); };
-            _opCodes[$"BIT {bit},E"] = () => { ExecuteBIT(bit, Registers.E); };
-            _opCodes[$"BIT {bit},H"] = () => { ExecuteBIT(bit, Registers.H); };
-            _opCodes[$"BIT {bit},L"] = () => { ExecuteBIT(bit, Registers.L); };
-            _opCodes[$"BIT {bit},(HL)"] = () => { ExecuteMemoryBIT(bit); };
+            _opCodes[$"BIT {bit},A"] = () => { Execute_BIT(bit, Registers.A); };
+            _opCodes[$"BIT {bit},B"] = () => { Execute_BIT(bit, Registers.B); };
+            _opCodes[$"BIT {bit},C"] = () => { Execute_BIT(bit, Registers.C); };
+            _opCodes[$"BIT {bit},D"] = () => { Execute_BIT(bit, Registers.D); };
+            _opCodes[$"BIT {bit},E"] = () => { Execute_BIT(bit, Registers.E); };
+            _opCodes[$"BIT {bit},H"] = () => { Execute_BIT(bit, Registers.H); };
+            _opCodes[$"BIT {bit},L"] = () => { Execute_BIT(bit, Registers.L); };
+            _opCodes[$"BIT {bit},(HL)"] = () => { Execute_BIT(bit); };
 
-            _opCodes[$"SET {bit},A"] = () => { ExecuteSET(bit, Registers.A); };
-            _opCodes[$"SET {bit},B"] = () => { ExecuteSET(bit, Registers.B); };
-            _opCodes[$"SET {bit},C"] = () => { ExecuteSET(bit, Registers.C); };
-            _opCodes[$"SET {bit},D"] = () => { ExecuteSET(bit, Registers.D); };
-            _opCodes[$"SET {bit},E"] = () => { ExecuteSET(bit, Registers.E); };
-            _opCodes[$"SET {bit},H"] = () => { ExecuteSET(bit, Registers.H); };
-            _opCodes[$"SET {bit},L"] = () => { ExecuteSET(bit, Registers.L); };
-            _opCodes[$"SET {bit},(HL)"] = () => { ExecuteMemorySET(bit); };
+            _opCodes[$"SET {bit},A"] = () => { Execute_SET(bit, Registers.A); };
+            _opCodes[$"SET {bit},B"] = () => { Execute_SET(bit, Registers.B); };
+            _opCodes[$"SET {bit},C"] = () => { Execute_SET(bit, Registers.C); };
+            _opCodes[$"SET {bit},D"] = () => { Execute_SET(bit, Registers.D); };
+            _opCodes[$"SET {bit},E"] = () => { Execute_SET(bit, Registers.E); };
+            _opCodes[$"SET {bit},H"] = () => { Execute_SET(bit, Registers.H); };
+            _opCodes[$"SET {bit},L"] = () => { Execute_SET(bit, Registers.L); };
+            _opCodes[$"SET {bit},(HL)"] = () => { Execute_SET(bit); };
 
-            _opCodes[$"RES {bit},A"] = () => { ExecuteRES(bit, Registers.A); };
-            _opCodes[$"RES {bit},B"] = () => { ExecuteRES(bit, Registers.B); };
-            _opCodes[$"RES {bit},C"] = () => { ExecuteRES(bit, Registers.C); };
-            _opCodes[$"RES {bit},D"] = () => { ExecuteRES(bit, Registers.D); };
-            _opCodes[$"RES {bit},E"] = () => { ExecuteRES(bit, Registers.E); };
-            _opCodes[$"RES {bit},H"] = () => { ExecuteRES(bit, Registers.H); };
-            _opCodes[$"RES {bit},L"] = () => { ExecuteRES(bit, Registers.L); };
-            _opCodes[$"RES {bit},(HL)"] = () => { ExecuteMemoryRES(bit); };
+            _opCodes[$"RES {bit},A"] = () => { Execute_RES(bit, Registers.A); };
+            _opCodes[$"RES {bit},B"] = () => { Execute_RES(bit, Registers.B); };
+            _opCodes[$"RES {bit},C"] = () => { Execute_RES(bit, Registers.C); };
+            _opCodes[$"RES {bit},D"] = () => { Execute_RES(bit, Registers.D); };
+            _opCodes[$"RES {bit},E"] = () => { Execute_RES(bit, Registers.E); };
+            _opCodes[$"RES {bit},H"] = () => { Execute_RES(bit, Registers.H); };
+            _opCodes[$"RES {bit},L"] = () => { Execute_RES(bit, Registers.L); };
+            _opCodes[$"RES {bit},(HL)"] = () => { Execute_RES(bit); };
         }
     }
 
-    private void ExecuteBIT(int bit, byte value)
+    private void Execute_BIT(int bit, byte value)
     {
         var result = value & BitMasks[bit];
         Registers.F &= C;
@@ -52,7 +52,7 @@ partial class Z80
         Registers.F |= bit == 3 && result != 0 ? X : 0;
     }
 
-    private void ExecuteMemoryBIT(int bit)
+    private void Execute_BIT(int bit)
     {
         var address = (Word)(Registers.XHL + _indexRegisterOffset);
         var value = ReadByte(address);
@@ -67,23 +67,23 @@ partial class Z80
         Registers.F |= bit == 3 && Registers.H != 0 ? X : 0;
     }
 
-    private void ExecuteSET(int bit, byte value)
+    private void Execute_SET(int bit, byte value)
     {
-
+        // TODO: Implement
     }
 
-    private void ExecuteMemorySET(int bit)
+    private void Execute_SET(int bit)
     {
-
+        // TODO: Implement
     }
 
-    private void ExecuteRES(int bit, byte value)
+    private void Execute_RES(int bit, byte value)
     {
-
+        // TODO: Implement
     }
 
-    private void ExecuteMemoryRES(int bit)
+    private void Execute_RES(int bit)
     {
-
+        // TODO: Implement
     }
 }

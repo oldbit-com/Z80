@@ -39,10 +39,10 @@ partial class Z80
             (Registers.XH, Registers.XL) = (y, x);
         };
 
-        _opCodes["LDI"] = () => ExecuteBlockLoad("LDI");
-        _opCodes["LDIR"] = () => ExecuteBlockLoad("LDIR");
-        _opCodes["LDD"] = () => ExecuteBlockLoad("LDD");
-        _opCodes["LDDR"] = () => ExecuteBlockLoad("LDDR");
+        _opCodes["LDI"] = () => Execute_LDI_LDD(increment: true);
+        _opCodes["LDIR"] = () => Execute_LDIR_LDDR(increment: true);
+        _opCodes["LDD"] = () => Execute_LDI_LDD(increment: false);
+        _opCodes["LDDR"] = () => Execute_LDIR_LDDR(increment: false);
 
         _opCodes["CPI"] = () => ExecuteBlockCompare("CPI");
         _opCodes["CPIR"] = () => ExecuteBlockCompare("CPIR");
@@ -50,7 +50,7 @@ partial class Z80
         _opCodes["CPDR"] = () => ExecuteBlockCompare("CPDR");
     }
 
-    private void ExecuteBlockLoad(string opCode)
+    private void Execute_LDI_LDD(bool increment)
     {
         var hl = Registers.XHL;
         var de = Registers.DE;
@@ -60,25 +60,34 @@ partial class Z80
         WriteByte(de, n);
         AddStates(2);
 
-        var offset = opCode is "LDI" or "LDIR" ? 1 : -1;
-        Registers.XHL = (Word)(hl + offset);
-        Registers.DE = (Word)(de + offset);
+        if (increment)
+        {
+            Registers.XHL = (Word)(hl + 1);
+            Registers.DE = (Word)(de + 1);
+        }
+        else
+        {
+            Registers.XHL = (Word)(hl - 1);
+            Registers.DE = (Word)(de - 1);
+        }
         Registers.BC = (Word)bc;
+
         Registers.F &= S | Z | C;
         n += Registers.A;
         if ((n & 0b0000010) != 0) Registers.F |= Y;
         if ((n & 0b0001000) != 0) Registers.F |= X;
-        if (bc == 0) return;
-        Registers.F |= P;
-
-        if (opCode is "LDIR" or "LDDR") {
-            Registers.PC -= 2;
-            AddStates(5);
-        }
+        Registers.F |= bc != 0 ? P : 0;
     }
 
-    private void Execute_LDIR_LDDR()
+    private void Execute_LDIR_LDDR(bool increment)
     {
+        Execute_LDI_LDD(increment);
+
+        if (Registers.BC == 0)
+        {
+            return;
+        }
+
         Registers.PC -= 2;
         AddStates(5);
     }

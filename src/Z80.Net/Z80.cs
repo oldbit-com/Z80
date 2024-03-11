@@ -99,7 +99,7 @@ public partial class Z80
         {
             _indexRegisterOffset = (sbyte)FetchByte();
             opCode = FetchByte();
-            AddStates(2);
+            Delay(2);
         }
         else
         {
@@ -147,7 +147,7 @@ public partial class Z80
     {
         var value = _memory.Read(Registers.PC);
 
-        AddStates(states);
+        Delay(states);
         Registers.PC += 1;
 
         return value;
@@ -169,7 +169,7 @@ public partial class Z80
     {
         var value = _memory.Read(address);
 
-        AddStates(3);
+        Delay(3);
 
         return value;
     }
@@ -192,7 +192,7 @@ public partial class Z80
     {
         _memory.Write(address, value);
 
-        AddStates(3);
+        Delay(3);
     }
 
     /// <summary>
@@ -203,7 +203,7 @@ public partial class Z80
     /// <returns>The value from the data bus.</returns>
     private byte ReadBus(byte top, byte bottom)
     {
-        AddStates(4);
+        Delay(4);
 
         return _bus?.Read(top, bottom) ?? 0xFF;
     }
@@ -216,7 +216,7 @@ public partial class Z80
     /// <param name="data">The data to be written</param>
     private void WriteBus(byte top, byte bottom, byte data)
     {
-        AddStates(4);
+        Delay(4);
 
         _bus?.Write(top, bottom, data);
     }
@@ -225,7 +225,7 @@ public partial class Z80
     /// Adds specified number of T-states to the current counter.
     /// </summary>
     /// <param name="states">The number of T-states to add.</param>
-    private void AddStates(int states) => StatesCounter.Add(states);
+    private void Delay(int states) => StatesCounter.Add(states);
 
     /// <summary>
     /// Reads an 8-bit value at the location provided in the HL register. This method is aware
@@ -247,7 +247,7 @@ public partial class Z80
         if (Registers.Context != RegisterContext.HL)
         {
             offset = (sbyte)FetchByte();
-            AddStates(extraIndexStates);
+            Delay(extraIndexStates);
         }
 
         return (Word)(Registers.XHL + offset);

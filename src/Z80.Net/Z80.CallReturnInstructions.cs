@@ -50,7 +50,7 @@ partial class Z80
 
         var (hiPC, loPC) = Registers.PC;
 
-        AddStates(1);
+        Delay(1);
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);
         Registers.SP -= 1;
@@ -66,7 +66,7 @@ partial class Z80
 
     private void Execute_RET(bool shouldReturn)
     {
-        AddStates(1);
+        Delay(1);
         if (shouldReturn)
         {
             Execute_RET();
@@ -83,7 +83,7 @@ partial class Z80
     {
         var (hiPC, loPC) = Registers.PC;
 
-        AddStates(1);
+        Delay(1);
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);
         Registers.SP -= 1;

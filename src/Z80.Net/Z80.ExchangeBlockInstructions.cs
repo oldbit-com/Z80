@@ -32,10 +32,10 @@ partial class Z80
         {
             var (x, y) = (ReadByte(Registers.SP), ReadByte(Registers.SP + 1));
             var (h, l) = (HX: Registers.XH, LX: Registers.XL);
-            AddStates(1);
+            Delay(1);
             WriteByte(Registers.SP, l);
             WriteByte(Registers.SP + 1, h);
-            AddStates(2);
+            Delay(2);
             (Registers.XH, Registers.XL) = (y, x);
         };
 
@@ -58,7 +58,7 @@ partial class Z80
         var n = ReadByte(hl);
 
         WriteByte(de, n);
-        AddStates(2);
+        Delay(2);
 
         if (increment)
         {
@@ -89,7 +89,7 @@ partial class Z80
         }
 
         Registers.PC -= 2;
-        AddStates(5);
+        Delay(5);
     }
 
     private void ExecuteBlockCompare(string opCode)
@@ -102,7 +102,7 @@ partial class Z80
         Registers.BC = (Word)bc;
 
         var n = ReadByte(hl);
-        AddStates(5);
+        Delay(5);
         var test = Registers.A - n;
         Registers.F = Registers.F & C | N | (Flags)(test & (int)S);
         if (test == 0) Registers.F |= Z;

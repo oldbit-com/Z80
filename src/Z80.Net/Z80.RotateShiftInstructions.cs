@@ -48,7 +48,7 @@ partial class Z80
         {   // A                        (HL)
             // a7 a6 a5 a4 a3 a2 a1 a0  m7 m6 m5 m4 m3 m2 m1 m0  Before
             // a7 a6 a5 a4 m7 m6 m5 m4  m3 m2 m1 m0 a3 a2 a1 a0  After
-            AddStates(4);
+            Delay(4);
 
             var value = ReadByte(Registers.HL);
             var newValue = (byte)((value << 4) | (Registers.A & 0x0F));
@@ -67,7 +67,7 @@ partial class Z80
             // A                        (HL)
             // a7 a6 a5 a4 a3 a2 a1 a0  m7 m6 m5 m4 m3 m2 m1 m0  Before
             // a7 a6 a5 a4 m3 m2 m1 m0  a3 a2 a1 a0 m7 a6 a5 a4  After
-            AddStates(4);
+            Delay(4);
 
             var value = ReadByte(Registers.HL);
             var newValue = (byte)((value >> 4) | (Registers.A << 4));
@@ -238,7 +238,7 @@ partial class Z80
     {
         var address = (Word)(Registers.XHL + _indexRegisterOffset);
         var value = ReadByte(address);
-        AddStates(1);
+        Delay(1);
         var result = calculate(value);
         WriteByte(address, result);
     }

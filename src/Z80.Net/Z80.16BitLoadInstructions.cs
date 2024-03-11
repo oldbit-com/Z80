@@ -43,7 +43,7 @@ partial class Z80
 
     private void Execute_PUSH(byte highByte, byte lowByte)
     {
-        AddStates(1);
+        Delay(1);
         Registers.SP -= 1;
         WriteByte(Registers.SP, highByte);
         Registers.SP -= 1;

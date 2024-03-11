@@ -56,7 +56,7 @@ partial class Z80
     {
         var address = (Word)(Registers.XHL + _indexRegisterOffset);
         var value = ReadByte(address);
-        AddStates(1);
+        Delay(1);
 
         var result = value & BitMasks[bit];
         Registers.F &= C;

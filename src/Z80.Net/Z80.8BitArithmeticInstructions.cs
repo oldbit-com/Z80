@@ -99,7 +99,7 @@ partial class Z80
         {
             var address = CalculateHLAddress(extraIndexStates: 5);
             var value = ReadByte(address);
-            AddStates(1);
+            Delay(1);
             WriteByte(address, Execute_INC(value));
         };
 
@@ -114,7 +114,7 @@ partial class Z80
         {
             var address = CalculateHLAddress(extraIndexStates: 5);
             var value = ReadByte(address);
-            AddStates(1);
+            Delay(1);
             WriteByte(address, Execute_DEC(value));
         };
     }

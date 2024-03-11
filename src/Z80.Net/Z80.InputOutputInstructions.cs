@@ -29,13 +29,13 @@ partial class Z80
         _opCodes["OUT (n),A"] = () => WriteBus(Registers.A, FetchByte(), Registers.A);
 
         _opCodes["INI"] = () => Execute_INI_IND(increment: true);
-        _opCodes["OUTI"] = () => throw new NotImplementedException();
+        _opCodes["OUTI"] = () => Execute_OUTI_OUTD(increment: true);
         _opCodes["IND"] = () => Execute_INI_IND(increment: false);
-        _opCodes["OUTD"] = () => throw new NotImplementedException();
-        _opCodes["INIR"] = () => Execute_INIR_INDR(increment: true);
-        _opCodes["OTIR"] = () => throw new NotImplementedException();
-        _opCodes["INDR"] = () => Execute_INIR_INDR(increment: false);
-        _opCodes["OTDR"] = () => throw new NotImplementedException();
+        _opCodes["OUTD"] = () => Execute_OUTI_OUTD(increment: false);
+        _opCodes["INIR"] = () =>  ExecuteRepeated_OUT(increment: true, Execute_INI_IND);
+        _opCodes["OTIR"] = () => ExecuteRepeated_OUT(increment: true, Execute_OUTI_OUTD);
+        _opCodes["INDR"] = () => ExecuteRepeated_OUT(increment: false, Execute_INI_IND);
+        _opCodes["OTDR"] = () => ExecuteRepeated_OUT(increment: false, Execute_OUTI_OUTD);
     }
 
     private byte Execute_IN()
@@ -52,7 +52,7 @@ partial class Z80
 
     private void Execute_INI_IND(bool increment)
     {
-        AddStates(1);
+        Delay(1);
         var result = ReadBus(Registers.B, Registers.C);
         WriteByte(Registers.HL, result);
 
@@ -70,9 +70,29 @@ partial class Z80
         Registers.F |= Registers.B == 0 ? Z : 0;
     }
 
-    private void Execute_INIR_INDR(bool increment)
+    private void Execute_OUTI_OUTD(bool increment)
     {
-        Execute_INI_IND(increment);
+        Delay(1);
+        var data = ReadByte(Registers.HL);
+
+        Registers.B -= 1;
+        WriteBus(Registers.B, Registers.C, data);
+
+        if (increment)
+        {
+            Registers.HL += 1;
+        }
+        else
+        {
+            Registers.HL -= 1;
+        }
+        Registers.F = (Registers.F & ~Z) | N;
+        Registers.F |= Registers.B == 0 ? Z : 0;
+    }
+
+    private void ExecuteRepeated_OUT(bool increment, Action<bool> outInstruction)
+    {
+        outInstruction(increment);
 
         if (Registers.B == 0)
         {
@@ -80,6 +100,6 @@ partial class Z80
         }
 
         Registers.PC -= 2;
-        AddStates(5);
+        Delay(5);
     }
 }

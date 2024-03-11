@@ -137,13 +137,71 @@ public class Z80InputOutputInstructionsTests
         var memory = builder.Memory!;
 
         z80.Run(10 + 10 + 21 + 21 + 21 + 21 + 16);
-        memory[9].Should().Be(0x71);
+        memory[09].Should().Be(0x71);
         memory[10].Should().Be(0x72);
         memory[11].Should().Be(0x73);
         memory[12].Should().Be(0x74);
         memory[13].Should().Be(0x75);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0E);
+        z80.Registers.F.Should().Be(Z | N | C);
+        z80.StatesCounter.TotalStates.Should().Be(120);
+    }
+
+    [Fact]
+    public void When_IND_InstructionIsExecuted_InputIsReturned()
+    {
+        _mockBus.Read(0x01, 0x34).Returns((byte)0x76);
+
+        var builder = new CodeBuilder()
+            .Flags(C)
+            .Bus(_mockBus)
+            .Code(
+                "LD HL,0x09",
+                "LD BC,0x0134",
+                "IND",
+                "NOP",
+                "db 0x01");
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(10 + 10 + 16);
+        memory[9].Should().Be(0x76);
+        z80.Registers.BC.Should().Be(0x34);
+        z80.Registers.HL.Should().Be(0x08);
+        z80.Registers.F.Should().Be(Z | N | C);
+        z80.StatesCounter.TotalStates.Should().Be(36);
+    }
+
+    [Fact]
+    public void When_INDR_InstructionIsExecuted_InputIsReturned()
+    {
+        _mockBus.Read(0x05, 0x34).Returns((byte)0x71);
+        _mockBus.Read(0x04, 0x34).Returns((byte)0x72);
+        _mockBus.Read(0x03, 0x34).Returns((byte)0x73);
+        _mockBus.Read(0x02, 0x34).Returns((byte)0x74);
+        _mockBus.Read(0x01, 0x34).Returns((byte)0x75);
+
+        var builder = new CodeBuilder()
+            .Flags(C)
+            .Bus(_mockBus)
+            .Code(
+                "LD HL,0x0D",
+                "LD BC,0x0534",
+                "INDR",
+                "NOP",
+                "db 0x01,0x02,0x03,0x04,0x05");
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(10 + 10 + 21 + 21 + 21 + 21 + 16);
+        memory[09].Should().Be(0x75);
+        memory[10].Should().Be(0x74);
+        memory[11].Should().Be(0x73);
+        memory[12].Should().Be(0x72);
+        memory[13].Should().Be(0x71);
+        z80.Registers.BC.Should().Be(0x34);
+        z80.Registers.HL.Should().Be(0x08);
         z80.Registers.F.Should().Be(Z | N | C);
         z80.StatesCounter.TotalStates.Should().Be(120);
     }

@@ -64,9 +64,11 @@ internal class AssemblyParser
             "LDI" => [0xED, 0xA0],
             "INI" => [0xED, 0xA2],
             "LDD" => [0xED, 0xA8],
+            "IND" => [0xED, 0xAA],
             "LDIR" => [0xED, 0xB0],
             "INIR" => [0xED, 0xB2],
             "LDDR" => [0xED, 0xB8],
+            "INDR" => [0xED, 0xBA],
             _ => null,
         };
 

@@ -30,11 +30,11 @@ partial class Z80
 
         _opCodes["INI"] = () => Execute_INI_IND(increment: true);
         _opCodes["OUTI"] = () => throw new NotImplementedException();
-        _opCodes["IND"] = () => throw new NotImplementedException();
+        _opCodes["IND"] = () => Execute_INI_IND(increment: false);
         _opCodes["OUTD"] = () => throw new NotImplementedException();
-        _opCodes["INIR"] = () => Execute_INIR(increment: true);
+        _opCodes["INIR"] = () => Execute_INIR_INDR(increment: true);
         _opCodes["OTIR"] = () => throw new NotImplementedException();
-        _opCodes["INDR"] = () => throw new NotImplementedException();
+        _opCodes["INDR"] = () => Execute_INIR_INDR(increment: false);
         _opCodes["OTDR"] = () => throw new NotImplementedException();
     }
 
@@ -70,7 +70,7 @@ partial class Z80
         Registers.F |= Registers.B == 0 ? Z : 0;
     }
 
-    private void Execute_INIR(bool increment)
+    private void Execute_INIR_INDR(bool increment)
     {
         Execute_INI_IND(increment);
 

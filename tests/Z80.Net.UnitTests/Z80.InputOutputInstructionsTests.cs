@@ -91,6 +91,27 @@ public class Z80InputOutputInstructionsTests
     }
 
     [Fact]
+    public void When_INI_InstructionIsExecuted_InputIsReturned()
+    {
+        var z80 = new CodeBuilder()
+            .Flags(C)
+            .Bus(_mockBus)
+            .Code(
+                "LD HL,0x09",
+                "LD BC,0x0134",
+                "INI",
+                "NOP",
+                "db 0x01")
+            .Build();
+
+        z80.Run(10 + 10 + 16);
+        z80.Registers.BC.Should().Be(0x34);
+        z80.Registers.HL.Should().Be(0x0A);
+        z80.Registers.F.Should().Be(Z | N | C);
+        z80.StatesCounter.TotalStates.Should().Be(36);
+    }
+
+    [Fact]
     public void When_OUT_A_n_InstructionIsExecuted_DataBusValueIsWritten()
     {
         var z80 = new CodeBuilder()

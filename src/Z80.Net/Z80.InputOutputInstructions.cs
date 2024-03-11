@@ -28,7 +28,7 @@ partial class Z80
         _opCodes["OUT (C),F"] = () => WriteBus(Registers.B, Registers.C, 0);
         _opCodes["OUT (n),A"] = () => WriteBus(Registers.A, FetchByte(), Registers.A);
 
-        _opCodes["INI"] = () => throw new NotImplementedException();
+        _opCodes["INI"] = () => ExecuteINI();
         _opCodes["OUTI"] = () => throw new NotImplementedException();
         _opCodes["IND"] = () => throw new NotImplementedException();
         _opCodes["OUTD"] = () => throw new NotImplementedException();
@@ -46,6 +46,20 @@ partial class Z80
         Registers.F |= S & (Flags)result;
         Registers.F |= Parity.Lookup[result];
         Registers.F |= result == 0 ? Z : 0;
+
+        return result;
+    }
+
+    private byte ExecuteINI()
+    {
+        AddStates(1);
+        var result = ReadBus(Registers.B, Registers.C);
+        WriteByte(Registers.HL, result);
+
+        Registers.B -= 1;
+        Registers.HL += 1;
+        Registers.F = (Registers.F & ~Z) | N;
+        Registers.F |= Registers.B == 0 ? Z : 0;
 
         return result;
     }

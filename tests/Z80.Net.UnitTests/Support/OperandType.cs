@@ -26,12 +26,12 @@ internal enum OperandType
     RegisterIY,
 
     Value,
-    Memory,
-    MemoryHL,
-    MemoryIXd,
-    MemoryIYd,
-    MemoryBC,
-    MemoryDE,
+    Address,
+    AddressHL,
+    AddressIXd,
+    AddressIYd,
+    AddressBC,
+    AddressDE,
 
     ConditionC,
     ConditionNC,

@@ -26,7 +26,7 @@ partial class Z80
         _opCodes["OUT (C),H"] = () => throw new NotImplementedException();
         _opCodes["OUT (C),L"] = () => throw new NotImplementedException();
         _opCodes["OUT (C),F"] = () => throw new NotImplementedException();
-        _opCodes["OUT (n),A"] = () => throw new NotImplementedException();
+        _opCodes["OUT (n),A"] = () => WriteBus(Registers.A, FetchByte(), Registers.A);
 
         _opCodes["INI"] = () => throw new NotImplementedException();
         _opCodes["OUTI"] = () => throw new NotImplementedException();

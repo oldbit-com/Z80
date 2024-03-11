@@ -89,4 +89,22 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.F.Should().Be(S);
         z80.StatesCounter.TotalStates.Should().Be(22);
     }
+
+    [Fact]
+    public void When_OUT_A_n_InstructionIsExecuted_DataBusValueIsOutput()
+    {
+        var z80 = new CodeBuilder()
+            .Flags(None)
+            .Bus(_mockBus)
+            .Code(
+                "LD A,0x23",
+                "OUT (0x24),A")
+            .Build();
+
+        z80.Run(7 + 11);
+
+        _mockBus.Received().Write(0x23, 0x24, 0x23);
+
+        z80.StatesCounter.TotalStates.Should().Be(18);
+    }
 }

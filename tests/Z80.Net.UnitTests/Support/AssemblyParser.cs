@@ -105,11 +105,11 @@ internal class AssemblyParser
                     case OperandType.Value:
                         return [0xC6, operand2.Value];
 
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         return [0x86];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         return [operand2.CodePrefix!.Value, 0x86, operand2.Offset];
                 }
 
@@ -139,11 +139,11 @@ internal class AssemblyParser
                     case OperandType.Value:
                         return [0xCE, operand2.Value];
 
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         return [0x8E];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         return [operand2.CodePrefix!.Value, 0x8E, operand2.Offset];
                 }
 
@@ -173,7 +173,7 @@ internal class AssemblyParser
                         };
                         return [opCode, operand1.Value];
 
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         opCode = instruction.Mnemonic switch
                         {
                             "SUB" => 0x96,
@@ -181,8 +181,8 @@ internal class AssemblyParser
                         };
                         return [opCode];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         opCode = instruction.Mnemonic switch
                         {
                             "SUB" => 0x96,
@@ -212,11 +212,11 @@ internal class AssemblyParser
                     case OperandType.Value:
                         return [0xDE, operand2.Value];
 
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         return [0x9E];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         return [operand2.CodePrefix!.Value, 0x9E, operand2.Offset];
                 }
 
@@ -248,7 +248,7 @@ internal class AssemblyParser
 
                 switch (operand1.OperandType)
                 {
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         opCode = instruction.Mnemonic switch
                         {
                             "INC" => 0x34,
@@ -256,8 +256,8 @@ internal class AssemblyParser
                         };
                         return [opCode];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         opCode = instruction.Mnemonic switch
                         {
                             "INC" => 0x34,
@@ -308,11 +308,11 @@ internal class AssemblyParser
 
                 switch (operand1.OperandType)
                 {
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         return [0xCB, opCode];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, opCode];
                 }
 
@@ -345,7 +345,7 @@ internal class AssemblyParser
                         };
                         return [opCode, operand1.Value];
 
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         opCode = instruction.Mnemonic switch
                         {
                             "AND" => 0xA6,
@@ -354,8 +354,8 @@ internal class AssemblyParser
                         };
                         return [opCode];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         opCode = instruction.Mnemonic switch
                         {
                             "AND" => 0xA6,
@@ -393,11 +393,11 @@ internal class AssemblyParser
                 operand1 = Operand.Parse(instruction.Operands[0]);
                 switch (operand1.OperandType)
                 {
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         return [0xE9];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         return [operand1.CodePrefix!.Value, 0xE9];
                 }
 
@@ -479,6 +479,17 @@ internal class AssemblyParser
 
                 break;
 
+            case "OUT":
+                operand1 = Operand.Parse(instruction.Operands[0]);
+                operand2 = Operand.Parse(instruction.Operands[1]);
+
+                if (operand1.OperandType == OperandType.Address && operand2.OperandType == OperandType.RegisterA)
+                {
+                    return [0xD3, operand1.Value];
+                }
+
+                break;
+
             case "LD":
             {
                 operand1 = Operand.Parse(instruction.Operands[0]);
@@ -495,23 +506,23 @@ internal class AssemblyParser
                         return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000110 | RegisterCodes[operand1.OperandType] << 3, operand2.Value);
 
                     // LD r,(HL)
-                    case true when operand2.OperandType == OperandType.MemoryHL:
+                    case true when operand2.OperandType == OperandType.AddressHL:
                         return [0b01000110 | RegisterCodes[operand1.OperandType] << 3];
 
                     // LD r,(IX+d) / LD r,(IY+d)
-                    case true when operand2.OperandType is OperandType.MemoryIXd or OperandType.MemoryIYd:
+                    case true when operand2.OperandType is OperandType.AddressIXd or OperandType.AddressIYd:
                         return [operand2.CodePrefix!.Value, 0b01000110 | RegisterCodes[operand1.OperandType] << 3, operand2.Offset];
 
                     // LD A,(BC)
-                    case true when operand2.OperandType == OperandType.MemoryBC:
+                    case true when operand2.OperandType == OperandType.AddressBC:
                         return [0x0A];
 
                     // LD A,(DE)
-                    case true when operand2.OperandType == OperandType.MemoryDE:
+                    case true when operand2.OperandType == OperandType.AddressDE:
                         return [0x1A];
 
                     // LD A,(nn)
-                    case true when operand2.OperandType == OperandType.Memory:
+                    case true when operand2.OperandType == OperandType.Address:
                         (hi, lo) = (Word)operand2.Value;
                         return [0x3A, lo, hi];
                 }
@@ -524,20 +535,20 @@ internal class AssemblyParser
                 }
 
                 // LD HL,(nn) / LD IX,(nn) / LD IY,(nn)
-                if (operand1.IsHLorIXorIYRegister && operand2.OperandType == OperandType.Memory)
+                if (operand1.IsHLorIXorIYRegister && operand2.OperandType == OperandType.Address)
                 {
                     (hi, lo) = (Word)operand2.Value;
                     return CodeWithOptionalPrefix(operand1.CodePrefix, 0x2A | RegisterCodes[operand1.OperandType], lo, hi);
                 }
 
                 // LD rr,(nn)
-                if (operand1.Is16BitRegister && operand2.OperandType == OperandType.Memory)
+                if (operand1.Is16BitRegister && operand2.OperandType == OperandType.Address)
                 {
                     (hi, lo) = (Word)operand2.Value;
                     return [0xED, 0b01001011 | RegisterCodes[operand1.OperandType] << 4, lo, hi];
                 }
 
-                if (operand1.OperandType == OperandType.MemoryHL)
+                if (operand1.OperandType == OperandType.AddressHL)
                 {
                     if (operand2.Is8BitRegister)
                     {
@@ -550,7 +561,7 @@ internal class AssemblyParser
                     }
                 }
 
-                if (operand1.OperandType is OperandType.MemoryIXd or OperandType.MemoryIYd)
+                if (operand1.OperandType is OperandType.AddressIXd or OperandType.AddressIYd)
                 {
                     if (operand2.Is8BitRegister)
                     {
@@ -603,11 +614,11 @@ internal class AssemblyParser
 
                 switch (operand2.OperandType)
                 {
-                    case OperandType.MemoryHL:
+                    case OperandType.AddressHL:
                         return [0xCB, prefix | 0b00000110 | operand1.Value << 3];
 
-                    case OperandType.MemoryIXd:
-                    case OperandType.MemoryIYd:
+                    case OperandType.AddressIXd:
+                    case OperandType.AddressIYd:
                         return [operand2.CodePrefix!.Value, 0xCB, operand2.Offset, prefix | 0b00000110 | operand1.Value << 3];
                 }
 

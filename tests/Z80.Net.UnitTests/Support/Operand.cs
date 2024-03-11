@@ -60,40 +60,40 @@ internal class Operand
 
         if (s.StartsWith("(") && s.EndsWith(")") && TryParseNumber(s[1..^1], out value))
         {
-            OperandType = OperandType.Memory;
+            OperandType = OperandType.Address;
             Value = value;
             return;
         }
 
         if (s.Equals("(HL)", StringComparison.OrdinalIgnoreCase))
         {
-            OperandType = OperandType.MemoryHL;
+            OperandType = OperandType.AddressHL;
             return;
         }
 
         if (s.StartsWith("(IX", StringComparison.OrdinalIgnoreCase))
         {
-            OperandType = OperandType.MemoryIXd;
+            OperandType = OperandType.AddressIXd;
             Offset = ParseIndexRegisterOffset(s);
             return;
         }
 
         if (s.StartsWith("(IY", StringComparison.OrdinalIgnoreCase))
         {
-            OperandType = OperandType.MemoryIYd;
+            OperandType = OperandType.AddressIYd;
             Offset = ParseIndexRegisterOffset(s);
             return;
         }
 
         if (s.Equals("(BC)", StringComparison.OrdinalIgnoreCase))
         {
-            OperandType = OperandType.MemoryBC;
+            OperandType = OperandType.AddressBC;
             return;
         }
 
         if (s.Equals("(DE)", StringComparison.OrdinalIgnoreCase))
         {
-            OperandType = OperandType.MemoryDE;
+            OperandType = OperandType.AddressDE;
             return;
         }
     }
@@ -168,17 +168,15 @@ internal class Operand
 
     public bool IsHLorIXorIYRegister => OperandType is OperandType.RegisterHL or OperandType.RegisterIX or OperandType.RegisterIY;
 
-    public bool IsHLorIXorIYMemory => OperandType is OperandType.MemoryHL or OperandType.MemoryIXd or OperandType.MemoryIYd;
-
     public byte? CodePrefix => OperandType switch
     {
         OperandType.RegisterIXH
             or OperandType.RegisterIXL
-            or OperandType.MemoryIXd
+            or OperandType.AddressIXd
             or OperandType.RegisterIX => 0xDD,
         OperandType.RegisterIYH
             or OperandType.RegisterIYL
-            or OperandType.MemoryIYd
+            or OperandType.AddressIYd
             or OperandType.RegisterIY => 0xFD,
         _ => null
     };

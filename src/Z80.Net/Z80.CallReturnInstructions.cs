@@ -60,7 +60,7 @@ partial class Z80
 
     private void Execute_RET()
     {
-        Registers.PC = (Word)(ReadByte(Registers.SP + 1) << 8 | ReadByte(Registers.SP));
+        Registers.PC = (Word)(ReadByte((Word)(Registers.SP + 1)) << 8 | ReadByte(Registers.SP));
         Registers.SP += 2;
     }
 

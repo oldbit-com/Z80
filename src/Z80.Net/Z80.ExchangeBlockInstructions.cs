@@ -30,11 +30,11 @@ partial class Z80
 
         _opCodes["EX (SP),HL"] = () =>
         {
-            var (x, y) = (ReadByte(Registers.SP), ReadByte(Registers.SP + 1));
+            var (x, y) = (ReadByte(Registers.SP), ReadByte((Word)(Registers.SP + 1)));
             var (h, l) = (HX: Registers.XH, LX: Registers.XL);
             Delay(1);
             WriteByte(Registers.SP, l);
-            WriteByte(Registers.SP + 1, h);
+            WriteByte((Word)(Registers.SP + 1), h);
             Delay(2);
             (Registers.XH, Registers.XL) = (y, x);
         };

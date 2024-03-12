@@ -94,7 +94,7 @@ public partial class Z80
     /// </summary>
     private void ExecuteBitOpCodes()
     {
-        int opCode;
+        byte opCode;
         if (Registers.UseIndexRegister)
         {
             _indexRegisterOffset = (sbyte)FetchByte();
@@ -165,7 +165,7 @@ public partial class Z80
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A byte value.</returns>
-    private byte ReadByte(int address)
+    private byte ReadByte(Word address)
     {
         var value = _memory.Read((Word)address);
 
@@ -180,7 +180,7 @@ public partial class Z80
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A word value.</returns>
-    private Word ReadWord(int address) => (Word)(ReadByte(address) | ReadByte((Word)(address + 1)) << 8);
+    private Word ReadWord(Word address) => (Word)(ReadByte(address) | ReadByte((Word)(address + 1)) << 8);
 
     /// <summary>
     /// Writes an 8-bit value to the specified location.
@@ -188,7 +188,7 @@ public partial class Z80
     /// </summary>
     /// <param name="address">The address to write to.</param>
     /// <param name="value">The value to write to the memory.</param>
-    private void WriteByte(int address, byte value)
+    private void WriteByte(Word address, byte value)
     {
         _memory.Write((Word)address, value);
 

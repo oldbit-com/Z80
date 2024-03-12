@@ -13,7 +13,7 @@ public sealed class CpuRegisters : StandardRegisters
     /// <summary>
     /// Gets a alternative (prime) registers set.
     /// </summary>
-    public StandardRegisters Alternative { get; } = new();
+    public StandardRegisters Prime { get; } = new();
 
     /// <summary>
     /// Gets or sets undocumented IXL register which is a low byte of the IX register.
@@ -84,6 +84,7 @@ public sealed class CpuRegisters : StandardRegisters
                 case RegisterContext.IY:
                     IY = value;
                     break;
+                case RegisterContext.HL:
                 default:
                     HL = value;
                     break;
@@ -112,6 +113,7 @@ public sealed class CpuRegisters : StandardRegisters
                 case RegisterContext.IY:
                     IYH = value;
                     break;
+                case RegisterContext.HL:
                 default:
                     H = value;
                     break;
@@ -140,6 +142,7 @@ public sealed class CpuRegisters : StandardRegisters
                 case RegisterContext.IY:
                     IYL = value;
                     break;
+                case RegisterContext.HL:
                 default:
                     L = value;
                     break;

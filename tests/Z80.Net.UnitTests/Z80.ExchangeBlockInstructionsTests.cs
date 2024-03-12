@@ -30,7 +30,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Run(4);
 
         z80.Registers.AF.Should().Be(0x5555);
-        z80.Registers.Alternative.AF.Should().Be(0xCC35);
+        z80.Registers.Prime.AF.Should().Be(0xCC35);
         z80.StatesCounter.TotalStates.Should().Be(4);
     }
 
@@ -47,11 +47,11 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Run(4);
 
         z80.Registers.BC.Should().Be(0x1112);
-        z80.Registers.Alternative.BC.Should().Be(0x0102);
+        z80.Registers.Prime.BC.Should().Be(0x0102);
         z80.Registers.DE.Should().Be(0x1314);
-        z80.Registers.Alternative.DE.Should().Be(0x0304);
+        z80.Registers.Prime.DE.Should().Be(0x0304);
         z80.Registers.HL.Should().Be(0x1516);
-        z80.Registers.Alternative.HL.Should().Be(0x0506);
+        z80.Registers.Prime.HL.Should().Be(0x0506);
         z80.StatesCounter.TotalStates.Should().Be(4);
     }
 
@@ -256,4 +256,6 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.F.Should().Be(S | Z | Y | C);
         z80.StatesCounter.TotalStates.Should().Be(88);
     }
+
+
 }

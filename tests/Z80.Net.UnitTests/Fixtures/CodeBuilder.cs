@@ -129,8 +129,8 @@ internal sealed class CodeBuilder
         if (_afPrime != null)
         {
             var (a, f) = _afPrime.Value;
-            z80.Registers.Alternative.A = a;
-            z80.Registers.Alternative.F = (Flags)f;
+            z80.Registers.Prime.A = a;
+            z80.Registers.Prime.F = (Flags)f;
         }
 
         if (_bc != null)
@@ -140,7 +140,7 @@ internal sealed class CodeBuilder
 
         if (_bcPrime != null)
         {
-            z80.Registers.Alternative.BC = _bcPrime.Value;
+            z80.Registers.Prime.BC = _bcPrime.Value;
         }
 
         if (_de != null)
@@ -150,7 +150,7 @@ internal sealed class CodeBuilder
 
         if (_dePrime != null)
         {
-            z80.Registers.Alternative.DE = _dePrime.Value;
+            z80.Registers.Prime.DE = _dePrime.Value;
         }
 
         if (_hl != null)
@@ -160,7 +160,7 @@ internal sealed class CodeBuilder
 
         if (_hlPrime != null)
         {
-            z80.Registers.Alternative.HL = _hlPrime.Value;
+            z80.Registers.Prime.HL = _hlPrime.Value;
         }
 
         if (_iff1 != null)

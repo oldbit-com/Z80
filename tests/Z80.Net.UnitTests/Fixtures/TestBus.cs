@@ -2,16 +2,16 @@ namespace Z80.Net.UnitTests.Fixtures;
 
 internal class TestBus : IBus
 {
-    internal List<(byte Top, byte Bottom, byte Data)> Outputs = new();
+    internal List<(Word address, byte Data)> Outputs = new();
 
 
-    public byte Read(byte top, byte bottom)
+    public byte Read(Word address)
     {
         throw new NotImplementedException();
     }
 
-    public void Write(byte top, byte bottom, byte data)
+    public void Write(Word address, byte data)
     {
-        Outputs.Add((top, bottom, data));
+        Outputs.Add((address, data));
     }
 }

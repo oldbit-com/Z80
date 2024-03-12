@@ -205,7 +205,7 @@ public partial class Z80
     {
         Delay(4);
 
-        return _bus?.Read(top, bottom) ?? 0xFF;
+        return _bus?.Read((Word)((top << 8) | bottom)) ?? 0xFF;
     }
 
     /// <summary>
@@ -218,7 +218,7 @@ public partial class Z80
     {
         Delay(4);
 
-        _bus?.Write(top, bottom, data);
+        _bus?.Write((Word)((top << 8) | bottom), data);
     }
 
     /// <summary>

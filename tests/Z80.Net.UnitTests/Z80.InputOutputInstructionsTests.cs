@@ -1,6 +1,7 @@
 using NSubstitute;
 using Z80.Net.Registers;
 using Z80.Net.UnitTests.Extensions;
+using Z80.Net.UnitTests.Support;
 
 namespace Z80.Net.UnitTests;
 
@@ -28,7 +29,7 @@ public class Z80InputOutputInstructionsTests
     public void When_IN_A_n_InstructionIsExecuted_InputIsReturned()
     {
         const byte data = 0xA4;
-        _mockBus.Read(0x23, 0x24).Returns(data);
+        _mockBus.Read(0x2324).Returns(data);
 
         var z80 = new CodeBuilder()
             .Flags(None)
@@ -55,7 +56,7 @@ public class Z80InputOutputInstructionsTests
     public void When_IN_r_C_InstructionIsExecuted_InputIsReturned(
         string register, byte data, Flags flags, Flags expectedFlags)
     {
-        _mockBus.Read(0x41, 0xA5).Returns(data);
+        _mockBus.Read(0x41A5).Returns(data);
 
         var z80 = new CodeBuilder()
             .Flags(flags)
@@ -76,7 +77,7 @@ public class Z80InputOutputInstructionsTests
     public void When_IN_F_C_InstructionIsExecuted_InputIsReturned()
     {
         const byte data = 0x80;
-        _mockBus.Read(0x41, 0x49).Returns(data);
+        _mockBus.Read(0x4149).Returns(data);
 
         var z80 = new CodeBuilder()
             .Flags(None)
@@ -96,7 +97,7 @@ public class Z80InputOutputInstructionsTests
     public void When_INI_InstructionIsExecuted_InputValueIsStoredInMemory()
     {
         const byte data = 0x76;
-        _mockBus.Read(0x01, 0x34).Returns(data);
+        _mockBus.Read(0x0134).Returns(data);
 
         var builder = new CodeBuilder()
             .Flags(C)
@@ -121,11 +122,11 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_INIR_InstructionIsExecuted_InputValuesAreStoredInMemory()
     {
-        _mockBus.Read(0x05, 0x34).Returns((byte)0x71);
-        _mockBus.Read(0x04, 0x34).Returns((byte)0x72);
-        _mockBus.Read(0x03, 0x34).Returns((byte)0x73);
-        _mockBus.Read(0x02, 0x34).Returns((byte)0x74);
-        _mockBus.Read(0x01, 0x34).Returns((byte)0x75);
+        _mockBus.Read(0x0534).Returns((byte)0x71);
+        _mockBus.Read(0x0434).Returns((byte)0x72);
+        _mockBus.Read(0x0334).Returns((byte)0x73);
+        _mockBus.Read(0x0234).Returns((byte)0x74);
+        _mockBus.Read(0x0134).Returns((byte)0x75);
 
         var builder = new CodeBuilder()
             .Flags(C)
@@ -155,7 +156,7 @@ public class Z80InputOutputInstructionsTests
     public void When_IND_InstructionIsExecuted_InputValueIsStoredInMemory()
     {
         const byte data = 0x76;
-        _mockBus.Read(0x01, 0x34).Returns(data);
+        _mockBus.Read(0x0134).Returns(data);
 
         var builder = new CodeBuilder()
             .Flags(C)
@@ -180,11 +181,11 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_INDR_InstructionIsExecuted_InputValuesAreStoredInMemory()
     {
-        _mockBus.Read(0x05, 0x34).Returns((byte)0x71);
-        _mockBus.Read(0x04, 0x34).Returns((byte)0x72);
-        _mockBus.Read(0x03, 0x34).Returns((byte)0x73);
-        _mockBus.Read(0x02, 0x34).Returns((byte)0x74);
-        _mockBus.Read(0x01, 0x34).Returns((byte)0x75);
+        _mockBus.Read(0x0534).Returns((byte)0x71);
+        _mockBus.Read(0x0434).Returns((byte)0x72);
+        _mockBus.Read(0x0334).Returns((byte)0x73);
+        _mockBus.Read(0x0234).Returns((byte)0x74);
+        _mockBus.Read(0x0134).Returns((byte)0x75);
 
         var builder = new CodeBuilder()
             .Flags(C)
@@ -223,7 +224,7 @@ public class Z80InputOutputInstructionsTests
 
         z80.Run(7 + 11);
 
-        _mockBus.Received().Write(z80.Registers.A, 0x24, z80.Registers.A);
+        _mockBus.Received().Write(To.Word(z80.Registers.A, 0x24), z80.Registers.A);
         z80.StatesCounter.TotalStates.Should().Be(18);
     }
 
@@ -248,7 +249,7 @@ public class Z80InputOutputInstructionsTests
 
         z80.Run(7 + 10 + 12);
 
-        _mockBus.Received().Write(z80.Registers.B, z80.Registers.C, expectedData);
+        _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), expectedData);
         z80.StatesCounter.TotalStates.Should().Be(29);
     }
 
@@ -265,7 +266,7 @@ public class Z80InputOutputInstructionsTests
 
         z80.Run(10 + 10 + 12);
 
-        _mockBus.Received().Write(z80.Registers.B, z80.Registers.C, 0);
+        _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), 0);
         z80.StatesCounter.TotalStates.Should().Be(32);
     }
 
@@ -285,7 +286,7 @@ public class Z80InputOutputInstructionsTests
             .Build();
 
         z80.Run(10 + 10 + 16);
-        _mockBus.Received().Write(z80.Registers.B, z80.Registers.C, data);
+        _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), data);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0A);
         z80.Registers.F.Should().Be(Z | N | C);
@@ -307,11 +308,11 @@ public class Z80InputOutputInstructionsTests
             .Build();
 
         z80.Run(10 + 10 + 21 + 21 + 21 + 21 + 16);
-        _mockBus.Received().Write(0x04, z80.Registers.C, 0x01);
-        _mockBus.Received().Write(0x03, z80.Registers.C, 0x02);
-        _mockBus.Received().Write(0x02, z80.Registers.C, 0x03);
-        _mockBus.Received().Write(0x01, z80.Registers.C, 0x04);
-        _mockBus.Received().Write(0x00, z80.Registers.C, 0x05);
+        _mockBus.Received().Write(To.Word(0x04, z80.Registers.C), 0x01);
+        _mockBus.Received().Write(To.Word(0x03, z80.Registers.C), 0x02);
+        _mockBus.Received().Write(To.Word(0x02, z80.Registers.C), 0x03);
+        _mockBus.Received().Write(To.Word(0x01, z80.Registers.C), 0x04);
+        _mockBus.Received().Write(To.Word(0x00, z80.Registers.C), 0x05);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0E);
         z80.Registers.F.Should().Be(Z | N | C);
@@ -334,7 +335,7 @@ public class Z80InputOutputInstructionsTests
             .Build();
 
         z80.Run(10 + 10 + 16);
-        _mockBus.Received().Write(z80.Registers.B, z80.Registers.C, data);
+        _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), data);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x08);
         z80.Registers.F.Should().Be(Z | N | C);
@@ -356,11 +357,11 @@ public class Z80InputOutputInstructionsTests
             .Build();
 
         z80.Run(10 + 10 + 21 + 21 + 21 + 21 + 16);
-        _mockBus.Received().Write(0x04, z80.Registers.C, 0x05);
-        _mockBus.Received().Write(0x03, z80.Registers.C, 0x04);
-        _mockBus.Received().Write(0x02, z80.Registers.C, 0x03);
-        _mockBus.Received().Write(0x01, z80.Registers.C, 0x02);
-        _mockBus.Received().Write(0x00, z80.Registers.C, 0x01);
+        _mockBus.Received().Write(To.Word(0x04, z80.Registers.C), 0x05);
+        _mockBus.Received().Write(To.Word(0x03, z80.Registers.C), 0x04);
+        _mockBus.Received().Write(To.Word(0x02, z80.Registers.C), 0x03);
+        _mockBus.Received().Write(To.Word(0x01, z80.Registers.C), 0x02);
+        _mockBus.Received().Write(To.Word(0x00, z80.Registers.C), 0x01);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x08);
         z80.Registers.F.Should().Be(Z | N | C);

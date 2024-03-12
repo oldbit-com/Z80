@@ -21,7 +21,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Fixtures\Bootstrap\bin\" />
+      <Folder Include="Fixtures\Bootstrap\binaries\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Z80.Net\Z80.Net.csproj" />
     </ItemGroup>
 
 </Project>

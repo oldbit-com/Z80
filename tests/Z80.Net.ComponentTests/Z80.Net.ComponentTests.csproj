@@ -21,11 +21,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Fixtures\Bootstrap\binaries\" />
+      <ProjectReference Include="..\..\src\Z80.Net\Z80.Net.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Z80.Net\Z80.Net.csproj" />
+      <None Update="TestFiles\binaries\prelim.bin">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestFiles\binaries\zexall.bin">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestFiles\binaries\zexdoc.bin">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

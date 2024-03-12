@@ -21,7 +21,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(7 + 8);
 
         z80.Registers.F.Should().Be(expectedFlags);
-        z80.StatesCounter.TotalStates.Should().Be(15);
+        z80.States.TotalStates.Should().Be(15);
     }
 
     [Theory]
@@ -38,7 +38,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(7 + 8);
 
         z80.Registers.F.Should().Be(expectedFlags);
-        z80.StatesCounter.TotalStates.Should().Be(15);
+        z80.States.TotalStates.Should().Be(15);
     }
 
     [Theory]
@@ -64,7 +64,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(10 + 12);
 
         z80.Registers.F.Should().Be(expectedFlags);
-        z80.StatesCounter.TotalStates.Should().Be(22);
+        z80.States.TotalStates.Should().Be(22);
     }
 
     [Theory]
@@ -84,7 +84,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(14 + 20);
 
         z80.Registers.F.Should().Be(H);
-        z80.StatesCounter.TotalStates.Should().Be(34);
+        z80.States.TotalStates.Should().Be(34);
     }
 
     public static IEnumerable<object[]> EightBitRegistersTestData()

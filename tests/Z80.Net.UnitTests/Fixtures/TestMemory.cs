@@ -14,9 +14,9 @@ internal class TestMemory : IMemory
         return _memory[address];
     }
 
-    public void Write(Word address, byte value)
+    public void Write(Word address, byte data)
     {
-        _memory[address] = value;
+        _memory[address] = data;
     }
 
     internal byte this[Word address] => _memory[address];

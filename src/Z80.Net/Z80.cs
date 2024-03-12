@@ -17,7 +17,7 @@ public partial class Z80
     public bool IFF1 { get; internal set; }
     public bool IFF2 { get; internal set; }
     public InterruptMode InterruptMode { get; private set; }
-    public StatesCounter StatesCounter { get; } = new();
+    public StatesCounter States { get; } = new();
 
     public Z80(IMemory memory, IBus? bus = null)
     {
@@ -45,11 +45,11 @@ public partial class Z80
         AddUndocumentedInstructions();
     }
 
-    public void Run(int maxStates = 0)
+    public void Run(int statesToExecute = 0)
     {
-        StatesCounter.Limit(maxStates);
+        States.Limit(statesToExecute);
 
-        while (!StatesCounter.IsComplete)
+        while (!States.IsComplete)
         {
             if (IsHalted)
             {
@@ -99,7 +99,8 @@ public partial class Z80
         {
             _indexRegisterOffset = (sbyte)FetchByte();
             opCode = FetchByte();
-            Delay(2);
+
+            States.Add(2);
         }
         else
         {
@@ -147,7 +148,7 @@ public partial class Z80
     {
         var value = _memory.Read(Registers.PC);
 
-        Delay(states);
+        States.Add(states);
         Registers.PC += 1;
 
         return value;
@@ -169,7 +170,7 @@ public partial class Z80
     {
         var value = _memory.Read((Word)address);
 
-        Delay(3);
+        States.Add(3);
 
         return value;
     }
@@ -187,45 +188,39 @@ public partial class Z80
     /// It costs 6 T-states.
     /// </summary>
     /// <param name="address">The address to write to.</param>
-    /// <param name="value">The value to write to the memory.</param>
-    private void WriteByte(Word address, byte value)
+    /// <param name="data">The value to write to the memory.</param>
+    private void WriteByte(Word address, byte data)
     {
-        _memory.Write((Word)address, value);
+        _memory.Write(address, data);
 
-        Delay(3);
+        States.Add(3);
     }
 
     /// <summary>
     /// Reads a value from the data bus.
     /// </summary>
-    /// <param name="top">The top 8 bits of the data bus address (A8-A15).</param>
-    /// <param name="bottom">The bottom 8 bits of the data bus address (A0-A7).</param>
+    /// <param name="topHalf">The top 8 bits of the data bus address (A8-A15).</param>
+    /// <param name="bottomHalf">The bottom 8 bits of the data bus address (A0-A7).</param>
     /// <returns>The value from the data bus.</returns>
-    private byte ReadBus(byte top, byte bottom)
+    private byte ReadBus(byte topHalf, byte bottomHalf)
     {
-        Delay(4);
+        States.Add(4);
 
-        return _bus?.Read((Word)((top << 8) | bottom)) ?? 0xFF;
+        return _bus?.Read((Word)((topHalf << 8) | bottomHalf)) ?? 0xFF;
     }
 
     /// <summary>
     /// Writes a value to the data bus.
     /// </summary>
-    /// <param name="top">The top 8 bits of the data bus address (A8-A15).</param>
-    /// <param name="bottom">The bottom 8 bits of the data bus address (A0-A7).</param>
+    /// <param name="topHalf">The top 8 bits of the data bus address (A8-A15).</param>
+    /// <param name="bottomHalf">The bottom 8 bits of the data bus address (A0-A7).</param>
     /// <param name="data">The data to be written</param>
-    private void WriteBus(byte top, byte bottom, byte data)
+    private void WriteBus(byte topHalf, byte bottomHalf, byte data)
     {
-        Delay(4);
+        States.Add(4);
 
-        _bus?.Write((Word)((top << 8) | bottom), data);
+        _bus?.Write((Word)((topHalf << 8) | bottomHalf), data);
     }
-
-    /// <summary>
-    /// Adds specified number of T-states to the current counter.
-    /// </summary>
-    /// <param name="states">The number of T-states to add.</param>
-    private void Delay(int states) => StatesCounter.Add(states);
 
     /// <summary>
     /// Reads an 8-bit value at the location provided in the HL register. This method is aware
@@ -247,7 +242,7 @@ public partial class Z80
         if (Registers.Context != RegisterContext.HL)
         {
             offset = (sbyte)FetchByte();
-            Delay(extraIndexStates);
+            States.Add(extraIndexStates);
         }
 
         return (Word)(Registers.XHL + offset);

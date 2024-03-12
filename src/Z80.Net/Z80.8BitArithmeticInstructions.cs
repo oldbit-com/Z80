@@ -99,7 +99,9 @@ partial class Z80
         {
             var address = CalculateHLAddress(extraIndexStates: 5);
             var value = ReadByte(address);
-            Delay(1);
+
+            States.Add(1);
+
             WriteByte(address, Execute_INC(value));
         };
 
@@ -114,7 +116,9 @@ partial class Z80
         {
             var address = CalculateHLAddress(extraIndexStates: 5);
             var value = ReadByte(address);
-            Delay(1);
+
+            States.Add(1);
+
             WriteByte(address, Execute_DEC(value));
         };
     }

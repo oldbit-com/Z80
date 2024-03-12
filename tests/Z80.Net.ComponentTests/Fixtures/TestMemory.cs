@@ -6,5 +6,5 @@ public class TestMemory : IMemory
 
     public byte Read(Word address) => _memory[address];
 
-    public void Write(Word address, byte value) => _memory[address] = value;
+    public void Write(Word address, byte data) => _memory[address] = data;
 }

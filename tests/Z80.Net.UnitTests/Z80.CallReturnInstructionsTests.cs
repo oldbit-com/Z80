@@ -26,7 +26,7 @@ public class Z80CallReturnInstructionsTests
         z80.Registers.PC.Should().Be(0x000B);
         memory![0x0F].Should().Be(0x00);
         memory[0x0E].Should().Be(0x06);
-        z80.StatesCounter.TotalStates.Should().Be(34);
+        z80.States.TotalStates.Should().Be(34);
     }
 
     [Theory]
@@ -76,7 +76,7 @@ public class Z80CallReturnInstructionsTests
             z80.Registers.A.Should().Be(0xAA);
             z80.Registers.PC.Should().Be(0x0008);
         }
-        z80.StatesCounter.TotalStates.Should().Be(cycles);
+        z80.States.TotalStates.Should().Be(cycles);
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class Z80CallReturnInstructionsTests
         z80.Registers.A.Should().Be(0x55);
         z80.Registers.SP.Should().Be(0x0C);
         z80.Registers.PC.Should().Be(0x0009);
-        z80.StatesCounter.TotalStates.Should().Be(27);
+        z80.States.TotalStates.Should().Be(27);
     }
 
     [Theory]
@@ -138,7 +138,7 @@ public class Z80CallReturnInstructionsTests
         z80.Registers.A.Should().Be(shouldReturn ? 0x55 : 0xAA);
         z80.Registers.SP.Should().Be(shouldReturn ? 0x0C : 0x0A);
         z80.Registers.PC.Should().Be(shouldReturn ? 0x0009 : 0x0006);
-        z80.StatesCounter.TotalStates.Should().Be(cycles);
+        z80.States.TotalStates.Should().Be(cycles);
     }
 
     [Fact]
@@ -162,7 +162,7 @@ public class Z80CallReturnInstructionsTests
         z80.Registers.SP.Should().Be(0x000D);
         z80.Registers.PC.Should().Be(0x000A);
         z80.IFF1.Should().Be(true);
-        z80.StatesCounter.TotalStates.Should().Be(31);
+        z80.States.TotalStates.Should().Be(31);
     }
 
     [Fact]
@@ -211,6 +211,6 @@ public class Z80CallReturnInstructionsTests
         z80.Run(10 + 8 * (11 + 7 + 10) + 7);
         z80.Registers.A.Should().Be(0xFF);
         z80.Registers.B.Should().Be(0x55);
-        z80.StatesCounter.TotalStates.Should().Be(241);
+        z80.States.TotalStates.Should().Be(241);
     }
 }

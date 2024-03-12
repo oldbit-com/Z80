@@ -4,7 +4,7 @@ public class TestMemory : IMemory
 {
     private readonly byte[] _memory = new byte [65536];
 
-    public byte Read(int address) => _memory[address];
+    public byte Read(Word address) => _memory[address];
 
-    public void Write(int address, byte value) => _memory[address] = value;
+    public void Write(Word address, byte value) => _memory[address] = value;
 }

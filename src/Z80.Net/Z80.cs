@@ -167,7 +167,7 @@ public partial class Z80
     /// <returns>A byte value.</returns>
     private byte ReadByte(int address)
     {
-        var value = _memory.Read(address);
+        var value = _memory.Read((Word)address);
 
         Delay(3);
 
@@ -190,7 +190,7 @@ public partial class Z80
     /// <param name="value">The value to write to the memory.</param>
     private void WriteByte(int address, byte value)
     {
-        _memory.Write(address, value);
+        _memory.Write((Word)address, value);
 
         Delay(3);
     }

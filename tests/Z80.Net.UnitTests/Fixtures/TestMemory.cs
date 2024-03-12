@@ -9,15 +9,15 @@ internal class TestMemory : IMemory
         _memory = memory;
     }
 
-    public byte Read(int address)
+    public byte Read(Word address)
     {
         return _memory[address];
     }
 
-    public void Write(int address, byte value)
+    public void Write(Word address, byte value)
     {
         _memory[address] = value;
     }
 
-    internal byte this[int address] => _memory[address];
+    internal byte this[Word address] => _memory[address];
 }

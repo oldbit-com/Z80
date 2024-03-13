@@ -27,16 +27,16 @@ bdos:
         cp C_WRITE
         jr nz,is_write_str
         ld a,e
-        out(PORT),a     // will be captured by the handler
+        out (PORT),a     // will be captured by the handler
         ret
 is_write_str:
         cp C_WRITESTR
         ret nz
 write_str:
         ld a,(de)
+        out (PORT),a    // will be captured by the handler
         cp '$'          // end of string?
         ret z
-        out(PORT),a     // will be captured by the handler
         inc de
         jr write_str
         ret
@@ -47,4 +47,4 @@ PORT = 5            // port used to output text
 HALT = $76          // halt instruction opcode
 
         // create boot.com file
-        savebin "bootstrap.com", $0000, $FFFF
+        savebin "bootstrap.bin", $0000, $FFFF

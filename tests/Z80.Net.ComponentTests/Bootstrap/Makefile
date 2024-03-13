@@ -1,2 +1,2 @@
 boot:
-	sjasmplus --outprefix=./bin/ ./src/bootstrap.asm
+	sjasmplus --outprefix=./binaries/ ./src/bootstrap.asm

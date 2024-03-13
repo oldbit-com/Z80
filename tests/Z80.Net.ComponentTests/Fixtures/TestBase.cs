@@ -12,15 +12,18 @@ public class TestBase
         _outputHelper = outputHelper;
     }
 
-    protected void Load(string fileName)
+    protected Z80 CreateZ80(string fileName)
     {
-        var file =  File.ReadAllBytes(Path.Combine(BinFolder, "TestFiles", "binaries", fileName));
+        var testFile =  File.ReadAllBytes(Path.Combine(BinFolder, "TestFiles", "binaries", fileName));
+        var bootstrapFile =  File.ReadAllBytes(Path.Combine(BinFolder, "Bootstrap", "binaries", "bootstrap.bin"));
 
-    }
+        var memory = new TestMemory();
+        memory.CopyFrom(bootstrapFile, 0);
+        memory.CopyFrom(testFile, 0x100);
 
-    private void LoadBootstrap()
-    {
-        var file =  File.ReadAllBytes(Path.Combine(BinFolder, "Bootstrap", "binaries", "bootstrap.bin"));
+        var bus = new TestBus(_outputHelper);
+
+        return new Z80(memory, bus);
     }
 
     private static string BinFolder => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;

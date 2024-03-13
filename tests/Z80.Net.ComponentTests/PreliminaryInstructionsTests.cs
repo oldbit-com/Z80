@@ -3,15 +3,25 @@ using Z80.Net.ComponentTests.Fixtures;
 
 namespace Z80.Net.ComponentTests;
 
-public class PreliminaryInstructionsTests : TestBase
+public class PreliminaryInstructionsTests(ITestOutputHelper outputHelper) : TestBase(outputHelper)
 {
-    public PreliminaryInstructionsTests(ITestOutputHelper outputHelper) : base(outputHelper)
-    {
-    }
-
     [Fact]
     public void RunPreliminaryInstructionsTests()
     {
-        Load("prelim.bin");
+        var z80  = CreateZ80("prelim.bin");
+        z80.Run();
+
+        z80.Registers.PC.Should().Be(0xF001);
+        z80.States.TotalStates.Should().Be(10086);
+    }
+
+    [Fact]
+    public void RunDocumentedInstructionsTests()
+    {
+        var z80  = CreateZ80("zexdoc.bin");
+        z80.Run();
+
+        z80.Registers.PC.Should().Be(0xF001);
+        z80.States.TotalStates.Should().Be(10086);
     }
 }

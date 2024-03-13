@@ -587,6 +587,11 @@ internal class AssemblyParser
                     }
                 }
 
+                if (operand1.OperandType == OperandType.RegisterSP && operand2.IsHLorIXorIYRegister)
+                {
+                    return CodeWithOptionalPrefix(operand2.CodePrefix, 0xF9);
+                }
+
                 break;
             }
 

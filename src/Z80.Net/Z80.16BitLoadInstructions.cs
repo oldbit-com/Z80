@@ -21,7 +21,12 @@ partial class Z80
         _opCodes["LD (nn),DE"] = () => throw new NotImplementedException();
         _opCodes["LD (nn),SP"] = () => throw new NotImplementedException();
 
-        _opCodes["LD SP,HL"] = () => throw new NotImplementedException();
+        _opCodes["LD SP,HL"] = () =>
+        {
+            States.Add(2);
+
+            Registers.SP = Registers.XHL;
+        };
 
         _opCodes["ED LD HL,(nn)"] = _opCodes["LD HL,(nn)"];
         _opCodes["ED LD (nn),HL"] = _opCodes["LD (nn),HL"];

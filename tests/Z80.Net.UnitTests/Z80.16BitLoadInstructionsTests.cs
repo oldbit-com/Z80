@@ -139,4 +139,36 @@ public class Z8016BitLoadInstructionsTests
         z80.Registers.SP.Should().Be(0x18);
         z80.States.TotalStates.Should().Be(78);
     }
+
+    [Fact]
+    public void When_LD_SP_HL_InstructionIsExecuted_StackPointerIsUpdated()
+    {
+        var z80 = new CodeBuilder()
+            .Code(
+                "LD HL,0x1234",
+                "LD SP,HL")
+            .Build();
+
+        z80.Run(10 + 6);
+
+        z80.Registers.SP.Should().Be(0x1234);
+        z80.States.TotalStates.Should().Be(16);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_LD_SP_IXY_InstructionIsExecuted_StackPointerIsUpdated(string register)
+    {
+        var z80 = new CodeBuilder()
+            .Code(
+                $"LD {register},0x1234",
+                $"LD SP,{register}")
+            .Build();
+
+        z80.Run(14 + 10);
+
+        z80.Registers.SP.Should().Be(0x1234);
+        z80.States.TotalStates.Should().Be(24);
+    }
 }

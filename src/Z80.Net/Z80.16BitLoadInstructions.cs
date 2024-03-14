@@ -17,9 +17,9 @@ partial class Z80
         _opCodes["LD SP,(nn)"] = () => Registers.SP = ReadWord(FetchWord());
 
         _opCodes["LD (nn),HL"] = () => WriteWord(FetchWord(), Registers.XHL);
-        _opCodes["LD (nn),BC"] = () => throw new NotImplementedException();
-        _opCodes["LD (nn),DE"] = () => throw new NotImplementedException();
-        _opCodes["LD (nn),SP"] = () => throw new NotImplementedException();
+        _opCodes["LD (nn),BC"] = () => WriteWord(FetchWord(), Registers.BC);
+        _opCodes["LD (nn),DE"] = () => WriteWord(FetchWord(), Registers.DE);
+        _opCodes["LD (nn),SP"] = () => WriteWord(FetchWord(), Registers.SP);
 
         _opCodes["LD SP,HL"] = () =>
         {

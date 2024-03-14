@@ -46,13 +46,13 @@ public class Z8016BitLoadInstructionsTests
     }
 
     [Fact]
-    public void When_LD_DD_mm_InstructionIsExecuted_RegisterValueIsUpdated()
+    public void When_LD_RR_mm_InstructionIsExecuted_RegisterValueIsUpdated()
     {
         var z80 = new Z80Builder()
             .Code(
                 "LD BC,(0x0010)",
                 "LD DE,(0x0012)",
-                "db 0xED, 0x6B, 0x14, 0x00",   // LD HL,(0x0014) - ED prefixed, not the default one
+                "db 0xED, 0x6B, 0x14, 0x00", // long form of LD HL,(0x0014)
                 "LD SP,(0x0016)",
                 "db 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08")
             .Build();
@@ -208,5 +208,36 @@ public class Z8016BitLoadInstructionsTests
         memory[8].Should().Be(0x34);
         memory[9].Should().Be(0x12);
         z80.States.TotalStates.Should().Be(34);
+    }
+
+    [Fact]
+    public void When_LD_mm_RR_InstructionIsExecuted_RegisterValueIsUpdated()
+    {
+        var builder = new Z80Builder()
+            .Code(
+                "LD BC,0x0102",
+                "LD DE,0x0304",
+                "LD HL,0x0506",
+                "LD SP,0x0708",
+                "LD (0x1C),BC",
+                "LD (0x1E),DE",
+                "db 0xED, 0x63, 0x20, 0x00", // long form of LD (4),HL
+                "LD (0x22),SP",
+                "db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(4 * 10 + 4 * 20);
+
+        memory[0x1C].Should().Be(0x02);
+        memory[0x1D].Should().Be(0x01);
+        memory[0x1E].Should().Be(0x04);
+        memory[0x1F].Should().Be(0x03);
+        memory[0x20].Should().Be(0x06);
+        memory[0x21].Should().Be(0x05);
+        memory[0x22].Should().Be(0x08);
+        memory[0x23].Should().Be(0x07);
+        z80.States.TotalStates.Should().Be(120);
     }
 }

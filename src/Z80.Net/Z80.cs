@@ -197,6 +197,18 @@ public partial class Z80
     }
 
     /// <summary>
+    /// Writes a 16-bit value to the specified location.
+    /// It costs 12 T-states (2 byte writes).
+    /// </summary>
+    /// <param name="address">The address to write to.</param>
+    /// <param name="data">The value to write to the memory.</param>
+    private void WriteWord(Word address, Word data)
+    {
+        WriteByte(address, (byte)data);
+        WriteByte((Word)(address + 1), (byte)(data >> 8));
+    }
+
+    /// <summary>
     /// Reads a value from the data bus.
     /// </summary>
     /// <param name="topHalf">The top 8 bits of the data bus address (A8-A15).</param>

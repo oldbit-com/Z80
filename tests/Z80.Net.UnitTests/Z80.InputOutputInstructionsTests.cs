@@ -12,7 +12,7 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_IN_A_n_InstructionIsExecuted_DefaultIsReturned()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x23",
@@ -31,7 +31,7 @@ public class Z80InputOutputInstructionsTests
         const byte data = 0xA4;
         _mockBus.Read(0x2324).Returns(data);
 
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Bus(_mockBus)
             .Code(
@@ -58,7 +58,7 @@ public class Z80InputOutputInstructionsTests
     {
         _mockBus.Read(0x41A5).Returns(data);
 
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Bus(_mockBus)
             .Code(
@@ -79,7 +79,7 @@ public class Z80InputOutputInstructionsTests
         const byte data = 0x80;
         _mockBus.Read(0x4149).Returns(data);
 
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Bus(_mockBus)
             .Code(
@@ -99,7 +99,7 @@ public class Z80InputOutputInstructionsTests
         const byte data = 0x76;
         _mockBus.Read(0x0134).Returns(data);
 
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -128,7 +128,7 @@ public class Z80InputOutputInstructionsTests
         _mockBus.Read(0x0234).Returns((byte)0x74);
         _mockBus.Read(0x0134).Returns((byte)0x75);
 
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -158,7 +158,7 @@ public class Z80InputOutputInstructionsTests
         const byte data = 0x76;
         _mockBus.Read(0x0134).Returns(data);
 
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -187,7 +187,7 @@ public class Z80InputOutputInstructionsTests
         _mockBus.Read(0x0234).Returns((byte)0x74);
         _mockBus.Read(0x0134).Returns((byte)0x75);
 
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -214,7 +214,7 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_OUT_A_n_InstructionIsExecuted_DataBusValueIsWritten()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Bus(_mockBus)
             .Code(
@@ -239,7 +239,7 @@ public class Z80InputOutputInstructionsTests
     public void When_OUT_C_r_InstructionIsExecuted_DataBusValueIsWritten(
         string register, byte expectedData)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Bus(_mockBus)
             .Code(
                 $"LD {register},0xF1",
@@ -256,7 +256,7 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_OUT_C_F_InstructionIsExecuted_DataBusZeroIsWritten()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Bus(_mockBus)
             .Code(
                 "LD AF,0xFFFF",
@@ -274,7 +274,7 @@ public class Z80InputOutputInstructionsTests
     public void When_OUTI_InstructionIsExecuted_MemoryValueIsWritten()
     {
         const byte data = 0x87;
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -296,7 +296,7 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_OTIR_InstructionIsExecuted_MemoryValuesAreWritten()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -323,7 +323,7 @@ public class Z80InputOutputInstructionsTests
     public void When_OUTD_InstructionIsExecuted_MemoryValueIsWritten()
     {
         const byte data = 0x87;
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(
@@ -345,7 +345,7 @@ public class Z80InputOutputInstructionsTests
     [Fact]
     public void When_OTDR_InstructionIsExecuted_MemoryValuesAreWritten()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Bus(_mockBus)
             .Code(

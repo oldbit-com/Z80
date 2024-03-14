@@ -8,7 +8,7 @@ public class Z80CallReturnInstructionsTests
     [Fact]
     public void When_CALL_InstructionIsExecuted_CodeAtJumpLocationIsExecutedAndStackUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD SP,0x0010",
                 "CALL 0x0009",
@@ -48,7 +48,7 @@ public class Z80CallReturnInstructionsTests
     [InlineData("po", P, false)]
     public void When_CALL_cc_InstructionIsExecuted_DependingOnFlagCondition_CodeAtJumpLocationIsExecutedAndStackUpdated(string condition, Flags flags, bool shouldCall)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(flags)
             .Code(
                 "LD SP,0x10",
@@ -82,7 +82,7 @@ public class Z80CallReturnInstructionsTests
     [Fact]
     public void When_RET_InstructionIsExecuted_CodeAtReturnAddressIsExecuted()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD SP,0x000A",
                 "RET",
@@ -120,7 +120,7 @@ public class Z80CallReturnInstructionsTests
     [InlineData("po", P, false)]
     public void When_RET_cc_InstructionIsExecuted_DependingOnFlagCondition_CodeAtReturnAddressIsExecuted(string condition, Flags flags, bool shouldReturn)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 "LD SP,0x000A",
@@ -144,7 +144,7 @@ public class Z80CallReturnInstructionsTests
     [Fact]
     public void When_RETN_InstructionIsExecuted_CodeAtReturnAddressIsExecuted()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Iff2(true)
             .Code(
                 "LD SP,0x000B",
@@ -168,7 +168,7 @@ public class Z80CallReturnInstructionsTests
     [Fact]
     public void When_RST_xx_InstructionIsExecuted_CodeAtSpecifiedAddressIsExecuted()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .StartAddress(0x40)
             .Code(
                 "LD A,0x01",

@@ -7,7 +7,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_ADD_A_A_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All ^ Z)
             .Code(
                 "LD A,0x00",
@@ -31,7 +31,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_ADD_A_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(
         byte a, byte b, Flags flags, byte expectedResult, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{a}",
@@ -49,7 +49,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_ADD_A_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD A,0x10",
@@ -66,7 +66,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_ADD_A_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All ^ Z)
             .Code(
                 "LD A,0xFF",
@@ -90,7 +90,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_ADD_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All ^ Z)
             .Code(
                 "LD A,0x22",
@@ -107,7 +107,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(All ^ Z)
             .Code(
                 "LD A,0x22",
@@ -122,7 +122,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(All ^ Z)
             .Code(
                 "LD A,0x22",
@@ -140,7 +140,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_A_A_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x7F",
@@ -163,7 +163,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_ADC_A_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(
         byte a, byte b, Flags flags, byte expectedResult, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{a}",
@@ -181,7 +181,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_A_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x20",
@@ -198,7 +198,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_A_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x0F",
@@ -222,7 +222,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_ADC_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x22",
@@ -239,7 +239,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x22",
@@ -256,7 +256,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x22",
@@ -276,7 +276,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_SUB_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x20",
@@ -289,7 +289,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(Z | N);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(Z)
             .Code(
                 "LD A,0x90",
@@ -307,7 +307,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_SUB_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(Z)
             .Code(
                 "LD A,0x00",
@@ -324,7 +324,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_SUB_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x7F",
@@ -348,7 +348,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_SUB_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x12",
@@ -365,7 +365,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x12",
@@ -380,7 +380,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x12",
@@ -398,7 +398,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_A_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x01",
@@ -412,7 +412,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(S | Y | H | X | N | C);
         z80.States.TotalStates.Should().Be(18);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x7F",
@@ -426,7 +426,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(S | Y | X | P | N | C);
         z80.States.TotalStates.Should().Be(18);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0xFF",
@@ -443,7 +443,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_A_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x02",
@@ -460,7 +460,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_A_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x81",
@@ -483,7 +483,7 @@ public class Z808BitArithmeticInstructionsTests
     [InlineData("IY")]
     public void When_SBC_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x12",
@@ -500,7 +500,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x12",
@@ -515,7 +515,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD A,0x12",
@@ -533,7 +533,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_AND_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(N | C)
             .Code(
                 "LD A,0x0F",
@@ -551,7 +551,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_AND_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x8F",
@@ -568,7 +568,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_AND_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0xFF",
@@ -592,7 +592,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_AND_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x88",
@@ -609,7 +609,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -624,7 +624,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -642,7 +642,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_OR_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(S | H | N | C)
             .Code(
                 "LD A,0x00",
@@ -660,7 +660,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_OR_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(S | H | N | C)
             .Code(
                 "LD A,0x11",
@@ -677,7 +677,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_OR_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(S | H | N | C)
             .Code(
                 "LD A,0x8A",
@@ -701,7 +701,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_OR_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x80",
@@ -718,7 +718,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -733,7 +733,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -751,7 +751,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_XOR_r_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(N | H | C)
             .Code(
                 "LD A,0x1F",
@@ -769,7 +769,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_XOR_n_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x1F",
@@ -786,7 +786,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_XOR_HL_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x1F",
@@ -810,7 +810,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_XOR_A_IXY_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x88",
@@ -827,7 +827,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -842,7 +842,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -860,7 +860,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_CP_r_InstructionIsExecuted_FlagsAreSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x20",
@@ -873,7 +873,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(Z | Y | N);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(Z)
             .Code(
                 "LD A,0x00",
@@ -891,7 +891,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_CP_n_InstructionIsExecuted_FlagsAreSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(Z)
             .Code(
                 "LD A,0x90",
@@ -908,7 +908,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_CP_HL_InstructionIsExecuted_FlagsAreSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x7F",
@@ -932,7 +932,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_CP_A_IndexRegister_InstructionIsExecuted_FlagsAreSet(string register)
     {
         // IX or IY
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x7F",
@@ -949,7 +949,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(40);
 
         // IXL or IYL
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x7F",
@@ -964,7 +964,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.States.TotalStates.Should().Be(29);
 
         // IXH or IYH
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x7F",
@@ -982,7 +982,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_INC_r_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD A,0x00",
@@ -995,7 +995,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(C);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(All ^ Z)
             .Code(
                 "LD C,0xFF",
@@ -1008,7 +1008,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(Z | H | C);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(N)
             .Code(
                 "LD D,0x7F",
@@ -1021,7 +1021,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(S | H | P);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD B,0x92",
@@ -1034,7 +1034,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(S);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD E,0x10",
@@ -1051,7 +1051,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_INC_IXH_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD IXH,0x99",
@@ -1068,7 +1068,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_INC_IYL_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD IYL,0xAB",
@@ -1090,7 +1090,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_INC_Memory_HL_InstructionIsExecuted_MemoryIsUpdatedAndFlagsSet(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(flags)
             .Code(
                 "LD HL,0x05",
@@ -1112,7 +1112,7 @@ public class Z808BitArithmeticInstructionsTests
     [InlineData("IY")]
     public void When_INC_Memory_IXY_InstructionIsExecuted_MemoryIsUpdatedAndFlagsSet(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD {register},0x05",
@@ -1128,7 +1128,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(H);
         z80.States.TotalStates.Should().Be(37);
 
-        builder = new CodeBuilder()
+        builder = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD {register},0x69",
@@ -1148,7 +1148,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_DEC_r_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x01",
@@ -1161,7 +1161,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(Z | N);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(All ^ (Z | H | N))
             .Code(
                 "LD C,0",
@@ -1174,7 +1174,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(S | H | Y | X | N | C);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(Z | S)
             .Code(
                 "LD D,0x80",
@@ -1187,7 +1187,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(Y | H | X | P | N);
         z80.States.TotalStates.Should().Be(11);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD B,0xAB",
@@ -1204,7 +1204,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_DEC_IXH_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD IXH,0x99",
@@ -1221,7 +1221,7 @@ public class Z808BitArithmeticInstructionsTests
     [Fact]
     public void When_DEC_IYL_InstructionIsExecuted_RegisterIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD IYL,0xAB",
@@ -1242,7 +1242,7 @@ public class Z808BitArithmeticInstructionsTests
     public void When_DEC_Memory_HL_InstructionIsExecuted_MemoryIsUpdatedAndFlagsSet(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(flags)
             .Code(
                 "LD HL,0x05",
@@ -1264,7 +1264,7 @@ public class Z808BitArithmeticInstructionsTests
     [InlineData("IY")]
     public void When_DEC_Memory_IXY_InstructionIsExecuted_MemoryIsUpdatedAndFlagsSet(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD {register},0x05",
@@ -1280,7 +1280,7 @@ public class Z808BitArithmeticInstructionsTests
         z80.Registers.F.Should().Be(Y | X | N);
         z80.States.TotalStates.Should().Be(37);
 
-        builder = new CodeBuilder()
+        builder = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD {register},0x69",

@@ -15,7 +15,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
     public void When_DAA_InstructionIsExecuted_AccumulatorAndFlagsAreUpdated(
         byte a, Flags flags, byte expectedResult, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{a}",
@@ -32,7 +32,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
     [Fact]
     public void When_CPL_InstructionIsExecuted_AccumulatorValueIsInvertedAndFlagsAreUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD A,0x5B",
@@ -54,7 +54,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
     public void When_NEG_InstructionIsExecuted_AccumulatorValueIsNegatedAndFlagsAreUpdated(
         byte a, byte expectedResult, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD A,{a}",
@@ -71,7 +71,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
     [Fact]
     public void When_SCF_InstructionIsExecuted_CarryFlagIsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(S | Z | H | P | N)
             .Code("SCF")
             .Build();
@@ -88,7 +88,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
     [InlineData(Z | N | C, Z | Y | H | X)]
     public void When_CCF_InstructionIsExecuted_CarryFlagIsInverted(Flags flags, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code("CCF")
             .Build();

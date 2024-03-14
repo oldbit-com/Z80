@@ -5,7 +5,7 @@ public class Z80ControlInstructionsTests
     [Fact]
     public void When_HALT_InstructionIsExecuted_CpuIsInHaltState()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code("HALT")
             .Build();
 
@@ -19,7 +19,7 @@ public class Z80ControlInstructionsTests
     [Fact]
     public void When_DI_InstructionIsExecuted_InterruptFlipFlop_FlagsAreFalse()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "EI",
                 "DI")
@@ -36,7 +36,7 @@ public class Z80ControlInstructionsTests
     [Fact]
     public void When_EI_InstructionIsExecuted_InterruptFlipFlop_FlagsAreTrue()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "DI",
                 "EI")
@@ -53,7 +53,7 @@ public class Z80ControlInstructionsTests
     [Fact]
     public void When_IM0_InstructionIsExecuted_InterruptModeIsSetTo0()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "IM 2",
                 "IM 0")
@@ -69,7 +69,7 @@ public class Z80ControlInstructionsTests
     [Fact]
     public void When_IM1_InstructionIsExecuted_CpuInterruptModeIsSetTo1()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code("IM 1")
             .Build();
 
@@ -83,7 +83,7 @@ public class Z80ControlInstructionsTests
     [Fact]
     public void When_IM2_InstructionIsExecuted_CpuInterruptModeIsSetTo2()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code("IM 2")
             .Build();
 

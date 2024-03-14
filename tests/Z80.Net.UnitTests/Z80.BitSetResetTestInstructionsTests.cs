@@ -11,7 +11,7 @@ public class Z80BitSetResetTestInstructionsTests
     public void When_BIT_n_A_InstructionIsExecuted_FlagsAreSet(
         int bit, byte value, Flags flags, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{value}",
@@ -28,7 +28,7 @@ public class Z80BitSetResetTestInstructionsTests
     [MemberData(nameof(EightBitRegistersTestData))]
     public void When_BIT_n_R_InstructionIsExecuted_FlagsSet(string register, int bit, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},0xFF",
@@ -52,7 +52,7 @@ public class Z80BitSetResetTestInstructionsTests
     [InlineData(7, H | S)]
     public void When_BIT_n_HL_InstructionIsExecuted_FlagsSet(int bit, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(Z | N)
             .Code(
                 "LD HL,0x06",
@@ -72,7 +72,7 @@ public class Z80BitSetResetTestInstructionsTests
     [InlineData("IY")]
     public void When_BIT_n_IXY_InstructionIsExecuted_FlagsSet(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(Z | N)
             .Code(
                 $"LD {register},0x07",

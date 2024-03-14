@@ -8,7 +8,7 @@ public class Z80JumpInstructionsTests
     [Fact]
     public void When_JP_InstructionIsExecuted_CodeAtJumpLocationIsExecuted()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "JP 0x06",
                 "LD A,0xAA",
@@ -42,7 +42,7 @@ public class Z80JumpInstructionsTests
     [InlineData("po", P, false)]
     public void When_JP_cc_InstructionIsExecuted_DependingOnFlagCondition_CodeAtJumpLocationIsExecuted(string condition, Flags flags, bool shouldJump)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"JP {condition},0x06",
@@ -61,7 +61,7 @@ public class Z80JumpInstructionsTests
     [Fact]
     public void When_JR_InstructionIsExecuted_CodeAtJumpLocationIsExecuted()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 $"JR 0x03",
                 "LD C,0x11",
@@ -89,7 +89,7 @@ public class Z80JumpInstructionsTests
     public void When_JR_cc_InstructionIsExecuted_DependingOnFlagCondition_CodeAtJumpLocationIsExecuted(string condition, Flags flags, bool shouldJump)
     {
         // Forward jump
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"JR {condition},2",
@@ -106,7 +106,7 @@ public class Z80JumpInstructionsTests
         z80.States.TotalStates.Should().Be(cycles);
 
         // Backward jump
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Flags(flags)
             .StartAddress(0x02)
             .Code(
@@ -128,7 +128,7 @@ public class Z80JumpInstructionsTests
     [InlineData("IY", 0x09, 14 + 8 + 7)]
     public void When_JP_RR_InstructionIsExecuted_CodeAtJumpLocationIsExecuted(string register, int address, int cycles)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 $"LD {register},{address}",
                 $"JP ({register})",
@@ -145,7 +145,7 @@ public class Z80JumpInstructionsTests
     [Fact]
     public void When_DJNZ_InstructionIsExecuted_LoopIsExecuted()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD B,0x20",
                 "LD A,0",
@@ -159,7 +159,7 @@ public class Z80JumpInstructionsTests
         z80.Registers.B.Should().Be(0);
         z80.States.TotalStates.Should().Be(553);
 
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Code(
                 "LD B,0xFF",
                 "LD A,1",

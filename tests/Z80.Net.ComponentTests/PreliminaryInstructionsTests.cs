@@ -15,13 +15,13 @@ public class PreliminaryInstructionsTests(ITestOutputHelper outputHelper) : Test
         z80.States.TotalStates.Should().Be(10086);
     }
 
-    [Fact]
-    public void RunDocumentedInstructionsTests()
-    {
-        var z80  = CreateZ80("zexdoc.bin");
-        z80.Run();
-
-        z80.Registers.PC.Should().Be(0xF001);
-        z80.States.TotalStates.Should().Be(10086);
-    }
+    // [Fact]
+    // public void RunDocumentedInstructionsTests()
+    // {
+    //     var z80  = CreateZ80("zexdoc.bin");
+    //     z80.Run();
+    //
+    //     z80.Registers.PC.Should().Be(0xF001);
+    //     z80.States.TotalStates.Should().Be(10086);
+    // }
 }

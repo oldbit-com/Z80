@@ -5,7 +5,7 @@ public class Z8016BitLoadInstructionsTests
     [Fact]
     public void When_LD_RR_nn_InstructionIsExecuted_RegisterValueIsUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD BC,0x0201",
                 "LD DE,0x0403",
@@ -29,7 +29,7 @@ public class Z8016BitLoadInstructionsTests
     [Fact]
     public void When_LD_HL_IX_IY_mm_InstructionIsExecuted_RegisterValueIsUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD HL,(0x000B)",
                 "LD IX,(0x000D)",
@@ -48,7 +48,7 @@ public class Z8016BitLoadInstructionsTests
     [Fact]
     public void When_LD_DD_mm_InstructionIsExecuted_RegisterValueIsUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD BC,(0x0010)",
                 "LD DE,(0x0012)",
@@ -69,7 +69,7 @@ public class Z8016BitLoadInstructionsTests
     [Fact]
     public void When_PUSH_RR_InstructionIsExecuted_RegisterValueIsStoredAtStack()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(S | C)
             .Code(
                 "LD SP,0x002A",
@@ -109,7 +109,7 @@ public class Z8016BitLoadInstructionsTests
     [Fact]
     public void When_POP_RR_InstructionIsExecuted_RegisterValueIsRestoredFromStack()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD SP,0x000C",
                 "POP AF",
@@ -143,7 +143,7 @@ public class Z8016BitLoadInstructionsTests
     [Fact]
     public void When_LD_SP_HL_InstructionIsExecuted_StackPointerIsUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD HL,0x1234",
                 "LD SP,HL")
@@ -160,7 +160,7 @@ public class Z8016BitLoadInstructionsTests
     [InlineData("IY")]
     public void When_LD_SP_IXY_InstructionIsExecuted_StackPointerIsUpdated(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 $"LD {register},0x1234",
                 $"LD SP,{register}")
@@ -170,5 +170,43 @@ public class Z8016BitLoadInstructionsTests
 
         z80.Registers.SP.Should().Be(0x1234);
         z80.States.TotalStates.Should().Be(24);
+    }
+
+    [Fact]
+    public void When_LD_mm_HL_InstructionIsExecuted_MemoryIsUpdated()
+    {
+        var builder = new Z80Builder()
+            .Code(
+                "LD HL,0x1234",
+                "LD (6),HL",
+                "db 0,0");
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(10 + 16);
+
+        memory[6].Should().Be(0x34);
+        memory[7].Should().Be(0x12);
+        z80.States.TotalStates.Should().Be(26);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_LD_mm_IXY_InstructionIsExecuted_MemoryIsUpdated(string opCode)
+    {
+        var builder = new Z80Builder()
+            .Code(
+                $"LD {opCode},0x1234",
+                $"LD (8),{opCode}",
+                "db 0,0");
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(14 + 20);
+
+        memory[8].Should().Be(0x34);
+        memory[9].Should().Be(0x12);
+        z80.States.TotalStates.Should().Be(34);
     }
 }

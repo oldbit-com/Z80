@@ -25,7 +25,6 @@ internal class AssemblyParser
     {
         var instruction = new Instruction(code);
 
-        // DB pseudo instruction (define byte)
         if (instruction.Mnemonic.Equals("DB"))
         {
             var result = new List<int>();
@@ -40,8 +39,25 @@ internal class AssemblyParser
             return result;
         }
 
-        // Single mnemonic instructions
-        int[]? opCodes = instruction.Mnemonic switch
+        var opCodes = GetSimpleOpCode(instruction.Mnemonic);
+
+        if (opCodes != null)
+        {
+            return opCodes;
+        }
+
+        opCodes = GetComplexOpCodes(instruction);
+        if (opCodes != null)
+        {
+            return opCodes;
+        }
+
+        throw new ArgumentException($"Instruction not supported: {code}");
+    }
+
+    private static IEnumerable<int>? GetSimpleOpCode(string mnemonic)
+    {
+        return mnemonic switch
         {
             "NOP" => [0x00],
             "RLCA" => [0x07],
@@ -75,12 +91,10 @@ internal class AssemblyParser
             "OTDR" => [0xED, 0xBB],
             _ => null,
         };
+    }
 
-        if (opCodes != null)
-        {
-            return opCodes;
-        }
-
+    private static IEnumerable<int>? GetComplexOpCodes(Instruction instruction)
+    {
         Operand operand1;
         Operand operand2;
         byte hi;
@@ -95,7 +109,7 @@ internal class AssemblyParser
 
                 if (operand1.IsHLorIXorIYRegister && operand2.Is16BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00001001 | RegisterCodes[operand2.OperandType] << 4);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00001001 | RegisterCodeMap[operand2.OperandType] << 4);
                 }
 
                 if (operand1.OperandType != OperandType.RegisterA)
@@ -105,7 +119,7 @@ internal class AssemblyParser
 
                 if (operand2.Is8BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b10000000 | RegisterCodes[operand2.OperandType]);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b10000000 | RegisterCodeMap[operand2.OperandType]);
                 }
 
                 switch (operand2.OperandType)
@@ -129,7 +143,7 @@ internal class AssemblyParser
 
                 if (operand1.IsHLorIXorIYRegister && operand2.Is16BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xED, 0b01001010 | RegisterCodes[operand2.OperandType] << 4);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xED, 0b01001010 | RegisterCodeMap[operand2.OperandType] << 4);
                 }
 
                 if (operand1.OperandType != OperandType.RegisterA)
@@ -139,7 +153,7 @@ internal class AssemblyParser
 
                 if (operand2.Is8BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b10001000 | RegisterCodes[operand2.OperandType]);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b10001000 | RegisterCodeMap[operand2.OperandType]);
                 }
 
                 switch (operand2.OperandType)
@@ -168,7 +182,7 @@ internal class AssemblyParser
                         "SUB" => 0b10010000,
                         "CP" => 0b10111000
                     };
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType]);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodeMap[operand1.OperandType]);
                 }
 
                 switch (operand1.OperandType)
@@ -207,12 +221,12 @@ internal class AssemblyParser
 
                 if (operand1.OperandType == OperandType.RegisterHL)
                 {
-                    return [0xED, 0b01000010 | RegisterCodes[operand2.OperandType] << 4];
+                    return [0xED, 0b01000010 | RegisterCodeMap[operand2.OperandType] << 4];
                 }
 
                 if (operand2.Is8BitRegister)
                 {
-                    return CodeWithOptionalPrefix(operand2.CodePrefix, 0b10011000 | RegisterCodes[operand2.OperandType]);
+                    return CodeWithOptionalPrefix(operand2.CodePrefix, 0b10011000 | RegisterCodeMap[operand2.OperandType]);
                 }
 
                 switch (operand2.OperandType)
@@ -241,7 +255,7 @@ internal class AssemblyParser
                         "INC" => 0b00000100,
                         "DEC" => 0b00000101
                     };
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType] << 3);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodeMap[operand1.OperandType] << 3);
                 }
 
                 if (operand1.Is16BitRegister)
@@ -251,7 +265,7 @@ internal class AssemblyParser
                         "INC" => 0b00000011,
                         "DEC" => 0b00001011
                     };
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType] << 4);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodeMap[operand1.OperandType] << 4);
                 }
 
                 switch (operand1.OperandType)
@@ -299,7 +313,7 @@ internal class AssemblyParser
                         "SRL" => 0b00111000,
                         "SLL" => 0b00110000
                     };
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, opCode | RegisterCodes[operand1.OperandType]);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0xCB, opCode | RegisterCodeMap[operand1.OperandType]);
                 }
 
                 opCode = instruction.Mnemonic switch
@@ -339,7 +353,7 @@ internal class AssemblyParser
                         "OR" => 0b10110000,
                         "XOR" => 0b10101000
                     };
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodes[operand1.OperandType]);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, opCode | RegisterCodeMap[operand1.OperandType]);
                 }
 
                 switch (operand1.OperandType)
@@ -381,7 +395,7 @@ internal class AssemblyParser
                     operand1 = Operand.Parse(instruction.Operands[0], instruction.Operands[1]);
                     (hi, lo) = (Word)operand1.Value;
 
-                    return [0b11000100 | ConditionCodes[operand1.OperandType] << 3, lo, hi];
+                    return [0b11000100 | ConditionCodeMap[operand1.OperandType] << 3, lo, hi];
                 }
 
                 operand1 = Operand.Parse(instruction.Operands[0]);
@@ -395,7 +409,7 @@ internal class AssemblyParser
                     operand1 = Operand.Parse(instruction.Operands[0], instruction.Operands[1]);
                     (hi, lo) = (Word)operand1.Value;
 
-                    return [0b11000010 | ConditionCodes[operand1.OperandType] << 3, lo, hi];
+                    return [0b11000010 | ConditionCodeMap[operand1.OperandType] << 3, lo, hi];
                 }
 
                 operand1 = Operand.Parse(instruction.Operands[0]);
@@ -482,7 +496,7 @@ internal class AssemblyParser
 
                 if (operand1.Is8BitRegister && operand2.OperandType == OperandType.RegisterC)
                 {
-                    return [0xED, 0b01000000 | RegisterCodes[operand1.OperandType] << 3];
+                    return [0xED, 0b01000000 | RegisterCodeMap[operand1.OperandType] << 3];
                 }
 
                 break;
@@ -498,7 +512,7 @@ internal class AssemblyParser
 
                 if (operand1.OperandType == OperandType.RegisterC && operand2.Is8BitRegister)
                 {
-                    return [0xED, 0b01000001 | RegisterCodes[operand2.OperandType] << 3];
+                    return [0xED, 0b01000001 | RegisterCodeMap[operand2.OperandType] << 3];
                 }
 
                 break;
@@ -512,19 +526,19 @@ internal class AssemblyParser
                 {
                     // LD r,r'
                     case true when operand2.Is8BitRegister:
-                        return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b01000000 | RegisterCodes[operand1.OperandType] << 3 | RegisterCodes[operand2.OperandType]);
+                        return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b01000000 | RegisterCodeMap[operand1.OperandType] << 3 | RegisterCodeMap[operand2.OperandType]);
 
                     // LD r,n
                     case true when operand2.OperandType == OperandType.Value:
-                        return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000110 | RegisterCodes[operand1.OperandType] << 3, operand2.Value);
+                        return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000110 | RegisterCodeMap[operand1.OperandType] << 3, operand2.Value);
 
                     // LD r,(HL)
                     case true when operand2.OperandType == OperandType.AddressHL:
-                        return [0b01000110 | RegisterCodes[operand1.OperandType] << 3];
+                        return [0b01000110 | RegisterCodeMap[operand1.OperandType] << 3];
 
                     // LD r,(IX+d) / LD r,(IY+d)
                     case true when operand2.OperandType is OperandType.AddressIXd or OperandType.AddressIYd:
-                        return [operand2.CodePrefix!.Value, 0b01000110 | RegisterCodes[operand1.OperandType] << 3, operand2.Offset];
+                        return [operand2.CodePrefix!.Value, 0b01000110 | RegisterCodeMap[operand1.OperandType] << 3, operand2.Offset];
 
                     // LD A,(BC)
                     case true when operand2.OperandType == OperandType.AddressBC:
@@ -544,30 +558,32 @@ internal class AssemblyParser
                 if (operand1.Is16BitRegister && operand2.OperandType == OperandType.Value)
                 {
                     (hi, lo) = (Word)operand2.Value;
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000001 | RegisterCodes[operand1.OperandType] << 4, lo, hi);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0b00000001 | RegisterCodeMap[operand1.OperandType] << 4, lo, hi);
                 }
 
                 // LD HL,(nn) / LD IX,(nn) / LD IY,(nn)
                 if (operand1.IsHLorIXorIYRegister && operand2.OperandType == OperandType.Address)
                 {
                     (hi, lo) = (Word)operand2.Value;
-                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0x2A | RegisterCodes[operand1.OperandType], lo, hi);
+                    return CodeWithOptionalPrefix(operand1.CodePrefix, 0x2A | RegisterCodeMap[operand1.OperandType], lo, hi);
                 }
 
                 // LD rr,(nn)
                 if (operand1.Is16BitRegister && operand2.OperandType == OperandType.Address)
                 {
                     (hi, lo) = (Word)operand2.Value;
-                    return [0xED, 0b01001011 | RegisterCodes[operand1.OperandType] << 4, lo, hi];
+                    return [0xED, 0b01001011 | RegisterCodeMap[operand1.OperandType] << 4, lo, hi];
                 }
 
                 if (operand1.OperandType == OperandType.AddressHL)
                 {
+                    // LD (HL),r
                     if (operand2.Is8BitRegister)
                     {
-                        return [0b01110000 | RegisterCodes[operand2.OperandType]];
+                        return [0b01110000 | RegisterCodeMap[operand2.OperandType]];
                     }
 
+                    // LD (HL),n
                     if (operand2.OperandType == OperandType.Value)
                     {
                         return [0x36, operand2.Value];
@@ -576,20 +592,40 @@ internal class AssemblyParser
 
                 if (operand1.OperandType is OperandType.AddressIXd or OperandType.AddressIYd)
                 {
+                    // LD (IX+d),r / LD (IY+d),r
                     if (operand2.Is8BitRegister)
                     {
-                        return [operand1.CodePrefix!.Value, 0b01110000 | RegisterCodes[operand2.OperandType], operand2.Offset];
+                        return [operand1.CodePrefix!.Value, 0b01110000 | RegisterCodeMap[operand2.OperandType], operand2.Offset];
                     }
 
+                    // LD (IX+d),n / LD (IY+d),n
                     if (operand2.OperandType == OperandType.Value)
                     {
                         return [operand1.CodePrefix!.Value, 0x36, operand1.Offset, operand2.Value];
                     }
                 }
 
+                // LD SP,HL / LD SP,IX / LD SP,IY
                 if (operand1.OperandType == OperandType.RegisterSP && operand2.IsHLorIXorIYRegister)
                 {
                     return CodeWithOptionalPrefix(operand2.CodePrefix, 0xF9);
+                }
+
+                if (operand1.OperandType == OperandType.Address)
+                {
+                    // LD (nn),HL / LD (nn),IX / LD (nn),IY
+                    if (operand2.IsHLorIXorIYRegister)
+                    {
+                        (hi, lo) = (Word)operand1.Value;
+                        return CodeWithOptionalPrefix(operand2.CodePrefix, 0x22, lo, hi);
+                    }
+
+                    // LD (nn),rr
+                    if (operand2.Is16BitRegister)
+                    {
+                        (hi, lo) = (Word)operand1.Value;
+                        return [0xED, 0b01000011 | RegisterCodeMap[operand2.OperandType] << 4, lo, hi];
+                    }
                 }
 
                 break;
@@ -598,14 +634,14 @@ internal class AssemblyParser
             case "PUSH":
             case "POP":
                 operand1 = Operand.Parse(instruction.Operands[0]);
-                opCode = (instruction.Mnemonic == "PUSH" ? 0b11000101 : 0b11000001) | RegisterCodes[operand1.OperandType] << 4;
+                opCode = (instruction.Mnemonic == "PUSH" ? 0b11000101 : 0b11000001) | RegisterCodeMap[operand1.OperandType] << 4;
                 return CodeWithOptionalPrefix(operand1.CodePrefix, opCode);
 
             case "RET":
                 if (instruction.Operands[0].Length > 0)
                 {
                     operand1 = Operand.Parse(instruction.Operands[0], string.Empty);
-                    return [0b11000000 | ConditionCodes[operand1.OperandType] << 3];
+                    return [0b11000000 | ConditionCodeMap[operand1.OperandType] << 3];
                 }
 
                 return [0xC9];
@@ -613,7 +649,7 @@ internal class AssemblyParser
             case "RST":
                 if (Operand.TryParseNumber(instruction.Operands[0], out var rst))
                 {
-                    return [0b11000111 | RstCodes[rst] << 3];
+                    return [0b11000111 | RstCodeMap[rst] << 3];
                 }
                 break;
 
@@ -640,13 +676,13 @@ internal class AssemblyParser
                         return [operand2.CodePrefix!.Value, 0xCB, operand2.Offset, prefix | 0b00000110 | operand1.Value << 3];
                 }
 
-                return [0xCB, prefix | operand1.Value << 3 | RegisterCodes[operand2.OperandType]];
+                return [0xCB, prefix | operand1.Value << 3 | RegisterCodeMap[operand2.OperandType]];
         }
 
-        throw new ArgumentException($"Instruction not supported: {code}");
+        return null;
     }
 
-    private static readonly Dictionary<OperandType, int> RegisterCodes = new()
+    private static readonly Dictionary<OperandType, int> RegisterCodeMap = new()
     {
         { OperandType.RegisterA, 0b111 },
         { OperandType.RegisterB, 0b000 },
@@ -669,7 +705,7 @@ internal class AssemblyParser
         { OperandType.RegisterIY, 0b10 }
     };
 
-    private static readonly Dictionary<OperandType, int> ConditionCodes = new()
+    private static readonly Dictionary<OperandType, int> ConditionCodeMap = new()
     {
         { OperandType.ConditionNZ, 0b000 },
         { OperandType.ConditionZ, 0b001 },
@@ -681,7 +717,7 @@ internal class AssemblyParser
         { OperandType.ConditionM, 0b111 }
     };
 
-    private static readonly Dictionary<int, int> RstCodes = new()
+    private static readonly Dictionary<int, int> RstCodeMap = new()
     {
         { 0x00, 0b000 },
         { 0x08, 0b001 },

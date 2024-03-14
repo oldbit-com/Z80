@@ -5,7 +5,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_EX_DE_HL_InstructionIsExecuted_RegisterValuesAreSwapped()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD HL,0x0201",
                 "LD DE,0x0403",
@@ -22,7 +22,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_EX_AF_AF_InstructionIsExecuted_RegisterValuesAreSwapped()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .SetAF(0xCC35, 0x5555)
             .Code("EX AF,AF")
             .Build();
@@ -37,7 +37,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_EXX_InstructionIsExecuted_RegisterValuesAreSwapped()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .SetBC(0x0102, 0x1112)
             .SetDE(0x0304, 0x1314)
             .SetHL(0x0506, 0x1516)
@@ -58,7 +58,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_EX_SP_HL_InstructionIsExecuted_HLAndMemoryValuesAreSwapped()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD HL,0x7012",
                 "LD SP,0x0008",
@@ -78,7 +78,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_EX_SP_IX_InstructionIsExecuted_HLAndMemoryValuesAreSwapped()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD IX,0x7012",
                 "LD SP,0x000A",
@@ -98,7 +98,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_EX_SP_IY_InstructionIsExecuted_HLAndMemoryValuesAreSwapped()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD IY,0x7012",
                 "LD SP,0x000A",
@@ -118,7 +118,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_LDI_InstructionIsExecuted_RegistersAndMemoryValuesAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD HL,0x0C",
@@ -138,7 +138,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.F.Should().Be(S | Z | C);
         z80.States.TotalStates.Should().Be(46);
 
-        builder = new CodeBuilder()
+        builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x0C",
@@ -162,7 +162,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_LDIR_InstructionIsExecuted_RegistersAndMemoryValuesAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD HL,0x0C",
@@ -189,7 +189,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_LDD_InstructionIsExecuted_RegistersAndMemoryValuesAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD HL,0x0C",
@@ -209,7 +209,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.F.Should().Be(S | Z | C);
         z80.States.TotalStates.Should().Be(46);
 
-        builder = new CodeBuilder()
+        builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x0C",
@@ -233,7 +233,7 @@ public class Z80ExchangeBlockInstructionsTests
     [Fact]
     public void When_LDDR_InstructionIsExecuted_RegistersAndMemoryValuesAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD HL,0x0E",

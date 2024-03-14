@@ -5,7 +5,7 @@ public class Z808BitLoadInstructionsTests
     [Fact]
     public void When_LD_R_n_InstructionIsExecuted_RegisterIsUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD A,1",
                 "LD B,2",
@@ -46,7 +46,7 @@ public class Z808BitLoadInstructionsTests
     [InlineData("L", 7)]
     public void When_LD_R_R_InstructionIsExecuted_RegisterIsUpdated(string register, byte value)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 $"LD {register},{value}",
                 $"LD A,{register}",
@@ -74,7 +74,7 @@ public class Z808BitLoadInstructionsTests
     public void When_LD_R_HL_InstructionIsExecuted_RegisterIsUpdated()
     {
         // A,B,C,D,E
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD H,0x00",
                 "LD L,0x09",
@@ -96,7 +96,7 @@ public class Z808BitLoadInstructionsTests
         z80.States.TotalStates.Should().Be(49);
 
         // H register
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Code(
                 "LD H,0x00",
                 "LD L,0x05",
@@ -110,7 +110,7 @@ public class Z808BitLoadInstructionsTests
         z80.States.TotalStates.Should().Be(21);
 
         // L register
-        z80 = new CodeBuilder()
+        z80 = new Z80Builder()
             .Code(
                 "LD H,0x00",
                 "LD L,0x05",
@@ -129,7 +129,7 @@ public class Z808BitLoadInstructionsTests
     [InlineData("IY")]
     public void When_LD_R_IXY_InstructionIsExecuted_RegisterIsUpdated(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 $"LD {register}H,0x00",
                 $"LD {register}L,0x06",
@@ -158,7 +158,7 @@ public class Z808BitLoadInstructionsTests
     [Fact]
     public void When_LD_MemoryHL_R_InstructionIsExecuted_MemoryIsUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD A,0x99",
                 "LD HL,0x07",
@@ -179,7 +179,7 @@ public class Z808BitLoadInstructionsTests
     [InlineData("IY")]
     public void When_LD_MemoryIXY_R_InstructionIsExecuted_MemoryIsUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD A,0x99",
                 $"LD {register},7",
@@ -198,7 +198,7 @@ public class Z808BitLoadInstructionsTests
     [Fact]
     public void When_LD_MemoryHL_n_InstructionIsExecuted_MemoryIsUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 "LD HL,6",
                 "LD (HL),0x5A",
@@ -218,7 +218,7 @@ public class Z808BitLoadInstructionsTests
     [InlineData("IY")]
     public void When_LD_MemoryIXY_n_InstructionIsExecuted_MemoryIsUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Code(
                 $"LD {register},6",
                 $"LD ({register}+3),0x5A",
@@ -238,7 +238,7 @@ public class Z808BitLoadInstructionsTests
     [InlineData("DE")]
     public void When_LD_A_MemoryRR_InstructionIsExecuted_AccumulatorIsUpdated(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 $"LD {register},0x05",
                 $"LD A,({register})",
@@ -254,7 +254,7 @@ public class Z808BitLoadInstructionsTests
     [Fact]
     public void When_LD_A_MemoryAddress_InstructionIsExecuted_AccumulatorIsUpdated()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Code(
                 "LD A,(4)",
                 "NOP",

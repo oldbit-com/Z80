@@ -4,7 +4,7 @@ using Z80.Net.UnitTests.Support;
 
 namespace Z80.Net.UnitTests.Fixtures;
 
-internal sealed class CodeBuilder
+internal sealed class Z80Builder
 {
     private readonly List<byte> _code = [];
     private IBus? _bus;
@@ -23,44 +23,35 @@ internal sealed class CodeBuilder
 
     internal TestMemory? Memory { get; private set; }
 
-    internal CodeBuilder Flags(Flags flags)
+    internal Z80Builder Flags(Flags flags)
     {
         _flags = flags;
 
         return this;
     }
 
-    internal CodeBuilder Iff1(bool value)
+    internal Z80Builder Iff1(bool value)
     {
         _iff1 = value;
 
         return this;
     }
 
-    internal CodeBuilder Iff2(bool value)
+    internal Z80Builder Iff2(bool value)
     {
         _iff2 = value;
 
         return this;
     }
 
-    internal CodeBuilder StartAddress(Word startAddress)
+    internal Z80Builder StartAddress(Word startAddress)
     {
         _startAddress = startAddress;
 
         return this;
     }
 
-    internal CodeBuilder Code(string code)
-    {
-        var parser = new AssemblyParser();
-        var lines = code.Split(Environment.NewLine);
-        _code.AddRange(parser.Parse(lines));
-
-        return this;
-    }
-
-    internal CodeBuilder Code(params string[] lines)
+    internal Z80Builder Code(params string[] lines)
     {
         var parser = new AssemblyParser();
         _code.AddRange(parser.Parse(lines));
@@ -68,14 +59,14 @@ internal sealed class CodeBuilder
         return this;
     }
 
-    internal CodeBuilder Bus(IBus? bus)
+    internal Z80Builder Bus(IBus? bus)
     {
         _bus = bus;
 
         return this;
     }
 
-    internal CodeBuilder SetAF(Word af, Word afPrime)
+    internal Z80Builder SetAF(Word af, Word afPrime)
     {
         _af = af;
         _afPrime = afPrime;
@@ -83,7 +74,7 @@ internal sealed class CodeBuilder
         return this;
     }
 
-    internal CodeBuilder SetBC(Word bc, Word bcPrime)
+    internal Z80Builder SetBC(Word bc, Word bcPrime)
     {
         _bc = bc;
         _bcPrime = bcPrime;
@@ -91,7 +82,7 @@ internal sealed class CodeBuilder
         return this;
     }
 
-    internal CodeBuilder SetDE(Word de, Word dePrime)
+    internal Z80Builder SetDE(Word de, Word dePrime)
     {
         _de = de;
         _dePrime = dePrime;
@@ -99,7 +90,7 @@ internal sealed class CodeBuilder
         return this;
     }
 
-    internal CodeBuilder SetHL(Word hl, Word hlPrime)
+    internal Z80Builder SetHL(Word hl, Word hlPrime)
     {
         _hl = hl;
         _hlPrime = hlPrime;
@@ -110,6 +101,7 @@ internal sealed class CodeBuilder
     internal Z80 Build()
     {
         Memory = new TestMemory(_code.ToArray());
+
         var z80 = new Z80(Memory, _bus)
         {
             Registers =

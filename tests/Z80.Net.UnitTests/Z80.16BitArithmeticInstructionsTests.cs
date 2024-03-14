@@ -8,7 +8,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADD_HL_BC_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0xFFFF",
@@ -30,7 +30,7 @@ public class Z8016BitArithmeticInstructionsTests
     public void When_ADD_HL_DE_InstructionIsExecuted_HLIsUpdatedAndFlagsSet(
         Flags flags, Word hl, Word de, Flags expectedFlags, Word expectedHL)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD HL,{hl}",
@@ -48,7 +48,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADD_HL_HL_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x4241",
@@ -65,7 +65,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADD_HL_SP_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0xFFFE",
@@ -85,7 +85,7 @@ public class Z8016BitArithmeticInstructionsTests
     [InlineData("IY")]
     public void When_ADD_IXY_SP_InstructionIsExecuted_IXIsUpdatedAndFlagsSet(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD {register},0xFFFE",
@@ -105,7 +105,7 @@ public class Z8016BitArithmeticInstructionsTests
     [InlineData("IY")]
     public void When_ADD_IXY_InstructionIsExecuted_IXIsUpdatedAndFlagsSet(string register)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(None)
             .Code(
                 $"LD {register},0xFFFE",
@@ -122,7 +122,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_HL_BC_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0xFFFE",
@@ -140,7 +140,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_HL_DE_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0x63C0",
@@ -158,7 +158,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_HL_HL_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD HL,0xF1FF",
@@ -175,7 +175,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_ADC_HL_SP_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0x7F18",
@@ -193,7 +193,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_HL_BC_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0xFFFE",
@@ -211,7 +211,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_HL_DE_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0x0001",
@@ -229,7 +229,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_HL_HL_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0xFFFF",
@@ -246,7 +246,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_SBC_HL_SP_InstructionIsExecuted_HLIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD HL,0x7001",
@@ -264,7 +264,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_INC_RR_InstructionIsExecuted_RRIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD BC,0xFFFF",
@@ -295,7 +295,7 @@ public class Z8016BitArithmeticInstructionsTests
     [Fact]
     public void When_DEC_RR_InstructionIsExecuted_RRIsUpdatedAndFlagsSet()
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(C)
             .Code(
                 "LD BC,0xFFFF",

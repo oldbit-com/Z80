@@ -12,7 +12,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RLCA_InstructionIsExecuted_AccumulatorAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{value}",
@@ -34,7 +34,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RRCA_InstructionIsExecuted_AccumulatorAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{value}",
@@ -56,7 +56,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RLA_InstructionIsExecuted_AccumulatorAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{value}",
@@ -78,7 +78,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RRA_InstructionIsExecuted_AccumulatorAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{value}",
@@ -100,7 +100,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RLC_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD C,{value}",
@@ -117,7 +117,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_RLC_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 "LD HL,0x06",
@@ -137,7 +137,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_RLC_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -160,7 +160,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RL_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD D,{value}",
@@ -177,7 +177,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_RL_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -197,7 +197,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_RL_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -220,7 +220,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RRC_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD D,{value}",
@@ -237,7 +237,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_RRC_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -257,7 +257,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_RRC_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -280,7 +280,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RR_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD L,{value}",
@@ -297,7 +297,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_RR_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -317,7 +317,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_RR_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -340,7 +340,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_SLA_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD B,{value}",
@@ -357,7 +357,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_SLA_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -377,7 +377,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_SLA_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -399,7 +399,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_SRA_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD D,{value}",
@@ -416,7 +416,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_SRA_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -436,7 +436,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_SRA_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -458,7 +458,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_SRL_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD H,{value}",
@@ -475,7 +475,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_SRL_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -495,7 +495,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_SRL_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -518,7 +518,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_SLL_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte value, Flags flags, byte expectedValue, Flags expectedFlags)
     {
-        var z80 = new CodeBuilder()
+        var z80 = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD H,{value}",
@@ -535,7 +535,7 @@ public class Z80RotateShiftInstructionsTests
     [Fact]
     public void When_SLL_HL_InstructionIsExecuted_RegisterAndFlagsAreUpdated()
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(None)
             .Code(
                 "LD HL,0x06",
@@ -555,7 +555,7 @@ public class Z80RotateShiftInstructionsTests
     [InlineData("IY")]
     public void When_SLL_IXY_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(All)
             .Code(
                 $"LD {register},4",
@@ -577,7 +577,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RLD_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte a, byte mem, Flags flags, byte expectedA, byte expectedMem, Flags expectedFlags)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{a}",
@@ -601,7 +601,7 @@ public class Z80RotateShiftInstructionsTests
     public void When_RRD_InstructionIsExecuted_RegisterAndFlagsAreUpdated(
         byte a, byte mem, Flags flags, byte expectedA, byte expectedMem, Flags expectedFlags)
     {
-        var builder = new CodeBuilder()
+        var builder = new Z80Builder()
             .Flags(flags)
             .Code(
                 $"LD A,{a}",

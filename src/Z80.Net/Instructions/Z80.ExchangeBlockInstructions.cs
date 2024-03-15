@@ -48,10 +48,10 @@ partial class Z80
         _opCodes["LDD"] = () => Execute_LDI_LDD(increment: false);
         _opCodes["LDDR"] = () => Execute_LDIR_LDDR(increment: false);
 
-        _opCodes["CPI"] = () => ExecuteBlockCompare("CPI");
-        _opCodes["CPIR"] = () => ExecuteBlockCompare("CPIR");
-        _opCodes["CPD"] = () => ExecuteBlockCompare("CPD");
-        _opCodes["CPDR"] = () => ExecuteBlockCompare("CPDR");
+        _opCodes["CPI"] = () => Execute_CPI_CPD(increment: true);
+        _opCodes["CPIR"] = () => Execute_CPIR_CPDR(increment: true);
+        _opCodes["CPD"] = () => Execute_CPI_CPD(increment: false);
+        _opCodes["CPDR"] = () => Execute_CPIR_CPDR(increment: false);
     }
 
     private void Execute_LDI_LDD(bool increment)
@@ -97,6 +97,11 @@ partial class Z80
     }
 
     private void Execute_CPI_CPD(bool increment)
+    {
+
+    }
+
+    private void Execute_CPIR_CPDR(bool increment)
     {
 
     }

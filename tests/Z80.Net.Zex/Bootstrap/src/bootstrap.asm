@@ -34,9 +34,9 @@ is_write_str:
         ret nz
 write_str:
         ld a,(de)
-        out (PORT),a    // will be captured by the handler
         cp '$'          // end of string?
         ret z
+        out (PORT),a    // will be captured by the handler
         inc de
         jr write_str
         ret

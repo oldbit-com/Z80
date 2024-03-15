@@ -1,12 +1,10 @@
 using System.Text;
-using Xunit.Abstractions;
 
-namespace Z80.Net.ComponentTests.Fixtures;
+namespace Z80.Net.Zex.Setup;
 
-internal class TestBus(ITestOutputHelper outputHelper) : IBus
+internal class TestBus() : IBus
 {
     private readonly byte _textPort = 5;    // Port used by Bootstrap to output a character
-    private readonly StringBuilder _text = new();
 
     public byte Read(Word address) => 0xFF;
 
@@ -18,13 +16,6 @@ internal class TestBus(ITestOutputHelper outputHelper) : IBus
         }
 
         var s = Encoding.ASCII.GetString(new[] { data });
-        if (s == "$")
-        {
-            outputHelper.WriteLine(_text.ToString());
-        }
-        else
-        {
-            _text.Append(s);
-        }
+        Console.Write(s);
     }
 }

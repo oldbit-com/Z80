@@ -1,5 +1,8 @@
 namespace Z80.Net.OpCodes;
 
+/// <summary>
+/// Provides a mapping of Z80 opcodes to their respective byte values.
+/// </summary>
 internal static class OpCodesMapping
 {
     internal static int GetCode(string opCode) => Map[opCode];

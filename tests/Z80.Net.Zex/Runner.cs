@@ -1,18 +1,11 @@
 using System.Reflection;
-using Xunit.Abstractions;
+using Z80.Net.Zex.Setup;
 
-namespace Z80.Net.ComponentTests.Fixtures;
+namespace Z80.Net.Zex;
 
-public class TestBase
+public static class Runner
 {
-    private readonly ITestOutputHelper _outputHelper;
-
-    protected TestBase(ITestOutputHelper outputHelper)
-    {
-        _outputHelper = outputHelper;
-    }
-
-    protected Z80 CreateZ80(string fileName)
+    public static void Run(string fileName)
     {
         var testFile =  File.ReadAllBytes(Path.Combine(BinFolder, "TestFiles", "binaries", fileName));
         var bootstrapFile =  File.ReadAllBytes(Path.Combine(BinFolder, "Bootstrap", "binaries", "bootstrap.bin"));
@@ -21,10 +14,12 @@ public class TestBase
         memory.CopyFrom(bootstrapFile, 0);
         memory.CopyFrom(testFile, 0x100);
 
-        var bus = new TestBus(_outputHelper);
+        var bus = new TestBus();
 
-        return new Z80(memory, bus);
+        var z80 = new Z80(memory, bus);
+        z80.Run();
     }
 
     private static string BinFolder => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
 }

@@ -1,4 +1,4 @@
-namespace Z80.Net.ComponentTests.Fixtures;
+namespace Z80.Net.Zex.Setup;
 
 internal class TestMemory : IMemory
 {

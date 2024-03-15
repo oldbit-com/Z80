@@ -16,7 +16,7 @@ partial class Z80
         _opCodes["ADD A,H"] = () => { Execute_ADD(Registers.XH); };
         _opCodes["ADD A,L"] = () => { Execute_ADD(Registers.XL); };
         _opCodes["ADD A,n"] = () => { Execute_ADD(FetchByte()); };
-        _opCodes["ADD A,(HL)"] = () => { Execute_ADD(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["ADD A,(HL)"] = () => { Execute_ADD(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["ADC A,A"] = () => { Execute_ADC(Registers.A); };
         _opCodes["ADC A,B"] = () => { Execute_ADC(Registers.B); };
@@ -26,7 +26,7 @@ partial class Z80
         _opCodes["ADC A,H"] = () => { Execute_ADC(Registers.XH); };
         _opCodes["ADC A,L"] = () => { Execute_ADC(Registers.XL); };
         _opCodes["ADC A,n"] = () => { Execute_ADC(FetchByte()); };
-        _opCodes["ADC A,(HL)"] = () => { Execute_ADC(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["ADC A,(HL)"] = () => { Execute_ADC(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["SUB A"] = () => { Execute_SUB(Registers.A); };
         _opCodes["SUB B"] = () => { Execute_SUB(Registers.B); };
@@ -36,7 +36,7 @@ partial class Z80
         _opCodes["SUB H"] = () => { Execute_SUB(Registers.XH); };
         _opCodes["SUB L"] = () => { Execute_SUB(Registers.XL); };
         _opCodes["SUB n"] = () => { Execute_SUB(FetchByte()); };
-        _opCodes["SUB (HL)"] = () => { Execute_SUB(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["SUB (HL)"] = () => { Execute_SUB(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["SBC A,A"] = () => { Execute_SBC(Registers.A); };
         _opCodes["SBC A,B"] = () => { Execute_SBC(Registers.B); };
@@ -46,7 +46,7 @@ partial class Z80
         _opCodes["SBC A,H"] = () => { Execute_SBC(Registers.XH); };
         _opCodes["SBC A,L"] = () => { Execute_SBC(Registers.XL); };
         _opCodes["SBC A,n"] = () => { Execute_SBC(FetchByte()); };
-        _opCodes["SBC A,(HL)"] = () => { Execute_SBC(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["SBC A,(HL)"] = () => { Execute_SBC(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["AND A"] = () => { Execute_AND(Registers.A); };
         _opCodes["AND B"] = () => { Execute_AND(Registers.B); };
@@ -56,7 +56,7 @@ partial class Z80
         _opCodes["AND H"] = () => { Execute_AND(Registers.XH); };
         _opCodes["AND L"] = () => { Execute_AND(Registers.XL); };
         _opCodes["AND n"] = () => { Execute_AND(FetchByte()); };
-        _opCodes["AND (HL)"] = () => { Execute_AND(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["AND (HL)"] = () => { Execute_AND(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["OR A"] = () => { Execute_OR(Registers.A); };
         _opCodes["OR B"] = () => { Execute_OR(Registers.B); };
@@ -66,7 +66,7 @@ partial class Z80
         _opCodes["OR H"] = () => { Execute_OR(Registers.XH); };
         _opCodes["OR L"] = () => { Execute_OR(Registers.XL); };
         _opCodes["OR n"] = () => { Execute_OR(FetchByte()); };
-        _opCodes["OR (HL)"] = () => { Execute_OR(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["OR (HL)"] = () => { Execute_OR(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["XOR A"] = () => { Execute_XOR(Registers.A); };
         _opCodes["XOR B"] = () => { Execute_XOR(Registers.B); };
@@ -76,7 +76,7 @@ partial class Z80
         _opCodes["XOR H"] = () => { Execute_XOR(Registers.XH); };
         _opCodes["XOR L"] = () => { Execute_XOR(Registers.XL); };
         _opCodes["XOR n"] = () => { Execute_XOR(FetchByte()); };
-        _opCodes["XOR (HL)"] = () => { Execute_XOR(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["XOR (HL)"] = () => { Execute_XOR(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["CP A"] = () => { Execute_CP(Registers.A); };
         _opCodes["CP B"] = () => { Execute_CP(Registers.B); };
@@ -86,7 +86,7 @@ partial class Z80
         _opCodes["CP H"] = () => { Execute_CP(Registers.XH); };
         _opCodes["CP L"] = () => { Execute_CP(Registers.XL); };
         _opCodes["CP n"] = () => { Execute_CP(FetchByte()); };
-        _opCodes["CP (HL)"] = () => { Execute_CP(ReadMemoryAtHL(extraIndexStates: 5)); };
+        _opCodes["CP (HL)"] = () => { Execute_CP(ReadByteAtExtendedHL(extraIndexStates: 5)); };
 
         _opCodes["INC A"] = () => { Registers.A = Execute_INC(Registers.A); };
         _opCodes["INC B"] = () => { Registers.B = Execute_INC(Registers.B); };
@@ -97,7 +97,7 @@ partial class Z80
         _opCodes["INC L"] = () => { Registers.XL = Execute_INC(Registers.XL); };
         _opCodes["INC (HL)"] = () =>
         {
-            var address = CalculateHLAddress(extraIndexStates: 5);
+            var address = CalculateExtendedHL(extraIndexStates: 5);
             var value = ReadByte(address);
 
             States.Add(1);
@@ -114,7 +114,7 @@ partial class Z80
         _opCodes["DEC L"] = () => { Registers.XL = Execute_DEC(Registers.XL); };
         _opCodes["DEC (HL)"] = () =>
         {
-            var address = CalculateHLAddress(extraIndexStates: 5);
+            var address = CalculateExtendedHL(extraIndexStates: 5);
             var value = ReadByte(address);
 
             States.Add(1);

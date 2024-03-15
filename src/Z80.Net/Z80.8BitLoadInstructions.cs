@@ -89,9 +89,9 @@ partial class Z80
         _opCodes["LD A,(DE)"] = () => Registers.A = ReadByte(Registers.DE);
         _opCodes["LD A,(nn)"] = () => Registers.A = ReadByte(FetchWord());
 
-        _opCodes["LD (BC),A"] = () => throw new NotImplementedException();
-        _opCodes["LD (DE),A"] = () => throw new NotImplementedException();
-        _opCodes["LD (nn),A"] = () => throw new NotImplementedException();
+        _opCodes["LD (BC),A"] = () => WriteByte(Registers.BC, Registers.A);
+        _opCodes["LD (DE),A"] = () => WriteByte(Registers.DE, Registers.A);
+        _opCodes["LD (nn),A"] = () => WriteByte(FetchWord(), Registers.A);
 
         _opCodes["LD I,A"] = () => throw new NotImplementedException();
         _opCodes["LD A,I"] = () => throw new NotImplementedException();

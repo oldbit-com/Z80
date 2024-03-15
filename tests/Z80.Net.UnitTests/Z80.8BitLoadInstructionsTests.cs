@@ -265,4 +265,43 @@ public class Z808BitLoadInstructionsTests
         z80.Registers.A.Should().Be(0x78);
         z80.States.TotalStates.Should().Be(13);
     }
+
+    [Theory]
+    [InlineData("BC")]
+    [InlineData("DE")]
+    public void When_LD_MemoryRR_A_InstructionIsExecuted_AccumulatorIsUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Code(
+                "LD A,0x99",
+                $"LD {register},0x07",
+                $"LD ({register}),A",
+                "NOP",
+                "db 0");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(7 + 10 + 7);
+        memory[0x07].Should().Be(0x99);
+        z80.States.TotalStates.Should().Be(24);
+    }
+
+    [Fact]
+    public void When_LD_Memory_A_InstructionIsExecuted_AccumulatorIsUpdated()
+    {
+        var builder = new Z80Builder()
+            .Code(
+                "LD A,0x99",
+                "LD (6),A",
+                "NOP",
+                "db 0");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(7 + 13);
+        memory[0x06].Should().Be(0x99);
+        z80.States.TotalStates.Should().Be(20);
+    }
 }

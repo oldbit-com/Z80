@@ -628,6 +628,25 @@ internal class AssemblyParser
                     }
                 }
 
+                // LD A,(BC)
+                if (operand1.OperandType == OperandType.AddressBC && operand2.OperandType == OperandType.RegisterA)
+                {
+                    return [0x02];
+                }
+
+                // LD A,(DE)
+                if (operand1.OperandType == OperandType.AddressDE && operand2.OperandType == OperandType.RegisterA)
+                {
+                    return [0x12];
+                }
+
+                // LD A,(nn)
+                if (operand1.OperandType == OperandType.Address && operand2.OperandType == OperandType.RegisterA)
+                {
+                    (hi, lo) = (Word)operand1.Value;
+                    return [0x32, lo, hi];
+                }
+
                 break;
             }
 

@@ -552,6 +552,14 @@ internal class AssemblyParser
                     case true when operand2.OperandType == OperandType.Address:
                         (hi, lo) = (Word)operand2.Value;
                         return [0x3A, lo, hi];
+
+                    // LD A,I
+                    case true when operand2.OperandType == OperandType.RegisterI:
+                        return [0xED, 0x57];
+
+                    // LD A,R
+                    case true when operand2.OperandType == OperandType.RegisterR:
+                        return [0xED, 0x5F];
                 }
 
                 // LD rr,nn

@@ -11,8 +11,9 @@ public partial class Z80
     private readonly OpCodesIndex _opCodes = new();
     private bool _isExtendedInstruction;
     private sbyte _indexRegisterOffset;
+    private RegisterContext RegisterContext { get; set; }
 
-    public CpuRegisters Registers { get; private set; } = new();
+    public Registers.Registers Registers { get; private set; } = new();
     public bool IsHalted { get; private set; }
     public bool IFF1 { get; internal set; }
     public bool IFF2 { get; internal set; }
@@ -112,7 +113,7 @@ public partial class Z80
 
     public void Reset()
     {
-        Registers = new CpuRegisters
+        Registers = new Registers.Registers
         {
             A = 0xFF,
             F = Flags.All,

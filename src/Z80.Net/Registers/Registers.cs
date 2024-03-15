@@ -6,7 +6,7 @@ namespace Z80.Net.Registers;
 /// <summary>
 /// Represents Z80 CPU registers.
 /// </summary>
-public sealed class CpuRegisters : StandardRegisters
+public sealed class Registers : StandardRegisters
 {
     internal RegisterContext Context { get; set; }
 
@@ -40,7 +40,7 @@ public sealed class CpuRegisters : StandardRegisters
     /// </summary>
     public Word IX
     {
-        get => TypeConverter.ToWord(IXH, IXL);
+        get => Converter.ToWord(IXH, IXL);
         set => (IXH, IXL) = value;
     }
 
@@ -49,7 +49,7 @@ public sealed class CpuRegisters : StandardRegisters
     /// </summary>
     public Word IY
     {
-        get => TypeConverter.ToWord(IYH, IYL);
+        get => Converter.ToWord(IYH, IYL);
         set => (IYH, IYL) = value;
     }
 

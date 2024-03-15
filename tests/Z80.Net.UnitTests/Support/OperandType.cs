@@ -12,6 +12,8 @@ internal enum OperandType
     RegisterH,
     RegisterL,
     RegisterF,
+    RegisterI,
+    RegisterR,
     RegisterIXH,
     RegisterIXL,
     RegisterIYH,

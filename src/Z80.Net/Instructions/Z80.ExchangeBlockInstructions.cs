@@ -77,8 +77,8 @@ partial class Z80
 
         Registers.F &= S | Z | C;
         value += Registers.A;
-        Registers.F |= ((value & 0b0000010) != 0) ? Y : 0;
-        Registers.F |= ((value & 0b0001000) != 0) ? X : 0;
+        Registers.F |= (value & 0b0000010) != 0 ? Y : 0;
+        Registers.F |= (value & 0b0001000) != 0 ? X : 0;
         Registers.F |= Registers.BC != 0 ? P : 0;
     }
 
@@ -96,38 +96,48 @@ partial class Z80
         States.Add(5);
     }
 
-    private void Execute_CPI_CPD(bool increment)
+    private int Execute_CPI_CPD(bool increment)
     {
+        var value = ReadByte(Registers.HL);
 
+        States.Add(5);
+
+        if (increment)
+        {
+            Registers.HL += 1;
+        }
+        else
+        {
+            Registers.HL -= 1;
+        }
+
+        Registers.BC -= 1;
+
+        var result = Registers.A - value;
+
+        Registers.F &= C;
+        Registers.F |= N | (Flags)(result & (byte)S);
+        Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)(Registers.A ^ value ^ result) & H;
+        var n = result - ((Registers.F & H) == H ? 1 : 0);
+        Registers.F |= ((n & 0b0000010) != 0) ? Y : 0;
+        Registers.F |= ((n & 0b0001000) != 0) ? X : 0;
+        Registers.F |= Registers.BC != 0 ? P : 0;
+
+        return result;
     }
 
     private void Execute_CPIR_CPDR(bool increment)
     {
+        var result = Execute_CPI_CPD(increment);
 
-    }
+        if (Registers.BC == 0 || result == 0)
+        {
+            return;
+        }
 
-    private void ExecuteBlockCompare(string opCode)
-    {
-        var hl = Registers.XHL;
-        var bc = Registers.BC - 1;
-
-        var offset = opCode is "CPI" or "CPIR" ? 1 : -1;
-        Registers.XHL = (Word)(hl + offset);
-        Registers.BC = (Word)bc;
-
-        var n = ReadByte(hl);
+        Registers.PC -= 2;
 
         States.Add(5);
-
-        var test = Registers.A - n;
-        Registers.F = Registers.F & C | N | (Flags)(test & (int)S);
-        if (test == 0) Registers.F |= Z;
-
-        Registers.F |= (Flags)(Registers.A ^ n ^ test) & H;
-        if (bc != 0) Registers.F |= P;
-
-        n = (byte)(test - (int)(Registers.F & H) >> 4);
-
-        // TODO: Implement
     }
 }

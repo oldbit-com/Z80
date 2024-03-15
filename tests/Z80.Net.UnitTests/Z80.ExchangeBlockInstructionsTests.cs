@@ -257,5 +257,127 @@ public class Z80ExchangeBlockInstructionsTests
         z80.States.TotalStates.Should().Be(88);
     }
 
+    [Fact]
+    public void When_CPI_InstructionIsExecuted_FlagsAreUpdated()
+    {
+        var builder = new Z80Builder()
+            .Flags(C)
+            .Code(
+                "LD HL,0x0B",
+                "LD BC,0x03",
+                "LD A,0x88",
+                "CPI",
+                "NOP",
+                "db 0x88");
+        var z80 = builder.Build();
 
+        z80.Run(10 + 10 + 7 + 16);
+
+        z80.Registers.BC.Should().Be(0x02);
+        z80.Registers.HL.Should().Be(0x0C);
+        z80.Registers.F.Should().Be(Z | P | N | C);
+        z80.States.TotalStates.Should().Be(43);
+
+        builder = new Z80Builder()
+            .Flags(None)
+            .Code(
+                "LD HL,0x0B",
+                "LD BC,0x01",
+                "LD A,0x88",
+                "CPI",
+                "NOP",
+                "db 0x89");
+        z80 = builder.Build();
+
+        z80.Run(10 + 10 + 7 + 16);
+
+        z80.Registers.BC.Should().Be(0x00);
+        z80.Registers.HL.Should().Be(0x0C);
+        z80.Registers.F.Should().Be(S | Y | H | X | N);
+        z80.States.TotalStates.Should().Be(43);
+    }
+
+    [Fact]
+    public void When_CPIR_InstructionIsExecuted_FlagsAreUpdated()
+    {
+        var builder = new Z80Builder()
+            .Flags(None)
+            .Code(
+                "LD HL,0x0B",
+                "LD BC,0xFF",
+                "LD A,0x88",
+                "CPIR",
+                "NOP",
+                "db 0x02, 0x04, 0x80, 0x88, 0x90");
+        var z80 = builder.Build();
+
+        z80.Run(10 + 10 + 7 + 21 + 21 + 21 + 16);
+
+        z80.Registers.BC.Should().Be(0xFB);
+        z80.Registers.HL.Should().Be(0x0F);
+        z80.Registers.F.Should().Be(Z | P | N);
+        z80.States.TotalStates.Should().Be(106);
+    }
+
+    [Fact]
+    public void When_CPD_InstructionIsExecuted_FlagsAreUpdated()
+    {
+        var builder = new Z80Builder()
+            .Flags(C)
+            .Code(
+                "LD HL,0x0B",
+                "LD BC,0x03",
+                "LD A,0x88",
+                "CPD",
+                "NOP",
+                "db 0x88");
+        var z80 = builder.Build();
+
+        z80.Run(10 + 10 + 7 + 16);
+
+        z80.Registers.BC.Should().Be(0x02);
+        z80.Registers.HL.Should().Be(0x0A);
+        z80.Registers.F.Should().Be(Z | P | N | C);
+        z80.States.TotalStates.Should().Be(43);
+
+        builder = new Z80Builder()
+            .Flags(None)
+            .Code(
+                "LD HL,0x0B",
+                "LD BC,0x01",
+                "LD A,0x88",
+                "CPD",
+                "NOP",
+                "db 0x89");
+        z80 = builder.Build();
+
+        z80.Run(10 + 10 + 7 + 16);
+
+        z80.Registers.BC.Should().Be(0x00);
+        z80.Registers.HL.Should().Be(0x0A);
+        z80.Registers.F.Should().Be(S | Y | H | X | N);
+        z80.States.TotalStates.Should().Be(43);
+    }
+
+    [Fact]
+    public void When_CPDR_InstructionIsExecuted_FlagsAreUpdated()
+    {
+        var builder = new Z80Builder()
+            .Flags(None)
+            .Code(
+                "LD HL,0x0F",
+                "LD BC,0xFF",
+                "LD A,0x88",
+                "CPDR",
+                "NOP",
+                "db 0x02, 0x04, 0x80, 0x88, 0x90");
+        var z80 = builder.Build();
+
+        z80.Run(10 + 10 + 7 + 21 + 16);
+
+        z80.Registers.BC.Should().Be(0xFD);
+        z80.Registers.HL.Should().Be(0x0D);
+        z80.Registers.F.Should().Be(Z | P | N);
+        z80.States.TotalStates.Should().Be(64);
+    }
 }

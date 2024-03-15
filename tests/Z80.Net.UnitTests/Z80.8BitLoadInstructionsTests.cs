@@ -70,6 +70,96 @@ public class Z808BitLoadInstructionsTests
         z80.States.TotalStates.Should().Be(35);
     }
 
+    [Theory]
+    [InlineData("A", 1)]
+    [InlineData("B", 2)]
+    [InlineData("C", 3)]
+    [InlineData("D", 4)]
+    [InlineData("E", 5)]
+    public void When_LD_IXY_R_InstructionIsExecuted_RegisterIsUpdated(string register, byte value)
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                $"LD {register},{value}",
+                $"LD IXH,{register}",
+                $"LD IXL,{register}",
+                $"LD IYH,{register}",
+                $"LD IYL,{register}")
+            .Build();
+
+        z80.Run(7 + 4 * 8);
+
+        z80.Registers.IXH.Should().Be(value);
+        z80.Registers.IXL.Should().Be(value);
+        z80.Registers.IYH.Should().Be(value);
+        z80.Registers.IYL.Should().Be(value);
+        z80.States.TotalStates.Should().Be(39);
+    }
+
+    [Fact]
+    public void When_LD_IXL_IXH_InstructionIsExecuted_RegisterIsUpdated()
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                "LD IXH,1",
+                "LD IXL,IXH")
+            .Build();
+
+        z80.Run(11 + 8);
+
+        z80.Registers.IXH.Should().Be(1);
+        z80.Registers.IXL.Should().Be(1);
+        z80.States.TotalStates.Should().Be(19);
+    }
+
+    [Fact]
+    public void When_LD_IXH_IXL_InstructionIsExecuted_RegisterIsUpdated()
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                "LD IXL,1",
+                "LD IXH,IXL")
+            .Build();
+
+        z80.Run(11 + 8);
+
+        z80.Registers.IXH.Should().Be(1);
+        z80.Registers.IXL.Should().Be(1);
+        z80.States.TotalStates.Should().Be(19);
+    }
+
+    [Fact]
+    public void When_LD_IYL_IYH_InstructionIsExecuted_RegisterIsUpdated()
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                "LD IYH,1",
+                "LD IYL,IXH")
+            .Build();
+
+        z80.Run(11 + 8);
+
+        z80.Registers.IYH.Should().Be(1);
+        z80.Registers.IYL.Should().Be(1);
+        z80.States.TotalStates.Should().Be(19);
+    }
+
+    [Fact]
+    public void When_LD_IYH_IYL_InstructionIsExecuted_RegisterIsUpdated()
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                "LD IYL,1",
+                "LD IYH,IXL")
+            .Build();
+
+        z80.Run(11 + 8);
+
+        z80.Registers.IYH.Should().Be(1);
+        z80.Registers.IYL.Should().Be(1);
+        z80.States.TotalStates.Should().Be(19);
+    }
+
     [Fact]
     public void When_LD_R_HL_InstructionIsExecuted_RegisterIsUpdated()
     {

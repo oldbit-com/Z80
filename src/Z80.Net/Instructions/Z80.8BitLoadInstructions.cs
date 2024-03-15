@@ -17,55 +17,55 @@ partial class Z80
         _opCodes["LD A,C"] = () => Registers.A = Registers.C;
         _opCodes["LD A,D"] = () => Registers.A = Registers.D;
         _opCodes["LD A,E"] = () => Registers.A = Registers.E;
-        _opCodes["LD A,H"] = () => Registers.A = Registers.H;
-        _opCodes["LD A,L"] = () => Registers.A = Registers.L;
+        _opCodes["LD A,H"] = () => Registers.A = Registers.XH;
+        _opCodes["LD A,L"] = () => Registers.A = Registers.XL;
 
         _opCodes["LD B,A"] = () => Registers.B = Registers.A;
         _opCodes["LD B,B"] = () => { };
         _opCodes["LD B,C"] = () => Registers.B = Registers.C;
         _opCodes["LD B,D"] = () => Registers.B = Registers.D;
         _opCodes["LD B,E"] = () => Registers.B = Registers.E;
-        _opCodes["LD B,H"] = () => Registers.B = Registers.H;
-        _opCodes["LD B,L"] = () => Registers.B = Registers.L;
+        _opCodes["LD B,H"] = () => Registers.B = Registers.XH;
+        _opCodes["LD B,L"] = () => Registers.B = Registers.XL;
 
         _opCodes["LD C,A"] = () => Registers.C = Registers.A;
         _opCodes["LD C,B"] = () => Registers.C = Registers.B;
         _opCodes["LD C,C"] = () => { };
         _opCodes["LD C,D"] = () => Registers.C = Registers.D;
         _opCodes["LD C,E"] = () => Registers.C = Registers.E;
-        _opCodes["LD C,H"] = () => Registers.C = Registers.H;
-        _opCodes["LD C,L"] = () => Registers.C = Registers.L;
+        _opCodes["LD C,H"] = () => Registers.C = Registers.XH;
+        _opCodes["LD C,L"] = () => Registers.C = Registers.XL;
 
         _opCodes["LD D,A"] = () => Registers.D = Registers.A;
         _opCodes["LD D,B"] = () => Registers.D = Registers.B;
         _opCodes["LD D,C"] = () => Registers.D = Registers.C;
         _opCodes["LD D,D"] = () => { };
         _opCodes["LD D,E"] = () => Registers.D = Registers.E;
-        _opCodes["LD D,H"] = () => Registers.D = Registers.H;
-        _opCodes["LD D,L"] = () => Registers.D = Registers.L;
+        _opCodes["LD D,H"] = () => Registers.D = Registers.XH;
+        _opCodes["LD D,L"] = () => Registers.D = Registers.XL;
 
         _opCodes["LD E,A"] = () => Registers.E = Registers.A;
         _opCodes["LD E,B"] = () => Registers.E = Registers.B;
         _opCodes["LD E,C"] = () => Registers.E = Registers.C;
         _opCodes["LD E,D"] = () => Registers.E = Registers.D;
         _opCodes["LD E,E"] = () => { };
-        _opCodes["LD E,H"] = () => Registers.E = Registers.H;
-        _opCodes["LD E,L"] = () => Registers.E = Registers.L;
+        _opCodes["LD E,H"] = () => Registers.E = Registers.XH;
+        _opCodes["LD E,L"] = () => Registers.E = Registers.XL;
 
-        _opCodes["LD H,A"] = () => Registers.H = Registers.A;
-        _opCodes["LD H,B"] = () => Registers.H = Registers.B;
-        _opCodes["LD H,C"] = () => Registers.H = Registers.C;
-        _opCodes["LD H,D"] = () => Registers.H = Registers.D;
-        _opCodes["LD H,E"] = () => Registers.H = Registers.E;
+        _opCodes["LD H,A"] = () => Registers.XH = Registers.A;
+        _opCodes["LD H,B"] = () => Registers.XH = Registers.B;
+        _opCodes["LD H,C"] = () => Registers.XH = Registers.C;
+        _opCodes["LD H,D"] = () => Registers.XH = Registers.D;
+        _opCodes["LD H,E"] = () => Registers.XH = Registers.E;
         _opCodes["LD H,H"] = () => { };
-        _opCodes["LD H,L"] = () => Registers.H = Registers.L;
+        _opCodes["LD H,L"] = () => Registers.XH = Registers.XL;
 
-        _opCodes["LD L,A"] = () => Registers.L = Registers.A;
-        _opCodes["LD L,B"] = () => Registers.L = Registers.B;
-        _opCodes["LD L,C"] = () => Registers.L = Registers.C;
-        _opCodes["LD L,D"] = () => Registers.L = Registers.D;
-        _opCodes["LD L,E"] = () => Registers.L = Registers.E;
-        _opCodes["LD L,H"] = () => Registers.L = Registers.H;
+        _opCodes["LD L,A"] = () => Registers.XL = Registers.A;
+        _opCodes["LD L,B"] = () => Registers.XL = Registers.B;
+        _opCodes["LD L,C"] = () => Registers.XL = Registers.C;
+        _opCodes["LD L,D"] = () => Registers.XL = Registers.D;
+        _opCodes["LD L,E"] = () => Registers.XL = Registers.E;
+        _opCodes["LD L,H"] = () => Registers.XL = Registers.XH;
         _opCodes["LD L,L"] = () => { };
 
         _opCodes["LD A,(HL)"] = () => Registers.A = ReadByteAtExtendedHL(extraIndexStates: 5);

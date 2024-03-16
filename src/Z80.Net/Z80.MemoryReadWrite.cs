@@ -48,7 +48,7 @@ partial class Z80
     /// <returns>A byte value.</returns>
     private byte ReadByte(Word address)
     {
-        var value = _memory.Read((Word)address);
+        var value = _memory.Read(address);
 
         States.Add(3);
 

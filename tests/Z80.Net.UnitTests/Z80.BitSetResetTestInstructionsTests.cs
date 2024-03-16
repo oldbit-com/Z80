@@ -1,4 +1,5 @@
 using Z80.Net.Registers;
+using Z80.Net.UnitTests.Extensions;
 
 namespace Z80.Net.UnitTests;
 
@@ -25,8 +26,8 @@ public class Z80BitSetResetTestInstructionsTests
     }
 
     [Theory]
-    [MemberData(nameof(EightBitRegistersTestData))]
-    public void When_BIT_n_R_InstructionIsExecuted_FlagsSet(string register, int bit, Flags expectedFlags)
+    [MemberData(nameof(BitTestData))]
+    public void When_BIT_n_R_InstructionIsExecuted_FlagsAreSet(string register, int bit, Flags expectedFlags)
     {
         var z80 = new Z80Builder()
             .Flags(All)
@@ -50,7 +51,7 @@ public class Z80BitSetResetTestInstructionsTests
     [InlineData(5, H)]
     [InlineData(6, H)]
     [InlineData(7, H | S)]
-    public void When_BIT_n_HL_InstructionIsExecuted_FlagsSet(int bit, Flags expectedFlags)
+    public void When_BIT_n_HL_InstructionIsExecuted_FlagsAreSet(int bit, Flags expectedFlags)
     {
         var z80 = new Z80Builder()
             .Flags(Z | N)
@@ -70,7 +71,7 @@ public class Z80BitSetResetTestInstructionsTests
     [Theory]
     [InlineData("IX")]
     [InlineData("IY")]
-    public void When_BIT_n_IXY_InstructionIsExecuted_FlagsSet(string register)
+    public void When_BIT_n_IXY_InstructionIsExecuted_FlagsAreSet(string register)
     {
         var z80 = new Z80Builder()
             .Flags(Z | N)
@@ -87,7 +88,135 @@ public class Z80BitSetResetTestInstructionsTests
         z80.States.TotalStates.Should().Be(34);
     }
 
-    public static IEnumerable<object[]> EightBitRegistersTestData()
+    [Theory]
+    [MemberData(nameof(SetResTestData))]
+    public void When_SET_n_R_InstructionIsExecuted_BitIsSet(string register, int bit)
+    {
+        var z80 = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},0x00",
+                $"SET {bit},{register}")
+            .Build();
+
+        z80.Run(7 + 8);
+
+        z80.Registers.ValueOf(register).Should().Be((byte)(1 << bit));
+        z80.States.TotalStates.Should().Be(15);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    [InlineData(7)]
+    public void When_SET_n_HL_InstructionIsExecuted_BitIsSet(int bit)
+    {
+        var builder = new Z80Builder()
+            .Code(
+                "LD HL,5",
+                $"SET {bit},(HL)",
+                "db 0");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(10 + 15);
+
+        memory[5].Should().Be((byte)(1 << bit));
+        z80.States.TotalStates.Should().Be(25);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_SET_n_IXY_InstructionIsExecuted_BitIsSet(string register)
+    {
+        var builder = new Z80Builder()
+            .Code(
+                $"LD {register},0x07",
+                $"SET 2,({register}+2)",
+                "NOP",
+                "db 0");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(14 + 23);
+
+        memory[9].Should().Be(0b00000100);
+        z80.States.TotalStates.Should().Be(37);
+    }
+
+    [Theory]
+    [MemberData(nameof(SetResTestData))]
+    public void When_RES_n_R_InstructionIsExecuted_BitIsReset(string register, int bit)
+    {
+        var z80 = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},0xFF",
+                $"RES {bit},{register}")
+            .Build();
+
+        z80.Run(7 + 8);
+
+        z80.Registers.ValueOf(register).Should().Be((byte)(0xFF & ~(1 << bit)));
+        z80.States.TotalStates.Should().Be(15);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    [InlineData(7)]
+    public void When_RES_n_HL_InstructionIsExecuted_BitIsReset(int bit)
+    {
+        var builder = new Z80Builder()
+            .Code(
+                "LD HL,5",
+                $"RES {bit},(HL)",
+                "db 0xFF");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(10 + 15);
+
+        memory[5].Should().Be((byte)(0xFF & ~(1 << bit)));
+        z80.States.TotalStates.Should().Be(25);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_RES_n_IXY_InstructionIsExecuted_BitReset(string register)
+    {
+        var builder = new Z80Builder()
+            .Code(
+                $"LD {register},0x07",
+                $"RES 2,({register}+2)",
+                "NOP",
+                "db 0xFF");
+
+        var z80 = builder.Build();
+        var memory = builder.Memory!;
+
+        z80.Run(14 + 23);
+
+        memory[9].Should().Be(0b11111011);
+        z80.States.TotalStates.Should().Be(37);
+    }
+
+    public static IEnumerable<object[]> BitTestData()
     {
         var bits = Enumerable.Range(0, 8);
         var registers = new[] { "A", "B", "C", "D", "E", "H", "L" };
@@ -101,6 +230,19 @@ public class Z80BitSetResetTestInstructionsTests
                 flags |= bit == 5 ? Y : 0;
 
                 yield return [register, bit, flags];
+            }
+        }
+    }
+
+    public static IEnumerable<object[]> SetResTestData()
+    {
+        var bits = Enumerable.Range(0, 8);
+        var registers = new[] { "A", "B", "C", "D", "E", "H", "L" };
+        foreach (var bit in bits)
+        {
+            foreach (var register in registers)
+            {
+                yield return [register, bit];
             }
         }
     }

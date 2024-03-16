@@ -224,7 +224,15 @@ partial class Z80
         return result;
     }
 
-    private byte Execute_SLL(byte value) => (byte)(Execute_SLA(value) | 1);
+    private byte Execute_SLL(byte value)
+    {
+        var bit7 = value >> 7;
+        var result = (byte)(value << 1 | 1);
+
+        UpdateFlagsForShiftAndRotate(result, bit7);
+
+        return result;
+    }
 
     private void UpdateFlagsForShiftAndRotate(byte result, int carry)
     {

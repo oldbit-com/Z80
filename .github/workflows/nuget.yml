@@ -1,7 +1,8 @@
 name: Publish NuGet package
 
 on:
-  
+  workflow_dispatch:
+    
 jobs:
   build:
 

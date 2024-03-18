@@ -4,6 +4,15 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>OldBit.Z80.Net</PackageId>
+        <Version>0.0.1</Version>
+        <Title>Z80 CPU emulator</Title>
+        <Authors>Wojciech Sobieszek</Authors>
+        <Copyright>Wojciech Sobieszek</Copyright>
+        <RepositoryUrl>https://github.com/oldbit-com/Z80.Net</RepositoryUrl>
+        <PackageTags>Z80 Emulator</PackageTags>
+        <Description>Z80 CPU emulator written in .NET</Description>
     </PropertyGroup>
     
     <ItemGroup>

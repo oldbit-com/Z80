@@ -1,11 +1,7 @@
-name: Build and Test
+name: Publish NuGet package
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+  
 jobs:
   build:
 
@@ -23,10 +19,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
-
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build -c Release --no-restore
 
     - name: Publish
       run: dotnet publish -c Release --no-restore

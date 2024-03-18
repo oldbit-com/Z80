@@ -31,7 +31,7 @@ partial class Z80
         _opCodes["EX (SP),HL"] = () =>
         {
             var (x, y) = (ReadByte(Registers.SP), ReadByte((Word)(Registers.SP + 1)));
-            var (h, l) = (HX: Registers.XH, LX: Registers.XL);
+            var (h, l) = (Registers.XH, Registers.XL);
 
             States.Add(1);
 

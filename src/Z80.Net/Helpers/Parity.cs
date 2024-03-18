@@ -1,7 +1,7 @@
-using Z80.Net.Registers;
-using static Z80.Net.Registers.Flags;
+using OldBit.Z80.Net.Registers;
+using static OldBit.Z80.Net.Registers.Flags;
 
-namespace Z80.Net.Helpers;
+namespace OldBit.Z80.Net.Helpers;
 
 /// <summary>
 /// Contains parity lookup table for faster access instead of dynamic calculation.

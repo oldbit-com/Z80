@@ -1,4 +1,4 @@
-namespace Z80.Net;
+namespace OldBit.Z80.Net;
 
 partial class Z80
 {

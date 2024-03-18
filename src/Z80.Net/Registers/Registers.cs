@@ -1,7 +1,7 @@
-using Z80.Net.Extensions;
-using Z80.Net.Helpers;
+using OldBit.Z80.Net.Extensions;
+using OldBit.Z80.Net.Helpers;
 
-namespace Z80.Net.Registers;
+namespace OldBit.Z80.Net.Registers;
 
 /// <summary>
 /// Represents Z80 CPU registers.

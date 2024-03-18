@@ -16,7 +16,7 @@ public static class Runner
 
         var bus = new TestBus();
 
-        var z80 = new Z80(memory, bus);
+        var z80 = new OldBit.Z80.Net.Z80(memory, bus);
         z80.Run();
     }
 

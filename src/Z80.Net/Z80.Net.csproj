@@ -13,6 +13,8 @@
         <RepositoryUrl>https://github.com/oldbit-com/Z80.Net</RepositoryUrl>
         <PackageTags>Z80 Emulator</PackageTags>
         <Description>Z80 CPU emulator written in .NET</Description>
+        <AssemblyName>OldBit.Z80.Net</AssemblyName>
+        <RootNamespace>OldBit.Z80.Net</RootNamespace>
     </PropertyGroup>
     
     <ItemGroup>

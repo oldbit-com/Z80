@@ -1,4 +1,4 @@
-namespace Z80.Net.OpCodes;
+namespace OldBit.Z80.Net.OpCodes;
 
 internal sealed class OpCodesIndex
 {

@@ -1,4 +1,4 @@
-namespace Z80.Net.OpCodes;
+namespace OldBit.Z80.Net.OpCodes;
 
 /// <summary>
 /// Provides a mapping of Z80 opcodes to their respective byte values.

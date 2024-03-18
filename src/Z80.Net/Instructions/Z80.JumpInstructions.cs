@@ -1,6 +1,6 @@
-using static Z80.Net.Registers.Flags;
+using static OldBit.Z80.Net.Registers.Flags;
 
-namespace Z80.Net;
+namespace OldBit.Z80.Net;
 
 partial class Z80
 {

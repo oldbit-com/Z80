@@ -1,8 +1,8 @@
-using Z80.Net.Helpers;
-using Z80.Net.Registers;
-using static Z80.Net.Registers.Flags;
+using OldBit.Z80.Net.Helpers;
+using OldBit.Z80.Net.Registers;
+using static OldBit.Z80.Net.Registers.Flags;
 
-namespace Z80.Net;
+namespace OldBit.Z80.Net;
 
 partial class Z80
 {

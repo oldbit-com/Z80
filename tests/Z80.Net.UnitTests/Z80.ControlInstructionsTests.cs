@@ -1,3 +1,5 @@
+using OldBit.Z80.Net;
+
 namespace Z80.Net.UnitTests;
 
 public class Z80ControlInstructionsTests

@@ -1,4 +1,4 @@
-namespace Z80.Net.Extensions;
+namespace OldBit.Z80.Net.Extensions;
 
 public static class WordExtensions
 {

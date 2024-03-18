@@ -1,5 +1,6 @@
-using Z80.Net.Extensions;
-using Z80.Net.Registers;
+using OldBit.Z80.Net;
+using OldBit.Z80.Net.Extensions;
+using OldBit.Z80.Net.Registers;
 using Z80.Net.UnitTests.Support;
 
 namespace Z80.Net.UnitTests.Fixtures;
@@ -98,11 +99,11 @@ internal sealed class Z80Builder
         return this;
     }
 
-    internal Z80 Build()
+    internal OldBit.Z80.Net.Z80 Build()
     {
         Memory = new TestMemory(_code.ToArray());
 
-        var z80 = new Z80(Memory, _bus)
+        var z80 = new OldBit.Z80.Net.Z80(Memory, _bus)
         {
             Registers =
             {

@@ -1,4 +1,4 @@
-namespace Z80.Net;
+namespace OldBit.Z80.Net;
 
 /// <summary>
 /// Represents the I/O bus. It is accessed using IN and OUT instructions.

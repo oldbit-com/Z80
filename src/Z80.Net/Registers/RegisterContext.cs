@@ -1,4 +1,4 @@
-namespace Z80.Net.Registers;
+namespace OldBit.Z80.Net.Registers;
 
 /// <summary>
 /// Specifies context for the HL register which is either HL, IX or IY.

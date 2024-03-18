@@ -1,4 +1,4 @@
-namespace Z80.Net.Helpers;
+namespace OldBit.Z80.Net.Helpers;
 
 internal static class Converter
 {

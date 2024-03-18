@@ -1,3 +1,5 @@
+using OldBit.Z80.Net;
+
 namespace Z80.Net.UnitTests.Fixtures;
 
 internal class TestBus : IBus

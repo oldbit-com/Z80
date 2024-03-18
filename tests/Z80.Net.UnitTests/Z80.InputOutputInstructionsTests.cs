@@ -1,5 +1,6 @@
 using NSubstitute;
-using Z80.Net.Registers;
+using OldBit.Z80.Net;
+using OldBit.Z80.Net.Registers;
 using Z80.Net.UnitTests.Extensions;
 using Z80.Net.UnitTests.Support;
 

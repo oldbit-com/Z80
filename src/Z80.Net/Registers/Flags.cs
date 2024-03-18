@@ -1,4 +1,4 @@
-namespace Z80.Net.Registers;
+namespace OldBit.Z80.Net.Registers;
 
 /// <summary>
 /// Specifies Z80 CPU flags. Includes two undocumented Y and X flags.

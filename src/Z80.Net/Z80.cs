@@ -1,7 +1,7 @@
-using Z80.Net.OpCodes;
-using Z80.Net.Registers;
+using OldBit.Z80.Net.OpCodes;
+using OldBit.Z80.Net.Registers;
 
-namespace Z80.Net;
+namespace OldBit.Z80.Net;
 
 public partial class Z80
 {

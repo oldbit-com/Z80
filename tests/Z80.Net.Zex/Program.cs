@@ -1,4 +1,4 @@
-﻿using Z80.Net.Zex;
+﻿using OldBit.Z80.Net.Zex;
 
 Console.WriteLine("Specify which test to run:");
 Console.WriteLine("1. Prelim");

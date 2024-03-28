@@ -1,6 +1,4 @@
-using OldBit.Z80.Net;
-
-namespace Z80.Net.Zex.Setup;
+namespace OldBit.Z80.Net.Zex.Setup;
 
 internal class TestMemory : IMemory
 {

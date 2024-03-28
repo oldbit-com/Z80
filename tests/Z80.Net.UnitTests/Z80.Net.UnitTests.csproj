@@ -7,6 +7,8 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <AssemblyName>OldBit.Z80.Net.UnitTests</AssemblyName>
+        <RootNamespace>OldBit.Z80.Net.UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

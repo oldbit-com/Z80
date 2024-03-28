@@ -1,4 +1,6 @@
-namespace Z80.Net.UnitTests;
+using OldBit.Z80.Net.UnitTests.Fixtures;
+
+namespace OldBit.Z80.Net.UnitTests;
 
 public class Z8016BitLoadInstructionsTests
 {

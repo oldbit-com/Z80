@@ -5,8 +5,8 @@ namespace OldBit.Z80.Net;
 
 public partial class Z80
 {
-    private readonly IMemory _memory;
-    private readonly IBus? _bus;
+    private IMemory _memory;
+    private IBus? _bus;
 
     private readonly OpCodesIndex _opCodes = new();
     private bool _isExtendedInstruction;
@@ -19,30 +19,15 @@ public partial class Z80
     public InterruptMode InterruptMode { get; private set; }
     public StatesCounter States { get; } = new();
 
-    public Z80(IMemory memory, IBus? bus = null)
+    public Z80()
     {
-        _memory = memory;
-        _bus = bus;
-
         Reset();
         SetupInstructions();
     }
 
-    private void SetupInstructions()
+    public Z80(IMemory memory) : this()
     {
-        AddControlInstructions();
-        AddCallAndReturnInstructions();
-        AddJumpInstructions();
-        AddExchangeBlockInstructions();
-        AddGeneralPurposeArithmeticInstructions();
-        Add8BitLoadInstructions();
-        Add8BitArithmeticInstructions();
-        Add16BitLoadInstructions();
-        Add16BitArithmeticInstructions();
-        AddRotateShiftInstructions();
-        AddBitSetResetTestInstructions();
-        AddInputOutputInstructions();
-        AddUndocumentedInstructions();
+        _memory = memory;
     }
 
     public void Run(int statesToExecute = 0)
@@ -77,7 +62,6 @@ public partial class Z80
 
                 default:
                     _opCodes.Execute(_isExtendedInstruction ? 0xED00 | opCode : opCode);
-
                     break;
             }
 
@@ -85,6 +69,43 @@ public partial class Z80
             _isExtendedInstruction = false;
             _indexRegisterOffset = 0;
         }
+    }
+
+    public Z80 AddBus(IBus? bus)
+    {
+        _bus = bus;
+        return this;
+    }
+
+    public void Reset()
+    {
+        Registers = new Registers.Registers
+        {
+            A = 0xFF,
+            F = Flags.All,
+            PC = 0x000,
+            SP = 0xFFF,
+        };
+        IFF1 = false;
+        IFF2 = false;
+        IsHalted = false;
+    }
+
+    private void SetupInstructions()
+    {
+        AddControlInstructions();
+        AddCallAndReturnInstructions();
+        AddJumpInstructions();
+        AddExchangeBlockInstructions();
+        AddGeneralPurposeArithmeticInstructions();
+        Add8BitLoadInstructions();
+        Add8BitArithmeticInstructions();
+        Add16BitLoadInstructions();
+        Add16BitArithmeticInstructions();
+        AddRotateShiftInstructions();
+        AddBitSetResetTestInstructions();
+        AddInputOutputInstructions();
+        AddUndocumentedInstructions();
     }
 
     /// <summary>
@@ -108,19 +129,5 @@ public partial class Z80
         }
 
         _opCodes.Execute(0xCB00 | opCode);
-    }
-
-    public void Reset()
-    {
-        Registers = new Registers.Registers
-        {
-            A = 0xFF,
-            F = Flags.All,
-            PC = 0x000,
-            SP = 0xFFF,
-        };
-        IFF1 = false;
-        IFF2 = false;
-        IsHalted = false;
     }
 }

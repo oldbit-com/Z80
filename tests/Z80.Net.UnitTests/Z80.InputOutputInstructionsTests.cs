@@ -1,10 +1,10 @@
 using NSubstitute;
-using OldBit.Z80.Net;
 using OldBit.Z80.Net.Registers;
-using Z80.Net.UnitTests.Extensions;
-using Z80.Net.UnitTests.Support;
+using OldBit.Z80.Net.UnitTests.Extensions;
+using OldBit.Z80.Net.UnitTests.Fixtures;
+using OldBit.Z80.Net.UnitTests.Support;
 
-namespace Z80.Net.UnitTests;
+namespace OldBit.Z80.Net.UnitTests;
 
 public class Z80InputOutputInstructionsTests
 {

@@ -1,7 +1,7 @@
 using System.Reflection;
-using Z80.Net.Zex.Setup;
+using OldBit.Z80.Net.Zex.Setup;
 
-namespace Z80.Net.Zex;
+namespace OldBit.Z80.Net.Zex;
 
 public static class Runner
 {
@@ -16,7 +16,7 @@ public static class Runner
 
         var bus = new TestBus();
 
-        var z80 = new OldBit.Z80.Net.Z80(memory, bus);
+        var z80 = new Z80(memory).AddBus(bus);
         z80.Run();
     }
 

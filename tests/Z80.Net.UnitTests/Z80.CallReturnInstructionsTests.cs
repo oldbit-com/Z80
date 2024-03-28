@@ -1,7 +1,8 @@
 using OldBit.Z80.Net.Registers;
-using Z80.Net.UnitTests.Extensions;
+using OldBit.Z80.Net.UnitTests.Extensions;
+using OldBit.Z80.Net.UnitTests.Fixtures;
 
-namespace Z80.Net.UnitTests;
+namespace OldBit.Z80.Net.UnitTests;
 
 public class Z80CallReturnInstructionsTests
 {

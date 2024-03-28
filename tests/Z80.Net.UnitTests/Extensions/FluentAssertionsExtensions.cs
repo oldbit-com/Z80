@@ -1,7 +1,6 @@
-using FluentAssertions;
 using FluentAssertions.Numeric;
 
-namespace Z80.Net.UnitTests.Extensions;
+namespace OldBit.Z80.Net.UnitTests.Extensions;
 
 public static class FluentAssertionsExtensions
 {

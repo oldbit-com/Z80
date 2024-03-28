@@ -1,10 +1,8 @@
-using OldBit.Z80.Net.Registers;
-
-namespace Z80.Net.UnitTests.Extensions;
+namespace OldBit.Z80.Net.UnitTests.Extensions;
 
 internal static class RegistersExtensions
 {
-    internal static Word ValueOf(this Registers registers, string register)
+    internal static Word ValueOf(this Registers.Registers registers, string register)
     {
         return register switch
         {

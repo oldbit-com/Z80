@@ -1,6 +1,6 @@
-using OldBit.Z80.Net;
+using OldBit.Z80.Net.UnitTests.Fixtures;
 
-namespace Z80.Net.UnitTests;
+namespace OldBit.Z80.Net.UnitTests;
 
 public class Z80ControlInstructionsTests
 {

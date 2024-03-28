@@ -16,10 +16,10 @@
         <AssemblyName>OldBit.Z80.Net</AssemblyName>
         <RootNamespace>OldBit.Z80.Net</RootNamespace>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-            <_Parameter1>Z80.Net.UnitTests</_Parameter1>
+            <_Parameter1>OldBit.Z80.Net.UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 </Project>

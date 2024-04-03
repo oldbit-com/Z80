@@ -39,6 +39,8 @@ public partial class Z80
             }
 
             var opCode = FetchOpCode();
+            IncrementR();
+
             switch (opCode)
             {
                 case 0xCB:
@@ -68,10 +70,54 @@ public partial class Z80
         }
     }
 
-    public Z80 AddBus(IBus? bus)
+    /// <summary>
+    /// Executes a Maskable Interrupt.
+    /// </summary>
+    /// <param name="data">The data byte associated with the interrupt.
+    /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
+    public void Int(byte data)
     {
-        _bus = bus;
-        return this;
+        IsHalted = false;
+        if (!IFF1)
+        {
+            return;
+        }
+
+        IFF1 = false;
+        IFF2 = false;
+
+        switch (InterruptMode)
+        {
+            case InterruptMode.Mode0:
+            case InterruptMode.Mode1:
+                PushPC();
+                Registers.PC = 0x38; // RST 38h
+                break;
+
+            case InterruptMode.Mode2:
+                PushPC();
+                var address = (Word)(Registers.I << 8 | data);
+                Registers.PC = ReadWord(address);
+                break;
+        }
+
+        States.Add(7);
+        IncrementR();
+    }
+
+    /// <summary>
+    /// Executes a Non-Maskable Interrupt.
+    /// </summary>
+    public void Nmi()
+    {
+        IsHalted = false;
+        IFF1 = false;
+        IFF2 = false;
+        PushPC();
+        Registers.PC = 0x66;
+
+        States.Add(5);
+        IncrementR();
     }
 
     public void Reset()
@@ -86,6 +132,12 @@ public partial class Z80
         IFF1 = false;
         IFF2 = false;
         IsHalted = false;
+    }
+
+    public Z80 AddBus(IBus? bus)
+    {
+        _bus = bus;
+        return this;
     }
 
     private void SetupInstructions()
@@ -125,6 +177,17 @@ public partial class Z80
             opCode = FetchOpCode();
         }
 
+        IncrementR();
         _opCodes.Execute(0xCB00 | opCode);
     }
+
+    /// <summary>
+    /// Pushes the Program Counter onto the stack.
+    /// </summary>
+    private void PushPC() => Execute_PUSH((byte)(Registers.SP >> 8), (byte)(Registers.PC & 0xFF));
+
+    /// <summary>
+    /// Increments the R register keeping the MSB intact.
+    /// </summary>
+    private void IncrementR() => Registers.R = (byte)((Registers.R & 0x80) | ((Registers.R + 1) & 0x7F));
 }

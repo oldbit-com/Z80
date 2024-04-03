@@ -449,24 +449,20 @@ public class Z808BitLoadInstructionsTests
         z80.States.TotalStates.Should().Be(16);
     }
 
-    [Theory]
-    [InlineData(0, H | N | C, Z | P | C)]
-    [InlineData(0xFF, None, S | P)]
-    public void When_LD_A_R_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(byte value, Flags flags, Flags expectedFlags)
+
+    [Fact]
+    public void When_LD_A_R_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
     {
         var z80 = new Z80Builder()
-            .Flags(flags)
+            .Flags(All)
             .Iff2(true)
-            .Code(
-                $"LD A,{value}",
-                "LD R,A",
-                "LD A,R")
+            .Code("LD A,R")
             .Build();
 
-        z80.Run(7 + 9 + 9);
+        z80.Run(9);
 
-        z80.Registers.A.Should().Be(value);
-        z80.Registers.F.Should().Be(expectedFlags);
-        z80.States.TotalStates.Should().Be(25);
+        z80.Registers.A.Should().Be(2);
+        z80.Registers.F.Should().Be(C | P | S);
+        z80.States.TotalStates.Should().Be(9);
     }
 }

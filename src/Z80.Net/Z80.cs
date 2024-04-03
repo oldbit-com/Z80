@@ -31,7 +31,7 @@ public partial class Z80
     {
         Cycles.Limit(cyclesToExecute);
 
-        while (!(Registers.Context == RegisterContext.HL && _isExtendedInstruction && Cycles.IsComplete))
+        while (!Cycles.IsComplete || Registers.UseIndexRegister)
         {
             if (IsHalted)
             {
@@ -41,9 +41,6 @@ public partial class Z80
 
             var opCode = FetchOpCode();
             IncrementR();
-
-            //Console.WriteLine($"PC: {Registers.PC - 1:X4}, Opcode: {opCode:X2}");
-            //Trace.WriteLine($"PC: {Registers.PC - 1:X4}, Opcode: {opCode:X2}");
 
             switch (opCode)
             {

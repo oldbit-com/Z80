@@ -31,7 +31,7 @@ public partial class Z80
     {
         Cycles.Limit(cyclesToExecute);
 
-        while (!Cycles.IsComplete)
+        while (!(Registers.Context == RegisterContext.HL && _isExtendedInstruction && Cycles.IsComplete))
         {
             if (IsHalted)
             {
@@ -42,7 +42,8 @@ public partial class Z80
             var opCode = FetchOpCode();
             IncrementR();
 
-            System.Diagnostics.Debug.WriteLine("PC: {0:X4}, Opcode: {1:X2}", Registers.PC - 1, opCode);
+            //Console.WriteLine($"PC: {Registers.PC - 1:X4}, Opcode: {opCode:X2}");
+            //Trace.WriteLine($"PC: {Registers.PC - 1:X4}, Opcode: {opCode:X2}");
 
             switch (opCode)
             {
@@ -187,7 +188,7 @@ public partial class Z80
     /// <summary>
     /// Pushes the Program Counter onto the stack.
     /// </summary>
-    private void PushPC() => Execute_PUSH((byte)(Registers.SP >> 8), (byte)(Registers.PC & 0xFF));
+    private void PushPC() => Execute_PUSH((byte)(Registers.PC >> 8), (byte)(Registers.PC & 0xFF));
 
     /// <summary>
     /// Increments the R register keeping the MSB intact.

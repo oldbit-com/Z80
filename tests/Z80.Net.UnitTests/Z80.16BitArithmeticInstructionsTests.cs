@@ -21,7 +21,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0x00);
         z80.Registers.F.Should().Be(H | C);
-        z80.States.TotalStates.Should().Be(31);
+        z80.Cycles.TotalCycles.Should().Be(31);
     }
 
     [Theory]
@@ -43,7 +43,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(expectedHL);
         z80.Registers.F.Should().Be(expectedFlags);
-        z80.States.TotalStates.Should().Be(31);
+        z80.Cycles.TotalCycles.Should().Be(31);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0x8482);
         z80.Registers.F.Should().Be(None);
-        z80.States.TotalStates.Should().Be(21);
+        z80.Cycles.TotalCycles.Should().Be(21);
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0);
         z80.Registers.F.Should().Be(H | C);
-        z80.States.TotalStates.Should().Be(31);
+        z80.Cycles.TotalCycles.Should().Be(31);
     }
 
     [Theory]
@@ -98,7 +98,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.ValueOf(register).Should().Be(0x0001);
         z80.Registers.F.Should().Be(H | C);
-        z80.States.TotalStates.Should().Be(39);
+        z80.Cycles.TotalCycles.Should().Be(39);
     }
 
     [Theory]
@@ -117,7 +117,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.ValueOf(register).Should().Be(0xFFFC);
         z80.Registers.F.Should().Be(Y | H | X | C);
-        z80.States.TotalStates.Should().Be(29);
+        z80.Cycles.TotalCycles.Should().Be(29);
     }
 
     [Fact]
@@ -135,7 +135,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0x00);
         z80.Registers.F.Should().Be(Z | H | C);
-        z80.States.TotalStates.Should().Be(35);
+        z80.Cycles.TotalCycles.Should().Be(35);
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0xEE91);
         z80.Registers.F.Should().Be(S | Y | X);
-        z80.States.TotalStates.Should().Be(35);
+        z80.Cycles.TotalCycles.Should().Be(35);
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0xE3FF);
         z80.Registers.F.Should().Be(S | Y | C);
-        z80.States.TotalStates.Should().Be(25);
+        z80.Cycles.TotalCycles.Should().Be(25);
     }
 
     [Fact]
@@ -188,7 +188,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0xF661);
         z80.Registers.F.Should().Be(S | Y | H | P );
-        z80.States.TotalStates.Should().Be(35);
+        z80.Cycles.TotalCycles.Should().Be(35);
     }
 
     [Fact]
@@ -206,7 +206,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0);
         z80.Registers.F.Should().Be(Z | N);
-        z80.States.TotalStates.Should().Be(35);
+        z80.Cycles.TotalCycles.Should().Be(35);
     }
 
     [Fact]
@@ -224,7 +224,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0x8003);
         z80.Registers.F.Should().Be(S | H | N | C);
-        z80.States.TotalStates.Should().Be(35);
+        z80.Cycles.TotalCycles.Should().Be(35);
     }
 
     [Fact]
@@ -241,7 +241,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0xFFFF);
         z80.Registers.F.Should().Be(S | Y | H | X | N | C);
-        z80.States.TotalStates.Should().Be(25);
+        z80.Cycles.TotalCycles.Should().Be(25);
     }
 
     [Fact]
@@ -259,7 +259,7 @@ public class Z8016BitArithmeticInstructionsTests
 
         z80.Registers.HL.Should().Be(0xE003);
         z80.Registers.F.Should().Be(S | Y | H | P | N | C);
-        z80.States.TotalStates.Should().Be(35);
+        z80.Cycles.TotalCycles.Should().Be(35);
     }
 
     [Fact]
@@ -290,7 +290,7 @@ public class Z8016BitArithmeticInstructionsTests
         z80.Registers.SP.Should().Be(0x00FA);
         z80.Registers.IX.Should().Be(0xFF01);
         z80.Registers.IY.Should().Be(0xFF02);
-        z80.States.TotalStates.Should().Be(112);
+        z80.Cycles.TotalCycles.Should().Be(112);
     }
 
     [Fact]
@@ -321,6 +321,6 @@ public class Z8016BitArithmeticInstructionsTests
         z80.Registers.SP.Should().Be(0x00F8);
         z80.Registers.IX.Should().Be(0xFEFF);
         z80.Registers.IY.Should().Be(0xFF00);
-        z80.States.TotalStates.Should().Be(112);
+        z80.Cycles.TotalCycles.Should().Be(112);
     }
 }

@@ -10,7 +10,7 @@ partial class Z80
     /// <returns>The value from the data bus.</returns>
     private byte ReadBus(byte topHalf, byte bottomHalf)
     {
-        States.Add(4);
+        Cycles.Add(4);
 
         return _bus?.Read((Word)((topHalf << 8) | bottomHalf)) ?? 0xFF;
     }
@@ -23,7 +23,7 @@ partial class Z80
     /// <param name="data">The data to be written</param>
     private void WriteBus(byte topHalf, byte bottomHalf, byte data)
     {
-        States.Add(4);
+        Cycles.Add(4);
 
         _bus?.Write((Word)((topHalf << 8) | bottomHalf), data);
     }

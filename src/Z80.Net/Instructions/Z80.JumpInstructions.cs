@@ -46,21 +46,21 @@ partial class Z80
             return;
         }
 
-        States.Add(5);
+        Cycles.Add(5);
 
         Registers.PC += (Word)(sbyte)offset;
     }
 
     private void Execute_DJNZ()
     {
-        States.Add(1);
+        Cycles.Add(1);
 
         var offset = (sbyte)FetchByte();
         Registers.B -= 1;
 
         if (Registers.B != 0)
         {
-            States.Add(5);
+            Cycles.Add(5);
 
             Registers.PC = (Word)(Registers.PC + offset);
         }

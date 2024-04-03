@@ -17,7 +17,7 @@ public partial class Z80
     public bool IFF1 { get; internal set; }
     public bool IFF2 { get; internal set; }
     public InterruptMode InterruptMode { get; private set; }
-    public StatesCounter States { get; } = new();
+    public CyclesCounter Cycles { get; } = new();
 
     public Z80(IMemory memory)
     {
@@ -27,19 +27,22 @@ public partial class Z80
         _memory = memory;
     }
 
-    public void Run(int statesToExecute = 0)
+    public void Run(int cyclesToExecute = 0)
     {
-        States.Limit(statesToExecute);
+        Cycles.Limit(cyclesToExecute);
 
-        while (!States.IsComplete)
+        while (!Cycles.IsComplete)
         {
             if (IsHalted)
             {
+                Cycles.Halt();
                 break;
             }
 
             var opCode = FetchOpCode();
             IncrementR();
+
+            System.Diagnostics.Debug.WriteLine("PC: {0:X4}, Opcode: {1:X2}", Registers.PC - 1, opCode);
 
             switch (opCode)
             {
@@ -101,7 +104,7 @@ public partial class Z80
                 break;
         }
 
-        States.Add(7);
+        Cycles.Add(7);
         IncrementR();
     }
 
@@ -116,7 +119,7 @@ public partial class Z80
         PushPC();
         Registers.PC = 0x66;
 
-        States.Add(5);
+        Cycles.Add(5);
         IncrementR();
     }
 
@@ -126,8 +129,8 @@ public partial class Z80
         {
             A = 0xFF,
             F = Flags.All,
-            PC = 0x000,
-            SP = 0xFFF,
+            PC = 0x0000,
+            SP = 0xFFFF,
         };
         IFF1 = false;
         IFF2 = false;
@@ -170,7 +173,7 @@ public partial class Z80
             _indexRegisterOffset = (sbyte)FetchByte();
             opCode = FetchByte();
 
-            States.Add(2);
+            Cycles.Add(2);
         }
         else
         {

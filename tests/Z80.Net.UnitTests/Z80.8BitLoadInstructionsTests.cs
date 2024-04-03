@@ -1,3 +1,4 @@
+using OldBit.Z80.Net.Registers;
 using OldBit.Z80.Net.UnitTests.Fixtures;
 
 namespace OldBit.Z80.Net.UnitTests;
@@ -395,5 +396,77 @@ public class Z808BitLoadInstructionsTests
         z80.Run(7 + 13);
         memory[0x06].Should().Be(0x99);
         z80.States.TotalStates.Should().Be(20);
+    }
+
+    [Fact]
+    public void When_LD_I_A_InstructionIsExecuted_InterruptRegisterIsUpdated()
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                "LD A,0x99",
+                "LD I,A")
+            .Build();
+
+        z80.Run(7 + 9);
+
+        z80.Registers.I.Should().Be(0x99);
+        z80.States.TotalStates.Should().Be(16);
+    }
+
+    [Theory]
+    [InlineData(0, H | N | C, Z | P | C)]
+    [InlineData(0xFF, None, S | P)]
+    public void When_LD_A_I_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(byte value, Flags flags, Flags expectedFlags)
+    {
+        var z80 = new Z80Builder()
+            .Flags(flags)
+            .Iff2(true)
+            .Code(
+                $"LD A,{value}",
+                "LD I,A",
+                "LD A,I")
+            .Build();
+
+        z80.Run(7 + 9 + 9);
+
+        z80.Registers.A.Should().Be(value);
+        z80.Registers.F.Should().Be(expectedFlags);
+        z80.States.TotalStates.Should().Be(25);
+    }
+
+    [Fact]
+    public void When_LD_R_A_InstructionIsExecuted_RefreshRegisterIsUpdated()
+    {
+        var z80 = new Z80Builder()
+            .Code(
+                "LD A,0x99",
+                "LD R,A")
+            .Build();
+
+        z80.Run(7 + 9);
+
+        z80.Registers.R.Should().Be(0x99);
+        z80.States.TotalStates.Should().Be(16);
+    }
+
+    [Theory]
+    [InlineData(0, H | N | C, Z | P | C)]
+    [InlineData(0xFF, None, S | P)]
+    public void When_LD_A_R_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(byte value, Flags flags, Flags expectedFlags)
+    {
+        var z80 = new Z80Builder()
+            .Flags(flags)
+            .Iff2(true)
+            .Code(
+                $"LD A,{value}",
+                "LD R,A",
+                "LD A,R")
+            .Build();
+
+        z80.Run(7 + 9 + 9);
+
+        z80.Registers.A.Should().Be(value);
+        z80.Registers.F.Should().Be(expectedFlags);
+        z80.States.TotalStates.Should().Be(25);
     }
 }

@@ -528,9 +528,17 @@ internal class AssemblyParser
 
                 switch (operand1.Is8BitRegister)
                 {
-                    // LD r,r'
+                    // LD r,r
                     case true when operand2.Is8BitRegister:
-                        return CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix, 0b01000000 | RegisterCodeMap[operand1.OperandType] << 3 | RegisterCodeMap[operand2.OperandType]);
+                        return operand1.OperandType switch
+                        {
+                            OperandType.RegisterA when operand2.OperandType == OperandType.RegisterI => [0xED, 0x57],
+                            OperandType.RegisterI when operand2.OperandType == OperandType.RegisterA => [0xED, 0x47],
+                            OperandType.RegisterA when operand2.OperandType == OperandType.RegisterR => [0xED, 0x5F],
+                            OperandType.RegisterR when operand2.OperandType == OperandType.RegisterA => [0xED, 0x4F],
+                            _ => CodeWithOptionalPrefix(operand1.CodePrefix ?? operand2.CodePrefix,
+                                0b01000000 | RegisterCodeMap[operand1.OperandType] << 3 | RegisterCodeMap[operand2.OperandType])
+                        };
 
                     // LD r,n
                     case true when operand2.OperandType == OperandType.Value:

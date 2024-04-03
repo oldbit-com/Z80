@@ -11,6 +11,16 @@ public sealed class Registers : StandardRegisters
     internal RegisterContext Context { get; set; }
 
     /// <summary>
+    /// Gets or sets the value of the I register.
+    /// </summary>
+    public byte I { get; set; }
+
+    /// <summary>
+    /// Gets or sets the value of the R register.
+    /// </summary>
+    public byte R { get; set; }
+
+    /// <summary>
     /// Gets a alternative (prime) registers set.
     /// </summary>
     public StandardRegisters Prime { get; } = new();

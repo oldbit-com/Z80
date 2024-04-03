@@ -5,7 +5,7 @@ namespace OldBit.Z80.Net;
 
 public partial class Z80
 {
-    private IMemory _memory;
+    private readonly IMemory _memory;
     private IBus? _bus;
 
     private readonly OpCodesIndex _opCodes = new();
@@ -19,14 +19,11 @@ public partial class Z80
     public InterruptMode InterruptMode { get; private set; }
     public StatesCounter States { get; } = new();
 
-    public Z80()
+    public Z80(IMemory memory)
     {
         Reset();
         SetupInstructions();
-    }
 
-    public Z80(IMemory memory) : this()
-    {
         _memory = memory;
     }
 

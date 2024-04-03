@@ -1,3 +1,6 @@
+using OldBit.Z80.Net.Registers;
+using static OldBit.Z80.Net.Registers.Flags;
+
 namespace OldBit.Z80.Net;
 
 partial class Z80
@@ -93,10 +96,34 @@ partial class Z80
         _opCodes["LD (DE),A"] = () => WriteByte(Registers.DE, Registers.A);
         _opCodes["LD (nn),A"] = () => WriteByte(FetchWord(), Registers.A);
 
-        _opCodes["LD I,A"] = () => throw new NotImplementedException();
-        _opCodes["LD A,I"] = () => throw new NotImplementedException();
+        _opCodes["LD I,A"] = () =>
+        {
+            States.Add(1);
+            Registers.I = Registers.A;
+        };
+        _opCodes["LD A,I"] = () =>
+        {
+            States.Add(1);
+            Registers.A = Registers.I;
+            Registers.F &= C | S;
+            Registers.F |= Registers.A == 0 ? Z : 0;
+            Registers.F |= IFF2 ? P : 0;
+            Registers.F |= (Flags)(Registers.A & (byte)S);
+        };
 
-        _opCodes["LD R,A"] = () => throw new NotImplementedException();
-        _opCodes["LD A,R"] = () => throw new NotImplementedException();
+        _opCodes["LD R,A"] = () =>
+        {
+            States.Add(1);
+            Registers.R = Registers.A;
+        };
+        _opCodes["LD A,R"] = () =>
+        {
+            States.Add(1);
+            Registers.A = Registers.R;
+            Registers.F &= C | S;
+            Registers.F |= Registers.A == 0 ? Z : 0;
+            Registers.F |= IFF2 ? P : 0;
+            Registers.F |= (Flags)(Registers.A & (byte)S);
+        };
     }
 }

@@ -31,7 +31,7 @@ public partial class Z80
     {
         Cycles.Limit(cyclesToExecute);
 
-        while (!Cycles.IsComplete || Registers.UseIndexRegister)
+        while (!Cycles.IsComplete || Registers.UseIndexRegister || _isExtendedInstruction)
         {
             if (IsHalted)
             {

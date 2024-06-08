@@ -98,11 +98,11 @@ internal sealed class Z80Builder
         return this;
     }
 
-    internal Z80Cpu.Z80 Build()
+    internal Z80 Build()
     {
         Memory = new TestMemory(_code.ToArray());
 
-        var z80 = new Z80Cpu.Z80(Memory)
+        var z80 = new Z80(Memory)
         {
             Registers =
             {

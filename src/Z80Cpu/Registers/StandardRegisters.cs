@@ -49,9 +49,18 @@ public class StandardRegisters
     public byte L { get; set; }
 
     /// <summary>
-    /// Gets the value of the AF register.
+    /// Gets or sets the value of the AF register.
     /// </summary>
-    public Word AF => Converter.ToWord(A, (byte)F);
+    public Word AF
+    {
+        get => Converter.ToWord(A, (byte)F);
+        set
+        {
+            var (a, f) = value;
+            A = a;
+            F = (Flags)f;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the value of the BC register.

@@ -16,7 +16,7 @@ public partial class Z80
     public bool IsHalted { get; private set; }
     public bool IFF1 { get; internal set; }
     public bool IFF2 { get; internal set; }
-    public InterruptMode InterruptMode { get; private set; }
+    public InterruptMode InterruptMode { get; set; }
     public CyclesCounter Cycles { get; } = new();
     public Action? Trap { get; set; }
 
@@ -28,7 +28,11 @@ public partial class Z80
         _memory = memory;
     }
 
-    public void Run(int cyclesToExecute = 0)
+    /// <summary>
+    /// Executes the Z80 CPU instructions.
+    /// </summary>
+    /// <param name="cyclesToExecute">Specifies the number of cycles to execute. Null if no limit.</param>
+    public void Run(int? cyclesToExecute = null)
     {
         Cycles.Limit(cyclesToExecute);
 

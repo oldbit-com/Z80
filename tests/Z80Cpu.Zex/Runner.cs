@@ -16,7 +16,7 @@ public static class Runner
 
         var bus = new TestBus();
 
-        var z80 = new Z80Cpu.Z80(memory).AddBus(bus);
+        var z80 = new Z80(memory).AddBus(bus);
         z80.Run();
     }
 

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>OldBit.Z80Cpu</PackageId>
+        <Version>0.0.6</Version>
+        <Title>Z80 CPU emulator</Title>
+        <Authors>Wojciech Sobieszek</Authors>
+        <Copyright>Wojciech Sobieszek</Copyright>
+        <RepositoryUrl>https://github.com/oldbit-com/Z80Cpu</RepositoryUrl>
+        <PackageTags>Z80 Emulator</PackageTags>
+        <Description>Z80 CPU emulator written in .NET</Description>
+        <AssemblyName>OldBit.Z80Cpu</AssemblyName>
+        <RootNamespace>OldBit.Z80Cpu</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>OldBit.Z80Cpu.UnitTests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+</Project>

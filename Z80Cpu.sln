@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Cpu", "src\Z80Cpu\Z80Cpu.csproj", "{F8780E59-4A6E-44CC-8ACB-290764ADD1FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{109A5116-3701-42A1-A892-C04D61032EFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0654BE8C-1134-4B4D-B537-FDA63E670073}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Cpu.UnitTests", "tests\Z80Cpu.UnitTests\Z80Cpu.UnitTests.csproj", "{BC9CF7A9-ECBB-4B34-B0B2-771D26BB3763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Z80Cpu.Zex", "tests\Z80Cpu.Zex\Z80Cpu.Zex.csproj", "{5425CB95-CCEE-4301-8576-E9D7C9AC742C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8780E59-4A6E-44CC-8ACB-290764ADD1FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8780E59-4A6E-44CC-8ACB-290764ADD1FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8780E59-4A6E-44CC-8ACB-290764ADD1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8780E59-4A6E-44CC-8ACB-290764ADD1FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC9CF7A9-ECBB-4B34-B0B2-771D26BB3763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC9CF7A9-ECBB-4B34-B0B2-771D26BB3763}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC9CF7A9-ECBB-4B34-B0B2-771D26BB3763}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC9CF7A9-ECBB-4B34-B0B2-771D26BB3763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5425CB95-CCEE-4301-8576-E9D7C9AC742C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5425CB95-CCEE-4301-8576-E9D7C9AC742C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5425CB95-CCEE-4301-8576-E9D7C9AC742C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5425CB95-CCEE-4301-8576-E9D7C9AC742C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8780E59-4A6E-44CC-8ACB-290764ADD1FA} = {109A5116-3701-42A1-A892-C04D61032EFD}
+		{BC9CF7A9-ECBB-4B34-B0B2-771D26BB3763} = {0654BE8C-1134-4B4D-B537-FDA63E670073}
+		{5425CB95-CCEE-4301-8576-E9D7C9AC742C} = {0654BE8C-1134-4B4D-B537-FDA63E670073}
+	EndGlobalSection
+EndGlobal

@@ -2,7 +2,7 @@ name: Publish NuGet package
 
 on:
   workflow_dispatch:
-    
+
 jobs:
   build:
 
@@ -26,4 +26,4 @@ jobs:
       run: dotnet publish -c Release --no-restore
 
     - name: Upload nuget package
-      run: dotnet nuget push ./src/Z80.Net/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/oldbit-com/index.json
+      run: dotnet nuget push ./src/Z80Cpu/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/oldbit-com/index.json

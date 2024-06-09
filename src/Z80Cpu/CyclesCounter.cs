@@ -35,18 +35,18 @@ public sealed class CyclesCounter
     /// <summary>
     /// Limits the number of T-states that should be executed.
     /// </summary>
-    /// <param name="cyclesLimit">The maximum number of T-states to execute. Null if no limit.</param>
-    public void Limit(int? cyclesLimit)
+    /// <param name="cyclesLimit">The maximum number of T-states to execute.</param>
+    public void Limit(int cyclesLimit)
     {
         var remaining = _cyclesLimit - CurrentCycles;
-        _cyclesLimit = cyclesLimit.GetValueOrDefault(0) + remaining;
+        _cyclesLimit = cyclesLimit + remaining;
         CurrentCycles = 0;
     }
 
     /// <summary>
     /// Returns true if number of executed T-states reached the maximum.
     /// </summary>
-    public bool IsComplete => CurrentCycles >= _cyclesLimit;
+    public bool IsComplete => _cyclesLimit != 0 && CurrentCycles >= _cyclesLimit;
 
     /// <summary>
     /// Gets the total number of T-states since boot or hard reset.

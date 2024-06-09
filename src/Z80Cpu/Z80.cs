@@ -14,8 +14,8 @@ public partial class Z80
 
     public Registers.Registers Registers { get; private set; } = new();
     public bool IsHalted { get; private set; }
-    public bool IFF1 { get; internal set; }
-    public bool IFF2 { get; internal set; }
+    public bool IFF1 { get; set; }
+    public bool IFF2 { get; set; }
     public InterruptMode InterruptMode { get; set; }
     public CyclesCounter Cycles { get; } = new();
     public Action? Trap { get; set; }
@@ -31,8 +31,8 @@ public partial class Z80
     /// <summary>
     /// Executes the Z80 CPU instructions.
     /// </summary>
-    /// <param name="cyclesToExecute">Specifies the number of cycles to execute. Null if no limit.</param>
-    public void Run(int? cyclesToExecute = null)
+    /// <param name="cyclesToExecute">Specifies the number of cycles to execute. Zero means no limit.</param>
+    public void Run(int cyclesToExecute = 0)
     {
         Cycles.Limit(cyclesToExecute);
 

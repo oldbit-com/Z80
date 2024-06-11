@@ -20,10 +20,10 @@ partial class Z80
             IFF2 = true;
         };
 
-        _opCodes["IM 0"] = () => InterruptMode = InterruptMode.Mode0;
+        _opCodes["IM 0"] = () => IM = InterruptMode.Mode0;
 
-        _opCodes["IM 1"] = () => InterruptMode = InterruptMode.Mode1;
+        _opCodes["IM 1"] = () => IM = InterruptMode.Mode1;
 
-        _opCodes["IM 2"] = () => InterruptMode = InterruptMode.Mode2;
+        _opCodes["IM 2"] = () => IM = InterruptMode.Mode2;
     }
 }

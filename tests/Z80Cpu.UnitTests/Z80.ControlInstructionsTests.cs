@@ -64,7 +64,7 @@ public class Z80ControlInstructionsTests
         z80.Run(16);
 
         z80.Registers.PC.Should().Be(4);
-        z80.InterruptMode.Should().Be(InterruptMode.Mode0);
+        z80.IM.Should().Be(InterruptMode.Mode0);
         z80.Cycles.TotalCycles.Should().Be(16);
     }
 
@@ -78,7 +78,7 @@ public class Z80ControlInstructionsTests
         z80.Run(8);
 
         z80.Registers.PC.Should().Be(2);
-        z80.InterruptMode.Should().Be(InterruptMode.Mode1);
+        z80.IM.Should().Be(InterruptMode.Mode1);
         z80.Cycles.TotalCycles.Should().Be(8);
     }
 
@@ -92,7 +92,7 @@ public class Z80ControlInstructionsTests
         z80.Run(8);
 
         z80.Registers.PC.Should().Be(2);
-        z80.InterruptMode.Should().Be(InterruptMode.Mode2);
+        z80.IM.Should().Be(InterruptMode.Mode2);
         z80.Cycles.TotalCycles.Should().Be(8);
     }
 }

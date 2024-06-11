@@ -6,7 +6,7 @@ namespace OldBit.Z80Cpu.Registers;
 /// <summary>
 /// Represents Z80 CPU registers.
 /// </summary>
-public sealed class Registers : StandardRegisters
+public sealed class RegisterSet : StandardRegisterSet
 {
     internal RegisterContext Context { get; set; }
 
@@ -23,7 +23,7 @@ public sealed class Registers : StandardRegisters
     /// <summary>
     /// Gets a alternative (prime) registers set.
     /// </summary>
-    public StandardRegisters Prime { get; } = new();
+    public StandardRegisterSet Prime { get; } = new();
 
     /// <summary>
     /// Gets or sets undocumented IXL register which is a low byte of the IX register.

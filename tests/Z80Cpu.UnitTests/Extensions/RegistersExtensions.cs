@@ -1,10 +1,12 @@
+using OldBit.Z80Cpu.Registers;
+
 namespace OldBit.Z80Cpu.UnitTests.Extensions;
 
 internal static class RegistersExtensions
 {
-    internal static Word ValueOf(this Registers.Registers registers, string register)
+    internal static Word ValueOf(this RegisterSet registers, string registerName)
     {
-        return register switch
+        return registerName switch
         {
             "A" => registers.A,
             "B" => registers.B,
@@ -15,7 +17,7 @@ internal static class RegistersExtensions
             "L" => registers.L,
             "IX" => registers.IX,
             "IY" => registers.IY,
-            _ => throw new ArgumentException($"Unknown register: {register}")
+            _ => throw new ArgumentException($"Unknown register: {registerName}")
         };
     }
 }

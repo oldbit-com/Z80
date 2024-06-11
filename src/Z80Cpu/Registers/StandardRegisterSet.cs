@@ -6,7 +6,7 @@ namespace OldBit.Z80Cpu.Registers;
 /// <summary>
 /// Represents the standard Z80 registers that have prime counterpart.
 /// </summary>
-public class StandardRegisters
+public class StandardRegisterSet
 {
     /// <summary>
     /// Gets or sets the value of the Accumulator register.

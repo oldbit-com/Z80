@@ -3,23 +3,34 @@ using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu;
 
+/// <summary>
+/// Represents the Z80 CPU emulator.
+/// </summary>
 public partial class Z80
 {
-    private readonly IMemory _memory;
-    private IBus? _bus;
+    private const int RST38 = 0x0038;
 
     private readonly OpCodesIndex _opCodes = new();
     private bool _isExtendedInstruction;
     private sbyte _indexRegisterOffset;
 
-    public Registers.Registers Registers { get; private set; } = new();
+    private readonly IMemory _memory;
+    private IBus? _bus;
+
+    public RegisterSet Registers { get; private set; } = new();
+
     public bool IsHalted { get; private set; }
     public bool IFF1 { get; set; }
     public bool IFF2 { get; set; }
-    public InterruptMode InterruptMode { get; set; }
+    public InterruptMode IM { get; set; }
+
     public CyclesCounter Cycles { get; } = new();
     public Action? Trap { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Z80"/> class.
+    /// </summary>
+    /// <param name="memory">An instance of IMemory that represents the memory used by the Z80 CPU.</param>
     public Z80(IMemory memory)
     {
         Reset();
@@ -94,12 +105,12 @@ public partial class Z80
         IFF1 = false;
         IFF2 = false;
 
-        switch (InterruptMode)
+        switch (IM)
         {
             case InterruptMode.Mode0:
             case InterruptMode.Mode1:
                 PushPC();
-                Registers.PC = 0x38; // RST 38h
+                Registers.PC = RST38;
                 break;
 
             case InterruptMode.Mode2:
@@ -130,7 +141,7 @@ public partial class Z80
 
     public void Reset()
     {
-        Registers = new Registers.Registers
+        Registers = new Registers.RegisterSet
         {
             A = 0xFF,
             F = Flags.All,
@@ -189,13 +200,7 @@ public partial class Z80
         _opCodes.Execute(0xCB00 | opCode);
     }
 
-    /// <summary>
-    /// Pushes the Program Counter onto the stack.
-    /// </summary>
     private void PushPC() => Execute_PUSH((byte)(Registers.PC >> 8), (byte)(Registers.PC & 0xFF));
 
-    /// <summary>
-    /// Increments the R register keeping the MSB intact.
-    /// </summary>
     private void IncrementR() => Registers.R = (byte)((Registers.R & 0x80) | ((Registers.R + 1) & 0x7F));
 }

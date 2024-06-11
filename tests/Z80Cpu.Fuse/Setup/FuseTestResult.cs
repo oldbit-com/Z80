@@ -75,16 +75,15 @@ public class FuseTestResult
 
         var registers2 = testLines.Skip(2 + events.Count).First()
             .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .Select(o => Convert.ToUInt16(o, 16))
             .ToArray();
 
-        testResult.I = (byte)registers2[0];
-        testResult.R = (byte)registers2[1];
-        testResult.IFF1 = registers2[2] != 0;
-        testResult.IFF2 = registers2[3] != 0;
-        testResult.IM = (byte)registers2[4];
-        testResult.Halted = registers2[5] != 0;
-        testResult.States = registers2[6];
+        testResult.I = (byte)Convert.ToUInt16(registers2[0], 16);
+        testResult.R = (byte)Convert.ToUInt16(registers2[1], 16);
+        testResult.IFF1 = registers2[2] != "0";
+        testResult.IFF2 = registers2[3] != "0";
+        testResult.IM = (byte)Convert.ToUInt16(registers2[4], 16);
+        testResult.Halted = registers2[5] != "0";
+        testResult.States = Convert.ToUInt16(registers2[6]);
 
         return testResult;
     }

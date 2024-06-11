@@ -21,5 +21,4 @@ public static class Runner
     }
 
     private static string BinFolder => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-
 }

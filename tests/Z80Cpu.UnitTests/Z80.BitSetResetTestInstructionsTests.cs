@@ -70,17 +70,15 @@ public class Z80BitSetResetTestInstructionsTests
     }
 
     [Theory]
-    [InlineData("IX", 0xDD, 0x50)]
-    [InlineData("IY", 0xFD, 0x50)]
-    [InlineData("IX", 0xDD, 0x57)]
-    [InlineData("IY", 0xFD, 0x57)]
-    public void When_BIT_0_IXY_InstructionIsExecuted_FlagsAreSet(string register, byte prefix, byte instruction)
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_BIT_0_IXY_InstructionIsExecuted_FlagsAreSet(string register)
     {
         var z80 = new Z80Builder()
             .Flags(Z | N)
             .Code(
                 $"LD {register},0x07",
-                $"db {prefix}, 0xCB, 0x02, {instruction}",
+                $"BIT 0,({register}+2),A",
                 "NOP",
                 "db 0xFD")
             .Build();
@@ -135,16 +133,16 @@ public class Z80BitSetResetTestInstructionsTests
     }
 
     [Theory]
-    [InlineData("IX", 0xDD, 0xD0, "B")]
-    [InlineData("IY", 0xFD, 0xD0, "B")]
-    [InlineData("IX", 0xDD, 0xD5, "L")]
-    [InlineData("IY", 0xFD, 0xD5, "L")]
-    public void When_SET_2_IXY_InstructionIsExecuted_BitIsSet(string ixy, byte prefix, byte instruction, string resultRegister)
+    [InlineData("IX", "B")]
+    [InlineData("IY", "B")]
+    [InlineData("IX", "L")]
+    [InlineData("IY", "L")]
+    public void When_SET_2_IXY_InstructionIsExecuted_BitIsSet(string register, string result)
     {
         var builder = new Z80Builder()
             .Code(
-                $"LD {ixy},0x07",
-                $"db {prefix}, 0xCB, 0x02, {instruction}",
+                $"LD {register},0x07",
+                $"SET 2,({register}+2),{result}",
                 "NOP",
                 "db 0");
 
@@ -154,7 +152,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(14 + 23);
 
         memory[9].Should().Be(0b00000100);
-        z80.Registers.ValueOf(resultRegister).Should().Be(0x04);
+        z80.Registers.ValueOf(result).Should().Be(0x04);
         z80.Cycles.TotalCycles.Should().Be(37);
     }
 
@@ -202,16 +200,16 @@ public class Z80BitSetResetTestInstructionsTests
     }
 
     [Theory]
-    [InlineData("IX", 0xDD, 0x90, "B")]
-    [InlineData("IY", 0xFD, 0x90, "B")]
-    [InlineData("IX", 0xDD, 0x95, "L")]
-    [InlineData("IY", 0xFD, 0x95, "L")]
-    public void When_RES_2_IXY_InstructionIsExecuted_BitReset(string ixy, byte prefix, byte instruction, string resultRegister)
+    [InlineData("IX", "B")]
+    [InlineData("IY", "B")]
+    [InlineData("IX", "L")]
+    [InlineData("IY", "L")]
+    public void When_RES_2_IXY_InstructionIsExecuted_BitReset(string register, string result)
     {
         var builder = new Z80Builder()
             .Code(
-                $"LD {ixy},0x07",
-                $"db {prefix}, 0xCB, 0x02, {instruction}",
+                $"LD {register},0x07",
+                $"RES 2,({register}+2),{result}",
                 "NOP",
                 "db 0xFF");
 
@@ -221,7 +219,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(14 + 23);
 
         memory[9].Should().Be(0b11111011);
-        z80.Registers.ValueOf(resultRegister).Should().Be(0xFB);
+        z80.Registers.ValueOf(result).Should().Be(0xFB);
         z80.Cycles.TotalCycles.Should().Be(37);
     }
 

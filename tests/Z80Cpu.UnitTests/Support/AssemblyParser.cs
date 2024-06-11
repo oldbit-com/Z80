@@ -322,24 +322,29 @@ internal class AssemblyParser
 
                 opCode = instruction.Mnemonic switch
                 {
-                    "RLC" => 0x06,
-                    "RL" => 0x16,
-                    "RRC" => 0x0E,
-                    "RR" => 0x1E,
-                    "SLA" => 0x26,
-                    "SRA" => 0x2E,
-                    "SRL" => 0x3E,
-                    "SLL" => 0x36
+                    "RLC" => 0x00,
+                    "RL" => 0x10,
+                    "RRC" => 0x08,
+                    "RR" => 0x18,
+                    "SLA" => 0x20,
+                    "SRA" => 0x28,
+                    "SRL" => 0x38,
+                    "SLL" => 0x30
                 };
 
                 switch (operand1.OperandType)
                 {
                     case OperandType.AddressHL:
-                        return [0xCB, opCode];
+                        return [0xCB, opCode + 6];
 
                     case OperandType.AddressIXd:
                     case OperandType.AddressIYd:
-                        return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, opCode];
+                        if (instruction.Operands.Length > 1)
+                        {
+                            operand2 = Operand.Parse(instruction.Operands[1]);
+                            return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, opCode + RegisterCodeMap[operand2.OperandType]];
+                        }
+                        return [operand1.CodePrefix!.Value, 0xCB, operand1.Offset, opCode + 6];
                 }
 
                 break;
@@ -712,7 +717,8 @@ internal class AssemblyParser
 
                     case OperandType.AddressIXd:
                     case OperandType.AddressIYd:
-                        return [operand2.CodePrefix!.Value, 0xCB, operand2.Offset, prefix | 0b00000110 | operand1.Value << 3];
+                        var operand3 = Operand.Parse(instruction.Operands[2]);
+                        return [operand2.CodePrefix!.Value, 0xCB, operand2.Offset, prefix + (operand1.Value << 3) + RegisterCodeMap[operand3.OperandType]];
                 }
 
                 return [0xCB, prefix | operand1.Value << 3 | RegisterCodeMap[operand2.OperandType]];

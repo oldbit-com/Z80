@@ -179,6 +179,27 @@ public class Z80RotateShiftInstructionsTests
     }
 
     [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_RLC_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"RLC ({register}+5),L",
+                "db 0,1");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0x02);
+        z80.Registers.F.Should().Be(None);
+        z80.Registers.L.Should().Be(0x02);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
     [InlineData(0x55, Z | H | N | C, 0xAB, S | Y | X)]
     [InlineData(0xAA, Z | H | N | C, 0x55, P | C)]
     [InlineData(0x80, None, 0x00, Z | P | C)]
@@ -259,6 +280,27 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].Should().Be(0x05);
         z80.Registers.F.Should().Be(P);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_RL_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"RL ({register}+5),H",
+                "db 0,2");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0x05);
+        z80.Registers.F.Should().Be(P);
+        z80.Registers.H.Should().Be(0x05);
         z80.Cycles.TotalCycles.Should().Be(37);
     }
 
@@ -347,6 +389,27 @@ public class Z80RotateShiftInstructionsTests
     }
 
     [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_RRC_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"RRC ({register}+5),A",
+                "db 0,0x7F");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0xBF);
+        z80.Registers.F.Should().Be(S | Y | X | C);
+        z80.Registers.A.Should().Be(0xBF);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
     [InlineData(0x55, Z | H | N | C, 0xAA, S | Y | X | P | C)]
     [InlineData(0xAA, Z | H | N | C, 0xD5, S)]
     [InlineData(0x01, None, 0x00, Z | P | C)]
@@ -427,6 +490,27 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].Should().Be(0xCC);
         z80.Registers.F.Should().Be(S | X | P | C);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_RR_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"RR ({register}+5),D",
+                "db 0,0x99");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0xCC);
+        z80.Registers.F.Should().Be(S | X | P | C);
+        z80.Registers.D.Should().Be(0xCC);
         z80.Cycles.TotalCycles.Should().Be(37);
     }
 
@@ -515,6 +599,27 @@ public class Z80RotateShiftInstructionsTests
     }
 
     [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_SLA_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"SLA ({register}+5),C",
+                "db 0,0x99");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0x32);
+        z80.Registers.F.Should().Be(Y | C);
+        z80.Registers.C.Should().Be(0x32);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
     [InlineData(0x85, Z | H | N, 0xC2, S | C)]
     [InlineData(0x7F, None, 0x3F, Y | X | P | C)]
     [InlineData(0x01, All, 0, Z | P | C)]
@@ -594,6 +699,27 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].Should().Be(0xCC);
         z80.Registers.F.Should().Be(S | X | P | C);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_SRA_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"SRA ({register}+5),E",
+                "db 0,0x99");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0xCC);
+        z80.Registers.F.Should().Be(S | X | P | C);
+        z80.Registers.E.Should().Be(0xCC);
         z80.Cycles.TotalCycles.Should().Be(37);
     }
 
@@ -681,6 +807,27 @@ public class Z80RotateShiftInstructionsTests
     }
 
     [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_SRL_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"SRL ({register}+5),E",
+                "db 0,0x99");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0x4C);
+        z80.Registers.F.Should().Be(X | C);
+        z80.Registers.E.Should().Be(0x4C);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
     [InlineData(0x55, Z | H | N | C, 0xAB, S | Y | X)]
     [InlineData(0xAA, Z | H | N, 0x55, P | C)]
     [InlineData(0x99, All, 0x33, Y | P | C)]
@@ -761,6 +908,27 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].Should().Be(0x33);
         z80.Registers.F.Should().Be(Y | P | C);
+        z80.Cycles.TotalCycles.Should().Be(37);
+    }
+
+    [Theory]
+    [InlineData("IX")]
+    [InlineData("IY")]
+    public void When_SLL_IXY_r_InstructionIsExecuted_RegisterAndFlagsAreUpdated(string register)
+    {
+        var builder = new Z80Builder()
+            .Flags(All)
+            .Code(
+                $"LD {register},4",
+                $"SLL ({register}+5),B",
+                "db 0,0x99");
+        var z80 = builder.Build();
+
+        z80.Run(14 + 23);
+
+        builder.Memory![0x09].Should().Be(0x33);
+        z80.Registers.F.Should().Be(Y | P | C);
+        z80.Registers.B.Should().Be(0x33);
         z80.Cycles.TotalCycles.Should().Be(37);
     }
 

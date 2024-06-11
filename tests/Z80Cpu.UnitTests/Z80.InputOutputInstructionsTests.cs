@@ -116,7 +116,7 @@ public class Z80InputOutputInstructionsTests
         memory[9].Should().Be(data);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0A);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z | P);
         z80.Cycles.TotalCycles.Should().Be(36);
     }
 
@@ -149,7 +149,7 @@ public class Z80InputOutputInstructionsTests
         memory[13].Should().Be(0x75);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0E);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z);
         z80.Cycles.TotalCycles.Should().Be(120);
     }
 
@@ -175,7 +175,7 @@ public class Z80InputOutputInstructionsTests
         memory[9].Should().Be(data);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x08);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z);
         z80.Cycles.TotalCycles.Should().Be(36);
     }
 
@@ -208,7 +208,7 @@ public class Z80InputOutputInstructionsTests
         memory[13].Should().Be(0x71);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x08);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(P | Z);
         z80.Cycles.TotalCycles.Should().Be(120);
     }
 
@@ -290,7 +290,7 @@ public class Z80InputOutputInstructionsTests
         _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), data);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0A);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z | N);
         z80.Cycles.TotalCycles.Should().Be(36);
     }
 
@@ -316,7 +316,7 @@ public class Z80InputOutputInstructionsTests
         _mockBus.Received().Write(To.Word(0x00, z80.Registers.C), 0x05);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x0E);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z | P);
         z80.Cycles.TotalCycles.Should().Be(120);
     }
 
@@ -339,7 +339,7 @@ public class Z80InputOutputInstructionsTests
         _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), data);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x08);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z | N);
         z80.Cycles.TotalCycles.Should().Be(36);
     }
 
@@ -365,7 +365,7 @@ public class Z80InputOutputInstructionsTests
         _mockBus.Received().Write(To.Word(0x00, z80.Registers.C), 0x01);
         z80.Registers.BC.Should().Be(0x34);
         z80.Registers.HL.Should().Be(0x08);
-        z80.Registers.F.Should().Be(Z | N | C);
+        z80.Registers.F.Should().Be(Z);
         z80.Cycles.TotalCycles.Should().Be(120);
     }
 }

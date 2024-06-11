@@ -2,7 +2,7 @@ using System.Text;
 
 namespace OldBit.Z80Cpu.Zex.Setup;
 
-internal class TestBus() : IBus
+internal class TestBus : IBus
 {
     private readonly byte _textPort = 5;    // Port used by Bootstrap to output a character
 

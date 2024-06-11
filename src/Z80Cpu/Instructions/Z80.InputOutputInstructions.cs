@@ -58,17 +58,23 @@ partial class Z80
         WriteByte(Registers.HL, result);
 
         Registers.B -= 1;
+        byte temp = 0;
         if (increment)
         {
             Registers.HL += 1;
+            temp = (byte)(Registers.C + result + 1);
         }
         else
         {
             Registers.HL -= 1;
+            temp = (byte)(Registers.C + result - 1);
         }
 
-        Registers.F = (Registers.F & ~Z) | N;
-        Registers.F |= Registers.B == 0 ? Z : 0;
+        Registers.F = Registers.B == 0 ? Z : 0;
+        Registers.F |= (result & 0x80) != 0 ? N : 0;
+        Registers.F |= temp < result ? H | C : 0;
+        Registers.F |= Parity.Lookup[(temp & 0x07) ^ Registers.B];
+        Registers.F |= (S | Y | X) & (Flags)Registers.B;
     }
 
     private void Execute_OUTI_OUTD(bool increment)
@@ -89,8 +95,12 @@ partial class Z80
             Registers.HL -= 1;
         }
 
-        Registers.F = (Registers.F & ~Z) | N;
-        Registers.F |= Registers.B == 0 ? Z : 0;
+        var temp = (byte)(data + Registers.L);
+        Registers.F = Registers.B == 0 ? Z : 0;
+        Registers.F |= (data & 0x80) != 0 ? N : 0;
+        Registers.F |= temp < data ? H | C : 0;
+        Registers.F |= Parity.Lookup[(temp & 0x07) ^ Registers.B];
+        Registers.F |= (S | Y | X) & (Flags)Registers.B;
     }
 
     private void ExecuteRepeated_OUT(bool increment, Action<bool> outInstruction)

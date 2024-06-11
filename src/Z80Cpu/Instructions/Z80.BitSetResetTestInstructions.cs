@@ -62,8 +62,7 @@ partial class Z80
         Registers.F |= result != 0 && bit == 7 ? S : 0;
         if (isMemory)
         {
-            Registers.F |= bit == 5 && Registers.H != 0 ? Y : 0;
-            Registers.F |= bit == 3 && Registers.H != 0 ? X : 0;
+            Registers.F |= (Flags)Registers.H & (X | Y);
         }
         else
         {

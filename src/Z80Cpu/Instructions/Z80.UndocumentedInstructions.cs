@@ -18,5 +18,10 @@ partial class Z80
         _opCodes[0xED6D] = _opCodes["RETN"];
         _opCodes[0xED75] = _opCodes["RETN"];
         _opCodes[0xED7D] = _opCodes["RETN"];
+
+        _opCodes[0xED4E] = _opCodes["IM 0"];
+        _opCodes[0xED66] = _opCodes["IM 0"];
+        _opCodes[0xED76] = _opCodes["IM 1"];
+        _opCodes[0xED7E] = _opCodes["IM 2"];
     }
 }

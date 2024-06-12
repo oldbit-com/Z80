@@ -33,3 +33,7 @@ apart from using it in my other projects.
   - Fuse tests (tests that come with the Fuse source code)
   - Zex tests (command line runner of the Z80 instruction exerciser)
 
+## References
+- [Z80 CPU User Manual](http://www.zilog.com/docs/z80/um0080.pdf)
+- [Z80 OpCodes Table](http://clrhome.org/table/)
+- [The Undocumented Z80 Documented](http://www.z80.info/zip/z80-documented.pdf)

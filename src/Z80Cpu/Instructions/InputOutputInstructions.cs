@@ -46,6 +46,7 @@ partial class Z80
         Registers.F |= S & (Flags)result;
         Registers.F |= Parity.Lookup[result];
         Registers.F |= result == 0 ? Z : 0;
+        Registers.F |= (Flags)result & (Y | X);
 
         return result;
     }

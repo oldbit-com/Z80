@@ -108,7 +108,7 @@ partial class Z80
             Registers.F &= C;
             Registers.F |= Registers.A == 0 ? Z : 0;
             Registers.F |= IFF2 ? P : 0;
-            Registers.F |= (Flags)Registers.A & S;
+            Registers.F |= (Flags)Registers.A & (S | Y | X);
         };
 
         _opCodes["LD R,A"] = () =>
@@ -123,7 +123,7 @@ partial class Z80
             Registers.F &= C | S;
             Registers.F |= Registers.A == 0 ? Z : 0;
             Registers.F |= IFF2 ? P : 0;
-            Registers.F |= (Flags)(Registers.A & (byte)S);
+            Registers.F |= (Flags)Registers.A & (S | Y | X);
         };
     }
 }

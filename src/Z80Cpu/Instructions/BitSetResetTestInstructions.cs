@@ -47,9 +47,10 @@ partial class Z80
     {
         var isMemory = Registers.UseIndexRegister || useHL;
 
+        Word address = 0;
         if (isMemory)
         {
-            var address = (Word)(Registers.XHL + _indexRegisterOffset);
+            address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
             Cycles.Add(1);
@@ -62,7 +63,15 @@ partial class Z80
         Registers.F |= result != 0 && bit == 7 ? S : 0;
         if (isMemory)
         {
-            Registers.F |= (Flags)Registers.H & (X | Y);
+            if (Registers.UseIndexRegister)
+            {
+                Registers.F |= (Flags)(address >> 8) & (X | Y);
+            }
+            else
+            {
+                Registers.F |= (Flags)Registers.H & (X | Y);
+            }
+
         }
         else
         {

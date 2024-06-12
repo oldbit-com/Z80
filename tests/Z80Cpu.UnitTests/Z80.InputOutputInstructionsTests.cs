@@ -47,12 +47,12 @@ public class Z80InputOutputInstructionsTests
     }
 
     [Theory]
-    [InlineData("A", 0xA5, All, S | P | C)]
-    [InlineData("B", 0xA5, All, S | P | C)]
-    [InlineData("C", 0xA5, All, S | P | C)]
-    [InlineData("D", 0xA5, All, S | P | C)]
-    [InlineData("E", 0x7E, None, P)]
-    [InlineData("H", 0x7F, None, None)]
+    [InlineData("A", 0xA5, All, S | P | C | Y)]
+    [InlineData("B", 0xA5, All, S | P | C | Y)]
+    [InlineData("C", 0xA5, All, S | P | C | Y)]
+    [InlineData("D", 0xA5, All, S | P | C | Y)]
+    [InlineData("E", 0x7E, None, P | Y | X)]
+    [InlineData("H", 0x7F, None, Y | X)]
     [InlineData("L", 0, None, Z | P)]
     public void When_IN_r_C_InstructionIsExecuted_InputIsReturned(
         string register, byte data, Flags flags, Flags expectedFlags)

@@ -10,7 +10,6 @@ public partial class Z80
 {
     private const int RST38 = 0x0038;
 
-    private readonly OpCodesIndex _opCodes = new();
     private bool _isExtendedInstruction;
     private sbyte _indexRegisterOffset;
 
@@ -159,27 +158,10 @@ public partial class Z80
         return this;
     }
 
-    private void SetupInstructions()
-    {
-        AddControlInstructions();
-        AddCallAndReturnInstructions();
-        AddJumpInstructions();
-        AddExchangeBlockInstructions();
-        AddGeneralPurposeArithmeticInstructions();
-        Add8BitLoadInstructions();
-        Add8BitArithmeticInstructions();
-        Add16BitLoadInstructions();
-        Add16BitArithmeticInstructions();
-        AddRotateShiftInstructions();
-        AddBitSetResetTestInstructions();
-        AddInputOutputInstructions();
-        AddUndocumentedInstructions();
-    }
-
     /// <summary>
     /// Processes CB prefixed op codes. They require slightly different handling,
     /// because for IX and IY registers, offset precedes the actual op code. This
-    /// is different than standard op codes where offset is after the op code.
+    /// is different from standard op codes where offset is after the op code.
     /// </summary>
     private void ExecuteBitOpCodes()
     {

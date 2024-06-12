@@ -1,7 +1,6 @@
 # Z80 CPU Emulator
 
-![Build]
-(https://github.com/oldbit-com/Z80Cpu/actions/workflows/build.yml/badge.svg)
+![Build](https://github.com/oldbit-com/Z80Cpu/actions/workflows/build.yml/badge.svg)
 
 ## Introduction
 This is a Z80 CPU emulator written in C#. There are many Z80 emulators out there, but this one is mine :)

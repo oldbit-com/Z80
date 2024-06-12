@@ -82,4 +82,6 @@ public class FuseTestCase
 
         return testCase;
     }
+
+    public override string ToString() => TestId;
 }

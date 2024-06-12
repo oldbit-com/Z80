@@ -7,12 +7,6 @@ public sealed class CyclesCounter
 {
     private int _cyclesLimit;
 
-    public void Reset()
-    {
-        TotalCycles = 0;
-        CurrentCycles = 0;
-    }
-
     /// <summary>
     /// Adds the specified number of T-states.
     /// </summary>

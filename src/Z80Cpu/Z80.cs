@@ -140,7 +140,7 @@ public partial class Z80
 
     public void Reset()
     {
-        Registers = new Registers.RegisterSet
+        Registers = new RegisterSet
         {
             A = 0xFF,
             F = Flags.All,

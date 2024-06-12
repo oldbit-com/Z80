@@ -7,7 +7,7 @@ public class FuseTests
 {
     [Theory]
     [MemberData(nameof(TestData))]
-    public void RunFuseTestCase(string testId, FuseTestCase testCase, FuseTestResult testResult)
+    public void RunFuseTestCase(FuseTestCase testCase, FuseTestResult testResult)
     {
         var z80 = SetupTest(testCase);
 
@@ -81,5 +81,5 @@ public class FuseTests
     public static IEnumerable<object[]> TestData =>
         FuseTestLoader.Load()
             //.Where(x => x.TestCase.TestId == "76")
-            .Select(x => new object[] { x.TestCase.TestId, x.TestCase, x.TestResult });
+            .Select(x => new object[] { x.TestCase, x.TestResult });
 }

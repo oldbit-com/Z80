@@ -1,5 +1,7 @@
 # Z80 CPU Emulator
 
+![Build] (https://github.com/oldbit-com/Z80Cpu/actions/workflows/build.yml/badge.svg)
+
 ## Introduction
 This is a Z80 CPU emulator written in C#. There are many Z80 emulators out there, but this one is mine :)
 I tried to write as clean and readable code as possible, so it can be used as a reference for anyone who 
@@ -29,7 +31,7 @@ apart from using it in my other projects.
     - `RotateShiftInstructions`
     - `UndocumentedInstructions`
 - There are 3 types of tests:
-  - Unit tests (I have written a very basic Z80 assembly parser to help me write unit tests)
+  - Unit tests (I have written a very basic Z80 assembly parser to help me write these)
   - Fuse tests (tests that come with the Fuse source code)
   - Zex tests (command line runner of the Z80 instruction exerciser)
 

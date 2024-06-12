@@ -1,5 +1,6 @@
 using FluentAssertions;
 using OldBit.Z80Cpu.Fuse.Setup;
+using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu.Fuse;
 
@@ -13,8 +14,17 @@ public class FuseTests
 
         z80.Run(testCase.States);
 
-        // Ignore Y and X undocumented flags for now
-        (z80.Registers.AF & 0xD7).Should().Be(testResult.AF & 0xD7);
+        z80.Registers.A.Should().Be((byte)(testResult.AF >> 8));
+        if (testCase.TestId is "37_1" or "3f" or "cb46_2" or "cb46_3" or "cb46_3" or "cb46_4" or "cb46_5"
+            or "cb4e" or "cb5e" or "cb6e" or "cb76")
+        {
+            // Ignore Y and X undocumented flags for these tests, undocumented features, may fix later, but not important
+            (z80.Registers.F & ~(Flags.X | Flags.Y)).Should().Be((Flags)(testResult.AF & 0xD7));
+        }
+        else
+        {
+            z80.Registers.F.Should().Be((Flags)(testResult.AF & 0xFF));
+        }
         z80.Registers.BC.Should().Be(testResult.BC);
         z80.Registers.DE.Should().Be(testResult.DE);
         z80.Registers.HL.Should().Be(testResult.HL);
@@ -39,6 +49,7 @@ public class FuseTests
 
         z80.Cycles.TotalCycles.Should().Be(testResult.States);
 
+        // TODO: Memory verification (events)
     }
 
     private static Z80 SetupTest(FuseTestCase testCase)
@@ -80,6 +91,6 @@ public class FuseTests
 
     public static IEnumerable<object[]> TestData =>
         FuseTestLoader.Load()
-            //.Where(x => x.TestCase.TestId == "76")
+            //.Where(x => x.TestCase.TestId == "3f")
             .Select(x => new object[] { x.TestCase, x.TestResult });
 }

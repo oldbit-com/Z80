@@ -44,14 +44,14 @@ public class Z80BitSetResetTestInstructionsTests
     }
 
     [Theory]
-    [InlineData(0, H)]
-    [InlineData(1, H | Z | P)]
-    [InlineData(2, H)]
-    [InlineData(3, H)]
-    [InlineData(4, H)]
-    [InlineData(5, H)]
-    [InlineData(6, H)]
-    [InlineData(7, H | S)]
+    [InlineData(0, H | X | Y)]
+    [InlineData(1, H | Z | P | X | Y)]
+    [InlineData(2, H | X | Y)]
+    [InlineData(3, H | X | Y)]
+    [InlineData(4, H | X | Y)]
+    [InlineData(5, H | X | Y)]
+    [InlineData(6, H | X | Y)]
+    [InlineData(7, H | S | X | Y)]
     public void When_BIT_n_HL_InstructionIsExecuted_FlagsAreSet(int bit, Flags expectedFlags)
     {
         var z80 = new Z80Builder()

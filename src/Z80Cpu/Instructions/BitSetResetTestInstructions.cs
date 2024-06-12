@@ -69,7 +69,7 @@ partial class Z80
             }
             else
             {
-                Registers.F |= (Flags)Registers.H & (X | Y);
+                Registers.F |= (Flags)value & (X | Y);
             }
 
         }

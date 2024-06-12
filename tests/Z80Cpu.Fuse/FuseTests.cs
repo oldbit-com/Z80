@@ -30,13 +30,15 @@ public class FuseTests
         z80.Registers.Prime.HL.Should().Be(testResult.HLPrime);
 
         z80.Registers.I.Should().Be(testResult.I);
-        //z80.Registers.R.Should().Be(testResult.R);
+        z80.Registers.R.Should().Be(testResult.R);
 
         z80.IM.Should().Be((InterruptMode)testResult.IM);
         z80.IFF1.Should().Be(testResult.IFF1);
         z80.IFF2.Should().Be(testResult.IFF2);
-        z80.Cycles.TotalCycles.Should().Be(testResult.States);
         z80.IsHalted.Should().Be(testResult.Halted);
+
+        z80.Cycles.TotalCycles.Should().Be(testResult.States);
+
     }
 
     private static Z80 SetupTest(FuseTestCase testCase)

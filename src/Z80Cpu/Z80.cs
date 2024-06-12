@@ -194,9 +194,9 @@ public partial class Z80
         else
         {
             opCode = FetchOpCode();
+            IncrementR();
         }
 
-        IncrementR();
         _opCodes.Execute(0xCB00 | opCode);
     }
 

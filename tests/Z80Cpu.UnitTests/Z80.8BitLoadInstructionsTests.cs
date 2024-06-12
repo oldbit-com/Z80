@@ -415,7 +415,7 @@ public class Z808BitLoadInstructionsTests
 
     [Theory]
     [InlineData(0, H | N | C, Z | P | C)]
-    [InlineData(0xFF, None, S | P)]
+    [InlineData(0xFF, None, S | P | Y | X)]
     public void When_LD_A_I_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(byte value, Flags flags, Flags expectedFlags)
     {
         var z80 = new Z80Builder()

@@ -37,7 +37,6 @@ public class FuseTestCase
 
         var registers2 = testLines[2]
             .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .Select(o => Convert.ToUInt16(o, 16))
             .ToArray();
 
         var testCase = new FuseTestCase
@@ -57,13 +56,13 @@ public class FuseTestCase
             PC = registers1[11],
             MemPtr = registers1[12],
 
-            I = (byte)registers2[0],
-            R = (byte)registers2[1],
-            IFF1 = registers2[2] != 0,
-            IFF2 = registers2[3] != 0,
-            IM = (byte)registers2[4],
-            Halted = registers2[5] != 0,
-            States = registers2[6]
+            I = Convert.ToByte(registers2[0], 16),
+            R = Convert.ToByte(registers2[1], 16),
+            IFF1 = registers2[2] != "0",
+            IFF2 = registers2[3] != "0",
+            IM = Convert.ToByte(registers2[4]),
+            Halted = registers2[5] != "0",
+            States = Convert.ToInt32(registers2[6]),
         };
 
         foreach (var memoryLine in testLines.Skip(3))

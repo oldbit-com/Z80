@@ -13,7 +13,7 @@ public class Z80ControlInstructionsTests
 
         z80.Run(4);
 
-        z80.Registers.PC.Should().Be(1);
+        z80.Registers.PC.Should().Be(0);
         z80.IsHalted.Should().BeTrue();
         z80.Cycles.TotalCycles.Should().Be(4);
     }

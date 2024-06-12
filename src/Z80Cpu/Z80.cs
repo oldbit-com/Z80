@@ -19,7 +19,7 @@ public partial class Z80
 
     public RegisterSet Registers { get; private set; } = new();
 
-    public bool IsHalted { get; private set; }
+    public bool IsHalted { get; internal set; }
     public bool IFF1 { get; set; }
     public bool IFF2 { get; set; }
     public InterruptMode IM { get; set; }

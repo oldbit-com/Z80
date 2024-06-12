@@ -77,13 +77,13 @@ public class FuseTestResult
             .Split(' ', StringSplitOptions.RemoveEmptyEntries)
             .ToArray();
 
-        testResult.I = (byte)Convert.ToUInt16(registers2[0], 16);
-        testResult.R = (byte)Convert.ToUInt16(registers2[1], 16);
+        testResult.I = Convert.ToByte(registers2[0], 16);
+        testResult.R = Convert.ToByte(registers2[1], 16);
         testResult.IFF1 = registers2[2] != "0";
         testResult.IFF2 = registers2[3] != "0";
-        testResult.IM = (byte)Convert.ToUInt16(registers2[4], 16);
+        testResult.IM = Convert.ToByte(registers2[4], 16);
         testResult.Halted = registers2[5] != "0";
-        testResult.States = Convert.ToUInt16(registers2[6]);
+        testResult.States = Convert.ToInt32(registers2[6]);
 
         return testResult;
     }

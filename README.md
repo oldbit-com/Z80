@@ -13,6 +13,7 @@ apart from using it in my other projects.
 ## Implementation
 - The emulator is written in C# 12 and .NET 8
 - Source files are kept small and clean using partial classes
+  - The main class is `Z80.cs`
   - Instructions are implemented in a separate files based on logical groups:
     - `8BitArithmeticInstructions`
     - `8BitLoadInstructions`
@@ -28,7 +29,7 @@ apart from using it in my other projects.
     - `RotateShiftInstructions`
     - `UndocumentedInstructions`
 - There are 3 types of tests:
-  - Unit tests
+  - Unit tests (I have written a very basic Z80 assembly parser to help me write unit tests)
   - Fuse tests (tests that come with the Fuse source code)
   - Zex tests (command line runner of the Z80 instruction exerciser)
 

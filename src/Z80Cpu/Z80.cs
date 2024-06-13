@@ -41,7 +41,10 @@ public partial class Z80
     /// </summary>
     public InterruptMode IM { get; set; }
 
-    public CyclesCounter Cycles { get; } = new();
+    /// <summary>
+    ///
+    /// </summary>
+    public StatesCounter States { get; } = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Z80"/> class.
@@ -58,16 +61,16 @@ public partial class Z80
     /// <summary>
     /// Executes the Z80 CPU instructions.
     /// </summary>
-    /// <param name="cyclesToExecute">Specifies the number of cycles to execute. Zero means no limit.</param>
-    public void Run(int cyclesToExecute = 0)
+    /// <param name="statesToExecute">Specifies the number of T-states to execute. Zero means no limit.</param>
+    public void Run(int statesToExecute = 0)
     {
-        Cycles.Limit(cyclesToExecute);
+        States.Limit(statesToExecute);
 
-        while (!Cycles.IsComplete || Registers.UseIndexRegister || _isExtendedInstruction)
+        while (!States.IsComplete || Registers.UseIndexRegister || _isExtendedInstruction)
         {
             if (IsHalted)
             {
-                Cycles.Halt();
+                States.Halt();
                 break;
             }
 
@@ -134,7 +137,7 @@ public partial class Z80
                 break;
         }
 
-        Cycles.Add(7);
+        States.Add(7);
         IncrementR();
     }
 
@@ -149,7 +152,7 @@ public partial class Z80
         PushPC();
         Registers.PC = 0x66;
 
-        Cycles.Add(5);
+        States.Add(5);
         IncrementR();
     }
 
@@ -191,7 +194,7 @@ public partial class Z80
             _indexRegisterOffset = (sbyte)FetchByte();
             opCode = FetchByte();
 
-            Cycles.Add(2);
+            States.Add(2);
         }
         else
         {

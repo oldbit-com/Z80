@@ -47,7 +47,7 @@ public class FuseTests
         z80.IFF2.Should().Be(testResult.IFF2);
         z80.IsHalted.Should().Be(testResult.Halted);
 
-        z80.Cycles.TotalCycles.Should().Be(testResult.States);
+        z80.States.TotalStates.Should().Be(testResult.States);
 
         // TODO: Memory verification (events)
     }

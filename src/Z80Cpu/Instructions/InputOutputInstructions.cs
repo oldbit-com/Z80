@@ -53,7 +53,7 @@ partial class Z80
 
     private void Execute_INI_IND(bool increment)
     {
-        Cycles.Add(1);
+        States.Add(1);
 
         var result = ReadBus(Registers.B, Registers.C);
         WriteByte(Registers.HL, result);
@@ -80,7 +80,7 @@ partial class Z80
 
     private void Execute_OUTI_OUTD(bool increment)
     {
-        Cycles.Add(1);
+        States.Add(1);
 
         var data = ReadByte(Registers.HL);
 
@@ -115,6 +115,6 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        Cycles.Add(5);
+        States.Add(5);
     }
 }

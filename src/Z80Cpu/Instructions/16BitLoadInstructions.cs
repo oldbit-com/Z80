@@ -23,7 +23,7 @@ partial class Z80
 
         _opCodes["LD SP,HL"] = () =>
         {
-            Cycles.Add(2);
+            States.Add(2);
 
             Registers.SP = Registers.XHL;
         };
@@ -48,7 +48,7 @@ partial class Z80
 
     private void Execute_PUSH(byte highByte, byte lowByte)
     {
-        Cycles.Add(1);
+        States.Add(1);
 
         Registers.SP -= 1;
         WriteByte(Registers.SP, highByte);

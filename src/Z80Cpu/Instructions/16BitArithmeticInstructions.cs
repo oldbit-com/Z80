@@ -35,7 +35,7 @@ partial class Z80
 
     private void Execute_ADD(Word value)
     {
-        Cycles.Add(7);
+        States.Add(7);
 
         var oldValue = Registers.XHL;
         var newValue = oldValue + value;
@@ -51,7 +51,7 @@ partial class Z80
 
     private void Execute_ADC(Word value)
     {
-        Cycles.Add(7);
+        States.Add(7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue + value + (byte)(Registers.F & C);
@@ -69,7 +69,7 @@ partial class Z80
 
     private void Execute_SBC(Word value)
     {
-        Cycles.Add(7);
+        States.Add(7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue - value - (byte)(Registers.F & C);
@@ -88,13 +88,13 @@ partial class Z80
 
     private Word Execute_INC(Word value)
     {
-        Cycles.Add(2);
+        States.Add(2);
         return (Word)(value + 1);
     }
 
     private Word Execute_DEC(Word value)
     {
-        Cycles.Add(2);
+        States.Add(2);
         return (Word)(value - 1);
     }
 }

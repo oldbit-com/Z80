@@ -16,11 +16,29 @@ public partial class Z80
     private readonly IMemory _memory;
     private IBus? _bus;
 
+    /// <summary>
+    /// Gets the Registers of the Z80 CPU.
+    /// </summary>
     public RegisterSet Registers { get; private set; } = new();
 
+    /// <summary>
+    /// Gets a value indicating whether the CPU is halted.
+    /// </summary>
     public bool IsHalted { get; internal set; }
+
+    /// <summary>
+    /// Gets or sets a value of the Interrupt Flip-Flop 1.
+    /// </summary>
     public bool IFF1 { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value of the Interrupt Flip-Flop 2.
+    /// </summary>
     public bool IFF2 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Interrupt Mode (0, 1 or 2).
+    /// </summary>
     public InterruptMode IM { get; set; }
 
     public CyclesCounter Cycles { get; } = new();
@@ -149,6 +167,11 @@ public partial class Z80
         IsHalted = false;
     }
 
+    /// <summary>
+    /// Adds a bus to the Z80 CPU.
+    /// </summary>
+    /// <param name="bus">An instance of IBus that represents the bus to be added to the Z80 CPU.</param>
+    /// <returns>Returns the Z80 instance after adding the bus.</returns>
     public Z80 AddBus(IBus? bus)
     {
         _bus = bus;

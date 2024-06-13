@@ -24,7 +24,6 @@ public partial class Z80
     public InterruptMode IM { get; set; }
 
     public CyclesCounter Cycles { get; } = new();
-    public Action? Trap { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Z80"/> class.
@@ -48,8 +47,6 @@ public partial class Z80
 
         while (!Cycles.IsComplete || Registers.UseIndexRegister || _isExtendedInstruction)
         {
-            Trap?.Invoke();
-
             if (IsHalted)
             {
                 Cycles.Halt();

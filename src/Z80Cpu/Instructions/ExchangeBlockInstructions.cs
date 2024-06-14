@@ -35,8 +35,8 @@ partial class Z80
 
             States.Add(1);
 
-            WriteByte(Registers.SP, l);
             WriteByte((Word)(Registers.SP + 1), h);
+            WriteByte(Registers.SP, l);
 
             States.Add(2);
 

@@ -58,9 +58,10 @@ partial class Z80
 
     private (byte highByte, byte lowByte) Execute_POP()
     {
-        var highByte = ReadByte((Word)(Registers.SP + 1));
         var lowByte = ReadByte(Registers.SP);
+        var highByte = ReadByte((Word)(Registers.SP + 1));
         Registers.SP += 2;
+
         return (highByte, lowByte);
     }
 }

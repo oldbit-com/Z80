@@ -1,12 +1,10 @@
 namespace OldBit.Z80Cpu.Fuse.Setup;
 
-public record Event(int Time, string Type, Word Address, byte Data);
-
 public class FuseTestResult
 {
     public string TestId { get; set; } = string.Empty;
 
-    public List<Event> Events { get; } = [];
+    public List<InputOutputEvent> Events { get; } = [];
 
     public Word AF { get; set; }
     public Word BC { get; set; }
@@ -47,7 +45,7 @@ public class FuseTestResult
 
         foreach (var parts in events.Select(@event => @event.Split(' ', StringSplitOptions.RemoveEmptyEntries)))
         {
-            testResult.Events.Add(new Event(
+            testResult.Events.Add(new InputOutputEvent(
                 Convert.ToUInt16(parts[0]),
                 parts[1],
                 Convert.ToUInt16(parts[2], 16),

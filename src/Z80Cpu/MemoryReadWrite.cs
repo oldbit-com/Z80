@@ -61,7 +61,7 @@ partial class Z80
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A word value.</returns>
-    private Word ReadWord(Word address) => (Word)(ReadByte((Word)(address + 1)) << 8 | ReadByte(address));
+    private Word ReadWord(Word address) => (Word)(ReadByte(address) | ReadByte((Word)(address + 1)) << 8);
 
     /// <summary>
     /// Writes an 8-bit value to the specified location.

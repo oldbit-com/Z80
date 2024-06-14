@@ -52,7 +52,7 @@ public class FuseTests
 
         z80.States.TotalStates.Should().Be(testResult.States);
 
-        var expectedEvents = testResult.Events.Where(e => e.Type is "MR" or "MW").ToList();
+        var expectedEvents = testResult.Events.Where(e => e.Type is "MR" or "MW" or "PR" or "PW").ToList();
         _events.Count.Should().Be(expectedEvents.Count);
         _events.Should().BeEquivalentTo(expectedEvents, options => options.WithStrictOrdering());
     }
@@ -89,7 +89,7 @@ public class FuseTests
             IsHalted = testCase.Halted
         };
 
-        z80.AddBus(new TestBus());
+        z80.AddBus(new TestBus(_events));
 
         return z80;
     }

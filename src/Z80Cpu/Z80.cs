@@ -1,5 +1,4 @@
 using OldBit.Z80Cpu.Contention;
-using OldBit.Z80Cpu.OpCodes;
 using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu;

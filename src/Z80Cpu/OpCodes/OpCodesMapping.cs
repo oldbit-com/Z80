@@ -44,7 +44,6 @@ internal static class OpCodesMapping
         { "RET M", 0xF8 }, { "LD SP,HL", 0xF9 }, { "JP M,nn", 0xFA }, { "EI", 0xFB }, { "CALL M,nn", 0xFC }, { "IY PREFIX", 0xFD }, { "CP n", 0xFE }, { "RST 38h", 0xFF },
 
         // ED prefixed instructions
-        // TODO: Add undocumented instructions: https://clrhome.org/table/
         { "IN B,(C)", 0xED40 }, { "OUT (C),B", 0xED41 }, { "SBC HL,BC", 0xED42 }, { "LD (nn),BC", 0xED43 }, { "NEG", 0xED44 }, { "RETN", 0xED45 }, { "IM 0", 0xED46 }, { "LD I,A", 0xED47 },
         { "IN C,(C)", 0xED48 }, { "OUT (C),C", 0xED49 }, { "ADC HL,BC", 0xED4A }, { "LD BC,(nn)", 0xED4B }, { "RETI", 0xED4D }, { "LD R,A", 0xED4F },
         { "IN D,(C)", 0xED50 }, { "OUT (C),D", 0xED51 }, { "SBC HL,DE", 0xED52 }, { "LD (nn),DE", 0xED53 }, { "IM 1", 0xED56 }, { "LD A,I", 0xED57 },

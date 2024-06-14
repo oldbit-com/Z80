@@ -6,6 +6,8 @@ namespace OldBit.Z80Cpu.Fuse;
 
 public class FuseTests
 {
+    private TestMemory _testMemory = null!;
+
     [Theory]
     [MemberData(nameof(TestData))]
     public void RunFuseTestCase(FuseTestCase testCase, FuseTestResult testResult)
@@ -49,14 +51,18 @@ public class FuseTests
 
         z80.States.TotalStates.Should().Be(testResult.States);
 
-        // TODO: Memory verification (events)
+        // Memory write events
+        var expectedReadEvents = testResult.Events.Where(e => e.Type == "MR").ToList();
+        _testMemory.ReadEvents.Count.Should().Be(expectedReadEvents.Count);
+
+        // TODO: Verify write events
     }
 
-    private static Z80 SetupTest(FuseTestCase testCase)
+    private Z80 SetupTest(FuseTestCase testCase)
     {
-        var memory = new TestMemory(testCase.Memory);
+        _testMemory = new TestMemory(testCase.Memory);
 
-        var z80 = new Z80(memory)
+        var z80 = new Z80(_testMemory)
         {
             Registers =
             {
@@ -91,6 +97,6 @@ public class FuseTests
 
     public static IEnumerable<object[]> TestData =>
         FuseTestLoader.Load()
-            //.Where(x => x.TestCase.TestId == "3f")
+            //.Where(x => x.TestCase.TestId == "20_2")
             .Select(x => new object[] { x.TestCase, x.TestResult });
 }

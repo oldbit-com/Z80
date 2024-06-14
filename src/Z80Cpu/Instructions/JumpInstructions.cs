@@ -7,20 +7,20 @@ partial class Z80
     private void AddJumpInstructions()
     {
         _opCodes["JP nn"] = () => Execute_JP();
-        _opCodes["JP C,nn"] = () => Execute_JP( (Registers.F & C) != 0);
-        _opCodes["JP NC,nn"] = () => Execute_JP( (Registers.F & C) == 0);
-        _opCodes["JP Z,nn"] = () => Execute_JP( (Registers.F & Z) != 0);
-        _opCodes["JP NZ,nn"] = () => Execute_JP( (Registers.F & Z) == 0);
-        _opCodes["JP PE,nn"] = () => Execute_JP( (Registers.F & P) != 0);
-        _opCodes["JP PO,nn"] = () => Execute_JP( (Registers.F & P) == 0);
-        _opCodes["JP M,nn"] = () => Execute_JP( (Registers.F & S) != 0);
-        _opCodes["JP P,nn"] = () => Execute_JP( (Registers.F & S) == 0);
+        _opCodes["JP C,nn"] = () => Execute_JP((Registers.F & C) != 0);
+        _opCodes["JP NC,nn"] = () => Execute_JP((Registers.F & C) == 0);
+        _opCodes["JP Z,nn"] = () => Execute_JP((Registers.F & Z) != 0);
+        _opCodes["JP NZ,nn"] = () => Execute_JP((Registers.F & Z) == 0);
+        _opCodes["JP PE,nn"] = () => Execute_JP((Registers.F & P) != 0);
+        _opCodes["JP PO,nn"] = () => Execute_JP((Registers.F & P) == 0);
+        _opCodes["JP M,nn"] = () => Execute_JP((Registers.F & S) != 0);
+        _opCodes["JP P,nn"] = () => Execute_JP((Registers.F & S) == 0);
 
         _opCodes["JR e"] = () => Execute_JR();
-        _opCodes["JR C,e"] = () => Execute_JR( (Registers.F & C) != 0);
-        _opCodes["JR NC,e"] = () => Execute_JR( (Registers.F & C) == 0);
-        _opCodes["JR Z,e"] = () => Execute_JR( (Registers.F & Z) != 0);
-        _opCodes["JR NZ,e"] = () => Execute_JR( (Registers.F & Z) == 0);
+        _opCodes["JR C,e"] = () => Execute_JR((Registers.F & C) != 0);
+        _opCodes["JR NC,e"] = () => Execute_JR((Registers.F & C) == 0);
+        _opCodes["JR Z,e"] = () => Execute_JR((Registers.F & Z) != 0);
+        _opCodes["JR NZ,e"] = () => Execute_JR((Registers.F & Z) == 0);
 
         _opCodes["JP (HL)"] = () => { Registers.PC = Registers.XHL; };
 
@@ -40,11 +40,15 @@ partial class Z80
 
     private void Execute_JR(bool shouldJump = true)
     {
-        var offset = FetchByte();
         if (!shouldJump)
         {
+            States.Add(3);
+            Registers.PC += 1;
+
             return;
         }
+
+        var offset = FetchByte();
 
         States.Add(5);
 
@@ -55,14 +59,8 @@ partial class Z80
     {
         States.Add(1);
 
-        var offset = (sbyte)FetchByte();
         Registers.B -= 1;
 
-        if (Registers.B != 0)
-        {
-            States.Add(5);
-
-            Registers.PC = (Word)(Registers.PC + offset);
-        }
+        Execute_JR(Registers.B != 0);
     }
 }

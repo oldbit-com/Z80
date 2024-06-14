@@ -1,9 +1,12 @@
+using OldBit.Z80Cpu.Contention;
+
 namespace OldBit.Z80Cpu;
 
 /// <summary>
 /// Utility class to count the number of T-states executed.
 /// </summary>
-public sealed class StatesCounter
+/// <param name="contentionProvider">Provides contention states data.</param>
+public sealed class StatesCounter(IContentionProvider contentionProvider)
 {
     private int _statesLimit;
 
@@ -15,6 +18,19 @@ public sealed class StatesCounter
     {
         TotalStates += states;
         CurrentStates += states;
+    }
+
+    /// <summary>
+    /// Adds the specified number of T-states respecting contention.
+    /// </summary>
+    /// <param name="states">The number of T-states to add.</param>
+    /// <param name="address">The address of the memory that might be contended.</param>
+    public void AddContended(int states, Word address)
+    {
+        var contentionStates = contentionProvider.GetContentionStates(CurrentStates, address);
+
+        TotalStates += states + contentionStates;
+        CurrentStates += states + contentionStates;
     }
 
     /// <summary>

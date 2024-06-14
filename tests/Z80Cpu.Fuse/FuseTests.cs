@@ -61,7 +61,7 @@ public class FuseTests
     {
         _testMemory = new TestMemory(testCase.Memory, _events);
 
-        var z80 = new Z80(_testMemory)
+        var z80 = new Z80(_testMemory, new TestContentionProvider(_events))
         {
             Registers =
             {

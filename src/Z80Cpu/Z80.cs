@@ -1,3 +1,4 @@
+using OldBit.Z80Cpu.Contention;
 using OldBit.Z80Cpu.OpCodes;
 using OldBit.Z80Cpu.Registers;
 
@@ -44,14 +45,17 @@ public partial class Z80
     /// <summary>
     ///
     /// </summary>
-    public StatesCounter States { get; } = new();
+    public StatesCounter States { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Z80"/> class.
     /// </summary>
     /// <param name="memory">An instance of IMemory that represents the memory used by the Z80 CPU.</param>
-    public Z80(IMemory memory)
+    /// <param name="contentionProvider">Specifies contention provider to</param>
+    public Z80(IMemory memory, IContentionProvider? contentionProvider = null)
     {
+        States = new StatesCounter(contentionProvider ?? new ZeroContentionProvider());
+
         Reset();
         SetupInstructions();
 

@@ -50,7 +50,7 @@ partial class Z80
 
         var (hiPC, loPC) = Registers.PC;
 
-        States.Add(1);
+        States.AddContended(Registers.PC - 1, 1);
 
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);

@@ -23,9 +23,40 @@ public sealed class StatesCounter(IContentionProvider contentionProvider)
     /// <summary>
     /// Adds the specified number of T-states respecting contention.
     /// </summary>
-    /// <param name="states">The number of T-states to add.</param>
     /// <param name="address">The address of the memory that might be contended.</param>
-    public void AddContended(int states, Word address)
+    /// <param name="repeat">The number of states to add.</param>
+    public void AddContended(Word address, int repeat)
+    {
+        for (var i = 0; i < repeat; i++)
+        {
+            var contentionStates = contentionProvider.GetContentionStates(CurrentStates, address);
+
+            TotalStates += 1 + contentionStates;
+            CurrentStates += 1 + contentionStates;
+        }
+    }
+
+    /// <summary>
+    /// Adds the specified number of T-states respecting contention for a given memory address
+    /// and repeats the operation a specified number of times.
+    /// </summary>
+    /// <param name="address">The address of the memory that might be contended.</param>
+    /// <param name="states">The number of T-states to add.</param>
+    /// <param name="repeat">The number of times to repeat the operation.</param>
+    public void AddContended(Word address, int states, int repeat)
+    {
+        for (var i = 0; i < repeat; i++)
+        {
+            var contentionStates = contentionProvider.GetContentionStates(CurrentStates, address);
+
+            TotalStates += states + contentionStates;
+            CurrentStates += states + contentionStates;
+        }
+    }
+
+    public void AddContended(int address, int repeat) => AddContended((Word)address, repeat);
+
+    public void AddContendedRead(Word address, int states)
     {
         var contentionStates = contentionProvider.GetContentionStates(CurrentStates, address);
 

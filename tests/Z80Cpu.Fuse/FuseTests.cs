@@ -28,6 +28,7 @@ public class FuseTests
         {
             z80.Registers.F.Should().Be((Flags)(testResult.AF & 0xFF));
         }
+
         z80.Registers.BC.Should().Be(testResult.BC);
         z80.Registers.DE.Should().Be(testResult.DE);
         z80.Registers.HL.Should().Be(testResult.HL);
@@ -52,9 +53,8 @@ public class FuseTests
 
         z80.States.TotalStates.Should().Be(testResult.States);
 
-        var expectedEvents = testResult.Events.Where(e => e.Type is "MR" or "MW" or "PR" or "PW").ToList();
-        _events.Count.Should().Be(expectedEvents.Count);
-        _events.Should().BeEquivalentTo(expectedEvents, options => options.WithStrictOrdering());
+        _events.Count.Should().Be(testResult.Events.Count);
+        _events.Should().BeEquivalentTo(testResult.Events, options => options.WithStrictOrdering());
     }
 
     private Z80 SetupTest(FuseTestCase testCase)
@@ -96,6 +96,6 @@ public class FuseTests
 
     public static IEnumerable<object[]> TestData =>
         FuseTestLoader.Load()
-            //.Where(x => x.TestCase.TestId == "2a")
+            //.Where(x => x.TestCase.TestId == "dd36")
             .Select(x => new object[] { x.TestCase, x.TestResult });
 }

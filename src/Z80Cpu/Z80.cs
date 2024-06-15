@@ -195,9 +195,11 @@ public partial class Z80
         if (Registers.UseIndexRegister)
         {
             _indexRegisterOffset = (sbyte)FetchByte();
+            var pc = Registers.PC;
+
             opCode = FetchByte();
 
-            States.Add(2);
+            States.AddContended(pc, repeat: 2);
         }
         else
         {

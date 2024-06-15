@@ -94,14 +94,14 @@ partial class Z80
     /// </summary>
     /// <param name="extraIndexStates">Extra T-states to add when index register is used.</param>
     /// <returns>Value of HL, IX+d or IY+d register.</returns>
-    private Word CalculateExtendedHL(int extraIndexStates)
+    private Word CalculateExtendedHL(int extraIndexStates = 0)
     {
         sbyte offset = 0;
 
         if (Registers.Context != RegisterContext.HL)
         {
             offset = (sbyte)FetchByte();
-            States.Add(extraIndexStates);
+            States.AddContended(Registers.PC - 1, extraIndexStates);
         }
 
         return (Word)(Registers.XHL + offset);

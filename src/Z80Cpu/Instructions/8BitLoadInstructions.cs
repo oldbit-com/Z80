@@ -86,7 +86,18 @@ partial class Z80
         _opCodes["LD (HL),E"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.E); };
         _opCodes["LD (HL),H"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.H); };
         _opCodes["LD (HL),L"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.L); };
-        _opCodes["LD (HL),n"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 2), FetchByte()); };
+        _opCodes["LD (HL),n"] = () =>
+        {
+            var address = CalculateExtendedHL();
+            var data = FetchByte();
+
+            if (Registers.UseIndexRegister)
+            {
+                States.AddContended(Registers.PC - 1, 2);
+            }
+
+            WriteByte(address, data);
+        };
 
         _opCodes["LD A,(BC)"] = () => Registers.A = ReadByte(Registers.BC);
         _opCodes["LD A,(DE)"] = () => Registers.A = ReadByte(Registers.DE);

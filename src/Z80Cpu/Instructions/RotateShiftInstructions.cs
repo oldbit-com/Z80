@@ -63,7 +63,7 @@ partial class Z80
             var value = ReadByte(Registers.HL);
             var newValue = (byte)((value << 4) | (Registers.A & 0x0F));
 
-            States.Add(4);
+            States.AddContended(Registers.HL, 4);
 
             Registers.A = (byte)((value >> 4) | (Registers.A & 0xF0));
             WriteByte(Registers.HL, newValue);
@@ -82,7 +82,7 @@ partial class Z80
             var value = ReadByte(Registers.HL);
             var newValue = (byte)((value >> 4) | (Registers.A << 4));
 
-            States.Add(4);
+            States.AddContended(Registers.HL, 4);
 
             Registers.A = (byte)((value & 0x0F) | (Registers.A & 0xF0));
             WriteByte(Registers.HL, newValue);

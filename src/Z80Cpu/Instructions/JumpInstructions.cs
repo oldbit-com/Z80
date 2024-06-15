@@ -50,7 +50,7 @@ partial class Z80
 
         var offset = FetchByte();
 
-        States.Add(5);
+        States.AddContended(Registers.PC - 1, 5);
 
         Registers.PC += (Word)(sbyte)offset;
     }

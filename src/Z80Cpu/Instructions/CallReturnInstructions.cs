@@ -67,7 +67,7 @@ partial class Z80
 
     private void Execute_RET(bool shouldReturn)
     {
-        States.Add(1);
+        States.AddContended(Registers.IR, 1);
 
         if (shouldReturn)
         {

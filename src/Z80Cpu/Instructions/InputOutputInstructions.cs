@@ -115,6 +115,6 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.AddContended(increment ? Registers.HL : Registers.BC, 5);
+        States.AddContended(increment ? Registers.BC : Registers.HL + 1, 5);
     }
 }

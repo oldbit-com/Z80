@@ -33,12 +33,12 @@ partial class Z80
             var (x, y) = (ReadByte(Registers.SP), ReadByte((Word)(Registers.SP + 1)));
             var (h, l) = (Registers.XH, Registers.XL);
 
-            States.Add(1);
+            States.AddContended(Registers.SP + 1, repeat: 1);
 
             WriteByte((Word)(Registers.SP + 1), h);
             WriteByte(Registers.SP, l);
 
-            States.Add(2);
+            States.AddContended(Registers.SP, repeat: 2);
 
             (Registers.XH, Registers.XL) = (y, x);
         };
@@ -60,7 +60,7 @@ partial class Z80
 
         WriteByte(Registers.DE, value);
 
-        States.Add(2);
+        States.AddContended(Registers.DE, 2);
 
         if (increment)
         {
@@ -93,14 +93,14 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.Add(5);
+        States.AddContended(Registers.DE + 1, 5);
     }
 
     private int Execute_CPI_CPD(bool increment)
     {
         var value = ReadByte(Registers.HL);
 
-        States.Add(5);
+        States.AddContended(Registers.HL, 5);
 
         if (increment)
         {
@@ -138,6 +138,6 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.Add(5);
+        States.AddContended(Registers.HL + 1, 5);
     }
 }

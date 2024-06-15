@@ -42,7 +42,7 @@ partial class Z80
     {
         if (!shouldJump)
         {
-            States.Add(3);
+            States.AddContendedRead(Registers.PC, 3);
             Registers.PC += 1;
 
             return;
@@ -57,7 +57,7 @@ partial class Z80
 
     private void Execute_DJNZ()
     {
-        States.Add(1);
+        States.AddContended(Registers.IR, 1);
 
         Registers.B -= 1;
 

@@ -35,7 +35,7 @@ partial class Z80
 
     private void Execute_ADD(Word value)
     {
-        States.AddContended(Registers.IR, repeat: 7);
+        States.Contention(Registers.IR, 7);
 
         var oldValue = Registers.XHL;
         var newValue = oldValue + value;
@@ -51,7 +51,7 @@ partial class Z80
 
     private void Execute_ADC(Word value)
     {
-        States.AddContended(Registers.IR, repeat: 7);
+        States.Contention(Registers.IR, 7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue + value + (byte)(Registers.F & C);
@@ -69,7 +69,7 @@ partial class Z80
 
     private void Execute_SBC(Word value)
     {
-        States.AddContended(Registers.IR, repeat: 7);
+        States.Contention(Registers.IR, 7);
 
         var oldValue = Registers.HL;
         var newValue = oldValue - value - (byte)(Registers.F & C);
@@ -88,14 +88,14 @@ partial class Z80
 
     private Word Execute_INC(Word value)
     {
-        States.AddContended(Registers.IR, repeat: 2);
+        States.Contention(Registers.IR, 2);
 
         return (Word)(value + 1);
     }
 
     private Word Execute_DEC(Word value)
     {
-        States.AddContended(Registers.IR, repeat: 2);
+        States.Contention(Registers.IR, 2);
         return (Word)(value - 1);
     }
 }

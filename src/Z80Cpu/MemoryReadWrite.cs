@@ -100,8 +100,9 @@ partial class Z80
 
         if (Registers.Context != RegisterContext.HL)
         {
+            var pc = Registers.PC;
             offset = (sbyte)FetchByte();
-            States.AddContended(Registers.PC - 1, extraIndexStates);
+            States.Contention(pc, extraIndexStates);
         }
 
         return (Word)(Registers.XHL + offset);

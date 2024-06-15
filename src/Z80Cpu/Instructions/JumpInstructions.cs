@@ -42,22 +42,23 @@ partial class Z80
     {
         if (!shouldJump)
         {
-            States.AddContendedRead(Registers.PC, 3);
+            States.Contention(Registers.PC, 1, 3);
             Registers.PC += 1;
 
             return;
         }
 
+        var pc = Registers.PC;
         var offset = FetchByte();
 
-        States.AddContended(Registers.PC - 1, 5);
+        States.Contention(pc, 5);
 
         Registers.PC += (Word)(sbyte)offset;
     }
 
     private void Execute_DJNZ()
     {
-        States.AddContended(Registers.IR, 1);
+        States.Contention(Registers.IR, 1);
 
         Registers.B -= 1;
 

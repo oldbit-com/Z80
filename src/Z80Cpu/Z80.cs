@@ -199,7 +199,7 @@ public partial class Z80
 
             opCode = FetchByte();
 
-            States.AddContended(pc, repeat: 2);
+            States.Contention(pc, 2);
         }
         else
         {

@@ -160,5 +160,13 @@ public sealed class RegisterSet : StandardRegisterSet
         }
     }
 
+    /// <summary>
+    /// Gets the value of the virtual IR register.
+    /// </summary>
+    internal Word IR => Converter.ToWord(I, R);
+
+    /// <summary>
+    /// Indicates whether IX or IY index register is in the current context.
+    /// </summary>
     internal bool UseIndexRegister => Context is RegisterContext.IX or RegisterContext.IY;
 }

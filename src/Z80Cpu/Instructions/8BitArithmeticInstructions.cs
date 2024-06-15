@@ -100,7 +100,7 @@ partial class Z80
             var address = CalculateExtendedHL(extraIndexStates: 5);
             var value = ReadByte(address);
 
-            States.Add(1);
+            States.AddContended(Registers.HL, 1);
 
             WriteByte(address, Execute_INC(value));
         };
@@ -117,7 +117,7 @@ partial class Z80
             var address = CalculateExtendedHL(extraIndexStates: 5);
             var value = ReadByte(address);
 
-            States.Add(1);
+            States.AddContended(Registers.HL, 1);
 
             WriteByte(address, Execute_DEC(value));
         };

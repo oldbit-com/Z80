@@ -23,7 +23,7 @@ partial class Z80
 
         _opCodes["LD SP,HL"] = () =>
         {
-            States.Add(2);
+            States.AddContended(Registers.IR, 2);
 
             Registers.SP = Registers.XHL;
         };

@@ -84,6 +84,7 @@ partial class Z80
 
     private void Execute_LDIR_LDDR(bool increment)
     {
+        var de = Registers.DE;
         Execute_LDI_LDD(increment);
 
         if (Registers.BC == 0)
@@ -93,7 +94,7 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.AddContended(Registers.DE + 1, 5);
+        States.AddContended(de, 5);
     }
 
     private int Execute_CPI_CPD(bool increment)
@@ -129,6 +130,7 @@ partial class Z80
 
     private void Execute_CPIR_CPDR(bool increment)
     {
+        var hl = Registers.HL;
         var result = Execute_CPI_CPD(increment);
 
         if (Registers.BC == 0 || result == 0)
@@ -138,6 +140,6 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.AddContended(Registers.HL + 1, 5);
+        States.AddContended(hl, 5);
     }
 }

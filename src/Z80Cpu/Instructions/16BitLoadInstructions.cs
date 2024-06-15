@@ -48,7 +48,7 @@ partial class Z80
 
     private void Execute_PUSH(byte highByte, byte lowByte)
     {
-        States.Add(1);
+        States.AddContended(Registers.IR, 1);
 
         Registers.SP -= 1;
         WriteByte(Registers.SP, highByte);

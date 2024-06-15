@@ -32,10 +32,10 @@ partial class Z80
         _opCodes["OUTI"] = () => Execute_OUTI_OUTD(increment: true);
         _opCodes["IND"] = () => Execute_INI_IND(increment: false);
         _opCodes["OUTD"] = () => Execute_OUTI_OUTD(increment: false);
-        _opCodes["INIR"] = () =>  ExecuteRepeated_OUT(increment: true, Execute_INI_IND);
-        _opCodes["OTIR"] = () => ExecuteRepeated_OUT(increment: true, Execute_OUTI_OUTD);
-        _opCodes["INDR"] = () => ExecuteRepeated_OUT(increment: false, Execute_INI_IND);
-        _opCodes["OTDR"] = () => ExecuteRepeated_OUT(increment: false, Execute_OUTI_OUTD);
+        _opCodes["INIR"] = () =>  ExecuteRepeated(increment: true, Execute_INI_IND);
+        _opCodes["OTIR"] = () => ExecuteRepeated(increment: true, Execute_OUTI_OUTD);
+        _opCodes["INDR"] = () => ExecuteRepeated(increment: false, Execute_INI_IND);
+        _opCodes["OTDR"] = () => ExecuteRepeated(increment: false, Execute_OUTI_OUTD);
     }
 
     private byte Execute_IN()
@@ -104,9 +104,9 @@ partial class Z80
         Registers.F |= (S | Y | X) & (Flags)Registers.B;
     }
 
-    private void ExecuteRepeated_OUT(bool increment, Action<bool> outInstruction)
+    private void ExecuteRepeated(bool increment, Action<bool> instruction)
     {
-        outInstruction(increment);
+        instruction(increment);
 
         if (Registers.B == 0)
         {

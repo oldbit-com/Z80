@@ -32,10 +32,10 @@ partial class Z80
         _opCodes["OUTI"] = () => Execute_OUTI_OUTD(increment: true);
         _opCodes["IND"] = () => Execute_INI_IND(increment: false);
         _opCodes["OUTD"] = () => Execute_OUTI_OUTD(increment: false);
-        _opCodes["INIR"] = () =>  ExecuteRepeated(increment: true, Execute_INI_IND);
-        _opCodes["OTIR"] = () => ExecuteRepeated(increment: true, Execute_OUTI_OUTD);
-        _opCodes["INDR"] = () => ExecuteRepeated(increment: false, Execute_INI_IND);
-        _opCodes["OTDR"] = () => ExecuteRepeated(increment: false, Execute_OUTI_OUTD);
+        _opCodes["INIR"] = () =>  ExecuteRepeated(increment: true, Execute_INI_IND, true);
+        _opCodes["OTIR"] = () => ExecuteRepeated(increment: true, Execute_OUTI_OUTD, false);
+        _opCodes["INDR"] = () => ExecuteRepeated(increment: false, Execute_INI_IND, true);
+        _opCodes["OTDR"] = () => ExecuteRepeated(increment: false, Execute_OUTI_OUTD, false);
     }
 
     private byte Execute_IN()
@@ -104,8 +104,10 @@ partial class Z80
         Registers.F |= (S | Y | X) & (Flags)Registers.B;
     }
 
-    private void ExecuteRepeated(bool increment, Action<bool> instruction)
+    private void ExecuteRepeated(bool increment, Action<bool> instruction, bool isInput)
     {
+        var hl = Registers.HL;
+
         instruction(increment);
 
         if (Registers.B == 0)
@@ -115,6 +117,6 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.AddContended(increment ? Registers.BC : Registers.HL + 1, 5);
+        States.AddContended(isInput ? hl : Registers.BC, 5);
     }
 }

@@ -176,7 +176,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.Add(1);
+            States.AddContended(address, 1);
         }
 
         var result = operation switch

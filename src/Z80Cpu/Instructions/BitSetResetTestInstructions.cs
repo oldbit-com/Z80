@@ -45,9 +45,9 @@ partial class Z80
 
     private void Execute_BIT(int bit, byte value = 0, bool useHL = false)
     {
+        Word address = 0;
         var isMemory = Registers.UseIndexRegister || useHL;
 
-        Word address = 0;
         if (isMemory)
         {
             address = (Word)(Registers.XHL + _indexRegisterOffset);
@@ -61,6 +61,7 @@ partial class Z80
         Registers.F |= H;
         Registers.F |= result == 0 ? Z | P : 0;
         Registers.F |= result != 0 && bit == 7 ? S : 0;
+
         if (isMemory)
         {
             if (Registers.UseIndexRegister)
@@ -71,7 +72,6 @@ partial class Z80
             {
                 Registers.F |= (Flags)value & (X | Y);
             }
-
         }
         else
         {
@@ -91,6 +91,7 @@ partial class Z80
 
             States.Add(1);
         }
+
         var result = (byte)(value | BitMasks[bit]);
 
         if (isMemory)
@@ -105,6 +106,7 @@ partial class Z80
     {
         Word address = 0;
         var isMemory = Registers.UseIndexRegister || useHL;
+
         if (isMemory)
         {
             address = (Word)(Registers.XHL + _indexRegisterOffset);

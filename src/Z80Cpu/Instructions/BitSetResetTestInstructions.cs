@@ -53,7 +53,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.Add(1);
+            States.AddContended(address, repeat: 1);
         }
 
         var result = value & BitMasks[bit];
@@ -89,7 +89,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.Add(1);
+            States.AddContended(address, repeat: 1);
         }
 
         var result = (byte)(value | BitMasks[bit]);
@@ -112,7 +112,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.Add(1);
+            States.AddContended(address, repeat: 1);
         }
 
         var result = (byte)(value & InvertedBitMasks[bit]);

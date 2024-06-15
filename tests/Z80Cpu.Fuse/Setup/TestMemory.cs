@@ -18,7 +18,7 @@ public class TestMemory : IMemory
     {
         var value = _memory[address];
 
-        //ReadEvents.Add(("MC", address, 0));
+        _events.Add(new InputOutputEvent(0, "MC", address, 0));
         _events.Add(new InputOutputEvent(0, "MR", address, value));
 
         return value;
@@ -26,6 +26,7 @@ public class TestMemory : IMemory
 
     public void Write(Word address, byte data)
     {
+        _events.Add(new InputOutputEvent(0, "MC", address, 0));
         _events.Add(new InputOutputEvent(0, "MW", address, data));
 
         _memory[address] = data;

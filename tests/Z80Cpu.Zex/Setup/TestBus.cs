@@ -6,11 +6,11 @@ internal class TestBus : IBus
 {
     private readonly byte _textPort = 5;    // Port used by Bootstrap to output a character
 
-    public byte Read(Word address) => 0xFF;
+    public byte Read(Word port) => 0xFF;
 
-    public void Write(Word address, byte data)
+    public void Write(Word port, byte data)
     {
-        if ((address & 0xFF) != _textPort)
+        if ((port & 0xFF) != _textPort)
         {
             return;
         }

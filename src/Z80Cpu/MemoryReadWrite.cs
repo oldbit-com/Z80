@@ -22,13 +22,12 @@ partial class Z80
     /// Reads an 8-bit value from the location specified by current PC value.
     /// PC is incremented by 1.
     /// </summary>
-    /// <param name="states">The number of T-states to add. The default is 3.</param>
+    /// <param name="states">The number of T-states to add.</param>
     /// <returns>A data byte at the current PC address.</returns>
     private byte FetchByte(int states)
     {
-        States.Add(states);
+        var value = ReadByte(Registers.PC, states);
 
-        var value = _memory.Read(Registers.PC);
         Registers.PC += 1;
 
         return value;
@@ -36,13 +35,14 @@ partial class Z80
 
     /// <summary>
     /// Reads a 8-bit value from the location provided.
-    /// It costs 3 T-states. PC is not changed.
+    /// PC is not changed.
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
+    /// <param name="states">The number of T-states to add. The default is 3.</param>
     /// <returns>A byte value.</returns>
-    private byte ReadByte(Word address)
+    private byte ReadByte(Word address, int states = 3)
     {
-        States.Add(3);
+        States.Add(states);
 
         var value = _memory.Read(address);
 

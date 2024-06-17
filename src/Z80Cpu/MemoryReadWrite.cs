@@ -26,9 +26,9 @@ partial class Z80
     /// <returns>A data byte at the current PC address.</returns>
     private byte FetchByte(int states)
     {
-        var value = _memory.Read(Registers.PC);
-
         States.Add(states);
+
+        var value = _memory.Read(Registers.PC);
         Registers.PC += 1;
 
         return value;
@@ -48,9 +48,9 @@ partial class Z80
     /// <returns>A byte value.</returns>
     private byte ReadByte(Word address)
     {
-        var value = _memory.Read(address);
-
         States.Add(3);
+
+        var value = _memory.Read(address);
 
         return value;
     }
@@ -71,9 +71,9 @@ partial class Z80
     /// <param name="data">The value to write to the memory.</param>
     private void WriteByte(Word address, byte data)
     {
-        _memory.Write(address, data);
-
         States.Add(3);
+
+        _memory.Write(address, data);
     }
 
     /// <summary>

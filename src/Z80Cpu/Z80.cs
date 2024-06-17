@@ -112,7 +112,12 @@ public partial class Z80
     /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
     public void Int(byte data)
     {
-        IsHalted = false;
+        if (IsHalted)
+        {
+            IsHalted = false;
+            Registers.PC += 1;
+        }
+
         if (!IFF1)
         {
             return;
@@ -145,7 +150,12 @@ public partial class Z80
     /// </summary>
     public void Nmi()
     {
-        IsHalted = false;
+        if (IsHalted)
+        {
+            IsHalted = false;
+            Registers.PC += 1;
+        }
+
         IFF1 = false;
         IFF2 = false;
         PushPC();

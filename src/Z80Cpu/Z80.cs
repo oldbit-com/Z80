@@ -41,7 +41,7 @@ public partial class Z80
     public InterruptMode IM { get; set; }
 
     /// <summary>
-    ///
+    /// Gets the counter that keeps track of the number of T-states executed.
     /// </summary>
     public StatesCounter States { get; } = new();
 

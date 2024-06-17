@@ -50,7 +50,7 @@ partial class Z80
 
         var (hiPC, loPC) = Registers.PC;
 
-        States.Contention((Word)(Registers.PC - 1), 1);
+        States.MemoryContention((Word)(Registers.PC - 1), 1);
 
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);
@@ -67,7 +67,7 @@ partial class Z80
 
     private void Execute_RET(bool shouldReturn)
     {
-        States.Contention(Registers.IR, 1);
+        States.MemoryContention(Registers.IR, 1);
 
         if (shouldReturn)
         {
@@ -85,7 +85,7 @@ partial class Z80
     {
         var (hiPC, loPC) = Registers.PC;
 
-        States.Contention(Registers.IR, 1);
+        States.MemoryContention(Registers.IR, 1);
 
         Registers.SP -= 1;
         WriteByte(Registers.SP, hiPC);

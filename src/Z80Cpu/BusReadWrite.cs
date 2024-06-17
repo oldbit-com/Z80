@@ -10,9 +10,13 @@ partial class Z80
     /// <returns>The value from the data bus.</returns>
     private byte ReadBus(byte topHalf, byte bottomHalf)
     {
-        States.Add(4);
+        var port = (Word)((topHalf << 8) | bottomHalf);
 
-        return _bus?.Read((Word)((topHalf << 8) | bottomHalf)) ?? 0xFF;
+        PrePortContention(port);
+        var value = _bus?.Read(port) ?? 0xFF;
+        PostPortContention(port);
+
+        return value;
     }
 
     /// <summary>
@@ -23,8 +27,42 @@ partial class Z80
     /// <param name="data">The data to be written</param>
     private void WriteBus(byte topHalf, byte bottomHalf, byte data)
     {
-        States.Add(4);
+        var port = (Word)((topHalf << 8) | bottomHalf);
 
-        _bus?.Write((Word)((topHalf << 8) | bottomHalf), data);
+        PrePortContention(port);
+        _bus?.Write(port, data);
+        PostPortContention(port);
+    }
+
+    private void PrePortContention(Word port)
+    {
+        if ((port & 0xC000) == 0x4000)
+        {
+            States.PortContention(port, 1);
+        }
+        else
+        {
+            States.Add(1);
+        }
+    }
+
+    private void PostPortContention(Word port)
+    {
+        if ((port & 0x0001) != 0)
+        {
+            if ((port & 0xC000) == 0x4000)
+            {
+                States.PortContention(port, 3);
+            }
+            else
+            {
+                States.Add(3);
+            }
+        }
+        else
+        {
+            States.PortContention(port, 1);
+            States.Add(2);
+        }
     }
 }

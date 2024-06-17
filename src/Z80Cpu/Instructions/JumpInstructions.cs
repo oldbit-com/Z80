@@ -42,7 +42,7 @@ partial class Z80
     {
         if (!shouldJump)
         {
-            States.Contention(Registers.PC, 1, 3);
+            States.MemoryContention(Registers.PC, 1, 3);
             Registers.PC += 1;
 
             return;
@@ -51,14 +51,14 @@ partial class Z80
         var pc = Registers.PC;
         var offset = FetchByte();
 
-        States.Contention(pc, 5);
+        States.MemoryContention(pc, 5);
 
         Registers.PC += (Word)(sbyte)offset;
     }
 
     private void Execute_DJNZ()
     {
-        States.Contention(Registers.IR, 1);
+        States.MemoryContention(Registers.IR, 1);
 
         Registers.B -= 1;
 

@@ -102,7 +102,7 @@ partial class Z80
         {
             var pc = Registers.PC;
             offset = (sbyte)FetchByte();
-            States.Contention(pc, extraIndexStates);
+            States.MemoryContention(pc, extraIndexStates);
         }
 
         return (Word)(Registers.XHL + offset);

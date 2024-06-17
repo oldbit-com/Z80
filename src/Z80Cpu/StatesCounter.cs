@@ -26,11 +26,22 @@ public sealed class StatesCounter(IContentionProvider contentionProvider)
     /// <param name="address">The address of the memory that might be contended.</param>
     /// <param name="repeat">The number of repeated conentions to repeat.</param>
     /// <param name="states">The number of T-states to add. Default is 1.</param>
-    public void Contention(Word address, int repeat, int states = 1)
+    public void MemoryContention(Word address, int repeat, int states = 1)
     {
         for (var i = 0; i < repeat; i++)
         {
-            var contentionStates = contentionProvider.GetContentionStates(CurrentStates, address);
+            var contentionStates = contentionProvider.GetMemoryContention(CurrentStates, address);
+
+            TotalStates += states + contentionStates;
+            CurrentStates += states + contentionStates;
+        }
+    }
+
+    public void PortContention(Word port, int repeat, int states = 1)
+    {
+        for (var i = 0; i < repeat; i++)
+        {
+            var contentionStates = contentionProvider.GetPortContention(CurrentStates, port);
 
             TotalStates += states + contentionStates;
             CurrentStates += states + contentionStates;

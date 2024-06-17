@@ -60,8 +60,9 @@ public class FuseTests
     private Z80 SetupTest(FuseTestCase testCase)
     {
         _testMemory = new TestMemory(testCase.Memory, _events);
+        var testContentionProvider = new TestContentionProvider(_events);
 
-        var z80 = new Z80(_testMemory, new TestContentionProvider(_events))
+        var z80 = new Z80(_testMemory, testContentionProvider)
         {
             Registers =
             {
@@ -89,13 +90,15 @@ public class FuseTests
             IsHalted = testCase.Halted
         };
 
-        z80.AddBus(new TestBus(_events));
+        _testMemory.States = z80.States;
+        testContentionProvider.States = z80.States;
+        z80.AddBus(new TestBus(_events, z80.States));
 
         return z80;
     }
 
     public static IEnumerable<object[]> TestData =>
         FuseTestLoader.Load()
-            //.Where(x => x.TestCase.TestId == "d3")
+            //.Where(x => x.TestCase.TestId == "01")
             .Select(x => new object[] { x.TestCase, x.TestResult });
 }

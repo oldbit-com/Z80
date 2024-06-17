@@ -26,6 +26,7 @@ partial class Z80
     /// <returns>A data byte at the current PC address.</returns>
     private byte FetchByte(int states)
     {
+        States.MemoryContention(Registers.PC, 1, 0);
         States.Add(states);
 
         var value = _memory.Read(Registers.PC);
@@ -42,6 +43,7 @@ partial class Z80
     /// <returns>A byte value.</returns>
     private byte ReadByte(Word address)
     {
+        States.MemoryContention(address, 1, 0);
         States.Add(3);
 
         var value = _memory.Read(address);
@@ -71,6 +73,7 @@ partial class Z80
     /// <param name="data">The value to write to the memory.</param>
     private void WriteByte(Word address, byte data)
     {
+        States.MemoryContention(address, 1, 0);
         States.Add(3);
 
         _memory.Write(address, data);

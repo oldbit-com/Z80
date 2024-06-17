@@ -35,12 +35,6 @@ partial class Z80
     }
 
     /// <summary>
-    /// Reads a 16-bit value from the location specified by current PC value.
-    /// The operation takes 6 T-states and PC is incremented by 2.
-    /// </summary>
-    private Word FetchWord() => (Word)(FetchByte() | (FetchByte() << 8));
-
-    /// <summary>
     /// Reads a 8-bit value from the location provided.
     /// It costs 3 T-states. PC is not changed.
     /// </summary>
@@ -54,6 +48,12 @@ partial class Z80
 
         return value;
     }
+
+    /// <summary>
+    /// Reads a 16-bit value from the location specified by current PC value.
+    /// The operation takes 6 T-states and PC is incremented by 2.
+    /// </summary>
+    private Word FetchWord() => (Word)(FetchByte() | (FetchByte() << 8));
 
     /// <summary>
     /// Reads a 16-bit value from the location provided.

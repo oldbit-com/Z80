@@ -65,7 +65,8 @@ public partial class Z80
     {
         States.Limit(statesToExecute);
 
-        while (!States.IsComplete || Registers.UseIndexRegister || _isExtendedInstruction)
+        var isRunning = true;
+        while (isRunning)
         {
             if (IsHalted)
             {
@@ -102,6 +103,8 @@ public partial class Z80
             Registers.Context = RegisterContext.HL;
             _isExtendedInstruction = false;
             _indexRegisterOffset = 0;
+
+            isRunning = !States.IsComplete;
         }
     }
 

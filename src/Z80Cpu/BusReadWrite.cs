@@ -38,11 +38,11 @@ partial class Z80
     {
         if ((port & 0xC000) == 0x4000)
         {
-            States.PortContention(port, 1);
+            Clock.PortContention(port, 1);
         }
         else
         {
-            States.Add(1);
+            Clock.Add(1);
         }
     }
 
@@ -52,17 +52,17 @@ partial class Z80
         {
             if ((port & 0xC000) == 0x4000)
             {
-                States.PortContention(port, 3);
+                Clock.PortContention(port, 3);
             }
             else
             {
-                States.Add(3);
+                Clock.Add(3);
             }
         }
         else
         {
-            States.PortContention(port, 1);
-            States.Add(2);
+            Clock.PortContention(port, 1);
+            Clock.Add(2);
         }
     }
 }

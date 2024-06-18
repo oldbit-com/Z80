@@ -93,7 +93,7 @@ partial class Z80
 
             if (Registers.UseIndexRegister)
             {
-                States.MemoryContention((Word)(Registers.PC - 1), 2);
+                Clock.MemoryContention((Word)(Registers.PC - 1), 2);
             }
 
             WriteByte(address, data);

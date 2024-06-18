@@ -50,7 +50,7 @@ public class FuseTests
         z80.IFF2.Should().Be(testResult.IFF2);
         z80.IsHalted.Should().Be(testResult.Halted);
 
-        z80.States.TotalStates.Should().Be(testResult.States);
+        z80.Clock.TotalStates.Should().Be(testResult.States);
 
         var expectedEvents = testResult.Events.Where(e => e.Type is "MR" or "MW" or "PR" or "PW").ToList();
         _events.Count.Should().Be(expectedEvents.Count);

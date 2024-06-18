@@ -41,9 +41,9 @@ public partial class Z80
     public InterruptMode IM { get; set; }
 
     /// <summary>
-    /// Gets the counter that keeps track of the number of T-states executed.
+    /// Gets the clock that keeps track of the number of T-states executed.
     /// </summary>
-    public StatesCounter States { get; } = new();
+    public StatesCounter Clock { get; } = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Z80"/> class.
@@ -63,14 +63,14 @@ public partial class Z80
     /// <param name="statesToExecute">Specifies the number of T-states to execute. Zero means no limit.</param>
     public void Run(int statesToExecute = 0)
     {
-        States.Limit(statesToExecute);
+        Clock.Limit(statesToExecute);
 
         var isRunning = true;
         while (isRunning)
         {
             if (IsHalted)
             {
-                States.Halt();
+                Clock.Halt();
                 break;
             }
 
@@ -104,7 +104,7 @@ public partial class Z80
             _isExtendedInstruction = false;
             _indexRegisterOffset = 0;
 
-            isRunning = !States.IsComplete;
+            isRunning = !Clock.IsComplete;
         }
     }
 
@@ -144,7 +144,7 @@ public partial class Z80
                 break;
         }
 
-        States.Add(7);
+        Clock.Add(7);
         IncrementR();
     }
 
@@ -164,7 +164,7 @@ public partial class Z80
         PushPC();
         Registers.PC = 0x66;
 
-        States.Add(5);
+        Clock.Add(5);
         IncrementR();
     }
 
@@ -206,7 +206,7 @@ public partial class Z80
             _indexRegisterOffset = (sbyte)FetchByte();
             opCode = FetchByte();
 
-            States.Add(2);
+            Clock.Add(2);
         }
         else
         {

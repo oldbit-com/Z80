@@ -42,7 +42,7 @@ partial class Z80
     {
         if (!shouldJump)
         {
-            States.Add(3);
+            Clock.Add(3);
             Registers.PC += 1;
 
             return;
@@ -50,14 +50,14 @@ partial class Z80
 
         var offset = FetchByte();
 
-        States.Add(5);
+        Clock.Add(5);
 
         Registers.PC += (Word)(sbyte)offset;
     }
 
     private void Execute_DJNZ()
     {
-        States.Add(1);
+        Clock.Add(1);
 
         Registers.B -= 1;
 

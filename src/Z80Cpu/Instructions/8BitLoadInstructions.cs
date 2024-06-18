@@ -109,12 +109,12 @@ partial class Z80
 
         _opCodes["LD I,A"] = () =>
         {
-            States.MemoryContention(Registers.IR, 1);
+            Clock.MemoryContention(Registers.IR, 1);
             Registers.I = Registers.A;
         };
         _opCodes["LD A,I"] = () =>
         {
-            States.MemoryContention(Registers.IR, 1);
+            Clock.MemoryContention(Registers.IR, 1);
             Registers.A = Registers.I;
             Registers.F &= C;
             Registers.F |= Registers.A == 0 ? Z : 0;
@@ -124,12 +124,12 @@ partial class Z80
 
         _opCodes["LD R,A"] = () =>
         {
-            States.MemoryContention(Registers.IR, 1);
+            Clock.MemoryContention(Registers.IR, 1);
             Registers.R = Registers.A;
         };
         _opCodes["LD A,R"] = () =>
         {
-            States.MemoryContention(Registers.IR, 1);
+            Clock.MemoryContention(Registers.IR, 1);
             Registers.A = Registers.R;
             Registers.F &= C | S;
             Registers.F |= Registers.A == 0 ? Z : 0;

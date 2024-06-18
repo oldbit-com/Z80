@@ -51,7 +51,7 @@ public class FuseTests
         z80.IFF2.Should().Be(testResult.IFF2);
         z80.IsHalted.Should().Be(testResult.Halted);
 
-        z80.States.TotalStates.Should().Be(testResult.States);
+        z80.Clock.TotalStates.Should().Be(testResult.States);
 
         _events.Count.Should().Be(testResult.Events.Count);
         _events.Should().BeEquivalentTo(testResult.Events, options => options.WithStrictOrdering());

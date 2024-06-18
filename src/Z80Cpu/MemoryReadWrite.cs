@@ -42,8 +42,8 @@ partial class Z80
     /// <returns>A byte value.</returns>
     private byte ReadByte(Word address, int states = 3)
     {
-        States.MemoryContention(address, 1, 0);
-        States.Add(states);
+        Clock.MemoryContention(address, 1, 0);
+        Clock.Add(states);
 
         var value = _memory.Read(address);
 
@@ -72,8 +72,8 @@ partial class Z80
     /// <param name="data">The value to write to the memory.</param>
     private void WriteByte(Word address, byte data)
     {
-        States.MemoryContention(address, 1, 0);
-        States.Add(3);
+        Clock.MemoryContention(address, 1, 0);
+        Clock.Add(3);
 
         _memory.Write(address, data);
     }
@@ -104,7 +104,7 @@ partial class Z80
         {
             var pc = Registers.PC;
             offset = (sbyte)FetchByte();
-            States.MemoryContention(pc, extraIndexStates);
+            Clock.MemoryContention(pc, extraIndexStates);
         }
 
         return (Word)(Registers.XHL + offset);

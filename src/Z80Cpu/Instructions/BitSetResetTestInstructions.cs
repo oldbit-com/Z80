@@ -53,7 +53,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.MemoryContention(address, 1);
+            Clock.MemoryContention(address, 1);
         }
 
         var result = value & BitMasks[bit];
@@ -89,7 +89,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.MemoryContention(address, 1);
+            Clock.MemoryContention(address, 1);
         }
 
         var result = (byte)(value | BitMasks[bit]);
@@ -112,7 +112,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            States.MemoryContention(address, 1);
+            Clock.MemoryContention(address, 1);
         }
 
         var result = (byte)(value & InvertedBitMasks[bit]);

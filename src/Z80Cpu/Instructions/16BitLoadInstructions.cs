@@ -23,7 +23,7 @@ partial class Z80
 
         _opCodes["LD SP,HL"] = () =>
         {
-            States.MemoryContention(Registers.IR, 2);
+            Clock.MemoryContention(Registers.IR, 2);
 
             Registers.SP = Registers.XHL;
         };
@@ -48,7 +48,7 @@ partial class Z80
 
     private void Execute_PUSH(byte highByte, byte lowByte)
     {
-        States.MemoryContention(Registers.IR, 1);
+        Clock.MemoryContention(Registers.IR, 1);
 
         Registers.SP -= 1;
         WriteByte(Registers.SP, highByte);

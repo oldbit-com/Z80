@@ -33,12 +33,12 @@ partial class Z80
             var (x, y) = (ReadByte(Registers.SP), ReadByte((Word)(Registers.SP + 1)));
             var (h, l) = (Registers.XH, Registers.XL);
 
-            States.MemoryContention((Word)(Registers.SP + 1), 1);
+            Clock.MemoryContention((Word)(Registers.SP + 1), 1);
 
             WriteByte((Word)(Registers.SP + 1), h);
             WriteByte(Registers.SP, l);
 
-            States.MemoryContention(Registers.SP, 2);
+            Clock.MemoryContention(Registers.SP, 2);
 
             (Registers.XH, Registers.XL) = (y, x);
         };
@@ -60,7 +60,7 @@ partial class Z80
 
         WriteByte(Registers.DE, value);
 
-        States.MemoryContention(Registers.DE, 2);
+        Clock.MemoryContention(Registers.DE, 2);
 
         if (increment)
         {
@@ -94,14 +94,14 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.MemoryContention(de, 5);
+        Clock.MemoryContention(de, 5);
     }
 
     private int Execute_CPI_CPD(bool increment)
     {
         var value = ReadByte(Registers.HL);
 
-        States.MemoryContention(Registers.HL, 5);
+        Clock.MemoryContention(Registers.HL, 5);
 
         if (increment)
         {
@@ -140,6 +140,6 @@ partial class Z80
 
         Registers.PC -= 2;
 
-        States.MemoryContention(hl, 5);
+        Clock.MemoryContention(hl, 5);
     }
 }

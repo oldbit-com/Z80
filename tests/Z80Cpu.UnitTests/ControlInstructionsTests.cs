@@ -15,7 +15,7 @@ public class Z80ControlInstructionsTests
 
         z80.Registers.PC.Should().Be(0);
         z80.IsHalted.Should().BeTrue();
-        z80.States.TotalStates.Should().Be(4);
+        z80.Clock.TotalStates.Should().Be(4);
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class Z80ControlInstructionsTests
         z80.Registers.PC.Should().Be(2);
         z80.IFF1.Should().BeFalse();
         z80.IFF2.Should().BeFalse();
-        z80.States.TotalStates.Should().Be(8);
+        z80.Clock.TotalStates.Should().Be(8);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class Z80ControlInstructionsTests
         z80.Registers.PC.Should().Be(2);
         z80.IFF1.Should().BeTrue();
         z80.IFF2.Should().BeTrue();
-        z80.States.TotalStates.Should().Be(8);
+        z80.Clock.TotalStates.Should().Be(8);
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class Z80ControlInstructionsTests
 
         z80.Registers.PC.Should().Be(4);
         z80.IM.Should().Be(InterruptMode.Mode0);
-        z80.States.TotalStates.Should().Be(16);
+        z80.Clock.TotalStates.Should().Be(16);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class Z80ControlInstructionsTests
 
         z80.Registers.PC.Should().Be(2);
         z80.IM.Should().Be(InterruptMode.Mode1);
-        z80.States.TotalStates.Should().Be(8);
+        z80.Clock.TotalStates.Should().Be(8);
     }
 
     [Fact]
@@ -93,6 +93,6 @@ public class Z80ControlInstructionsTests
 
         z80.Registers.PC.Should().Be(2);
         z80.IM.Should().Be(InterruptMode.Mode2);
-        z80.States.TotalStates.Should().Be(8);
+        z80.Clock.TotalStates.Should().Be(8);
     }
 }

@@ -5,16 +5,16 @@ namespace OldBit.Z80Cpu;
 /// </summary>
 public sealed class Clock
 {
-    private int _statesLimit;
+    private int _ticksLimit;
 
     /// <summary>
     /// Adds the specified number of T-states.
     /// </summary>
-    /// <param name="states">The number of T-states to add.</param>
-    public void Add(int states)
+    /// <param name="ticks">The number of T-states to add.</param>
+    public void Add(int ticks)
     {
-        TotalStates += states;
-        CurrentStates += states;
+        TotalTicks += ticks;
+        CurrentTicks += ticks;
     }
 
     /// <summary>
@@ -22,33 +22,33 @@ public sealed class Clock
     /// </summary>
     public void Halt()
     {
-        var remaining = _statesLimit - CurrentStates;
+        var remaining = _ticksLimit - CurrentTicks;
         Add(remaining >= 4 ? 4 : remaining);
     }
 
     /// <summary>
     /// Limits the number of T-states that should be executed.
     /// </summary>
-    /// <param name="statesLimit">The maximum number of T-states to execute.</param>
-    public void Limit(int statesLimit)
+    /// <param name="ticksLimit">The maximum number of T-states to execute.</param>
+    public void Limit(int ticksLimit)
     {
-        var remaining = _statesLimit - CurrentStates;
-        _statesLimit = statesLimit + remaining;
-        CurrentStates = 0;
+        var remaining = _ticksLimit - CurrentTicks;
+        _ticksLimit = ticksLimit + remaining;
+        CurrentTicks = 0;
     }
 
     /// <summary>
     /// Returns true if number of executed T-states reached the maximum.
     /// </summary>
-    public bool IsComplete => _statesLimit != 0 && CurrentStates >= _statesLimit;
+    public bool IsComplete => _ticksLimit != 0 && CurrentTicks >= _ticksLimit;
 
     /// <summary>
     /// Gets the total number of T-states since boot or hard reset.
     /// </summary>
-    public long TotalStates { get; private set; }
+    public long TotalTicks { get; private set; }
 
     /// <summary>
     /// Gets the number of T-states executed in the current run.
     /// </summary>
-    public int CurrentStates { get; private set; }
+    public int CurrentTicks { get; private set; }
 }

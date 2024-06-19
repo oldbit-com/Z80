@@ -21,7 +21,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(0x55);
         z80.Registers.PC.Should().Be(0x0008);
-        z80.Clock.TotalStates.Should().Be(17);
+        z80.Clock.TotalTicks.Should().Be(17);
     }
 
     [Theory]
@@ -56,7 +56,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(shouldJump ? 0x55 : 0xAA);
         z80.Registers.PC.Should().Be(shouldJump ? 0x0008 : 0x0005);
-        z80.Clock.TotalStates.Should().Be(17);
+        z80.Clock.TotalTicks.Should().Be(17);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class Z80JumpInstructionsTests
         z80.Registers.C.Should().Be(0x00);
         z80.Registers.D.Should().Be(0x22);
         z80.Registers.PC.Should().Be(0x07);
-        z80.Clock.TotalStates.Should().Be(19);
+        z80.Clock.TotalTicks.Should().Be(19);
     }
 
     [Theory]
@@ -98,13 +98,13 @@ public class Z80JumpInstructionsTests
                 "LD C,0x54")
             .Build();
 
-        var states = shouldJump ? 12 + 7 : 7 + 7;
-        z80.Run(states);
+        var ticks = shouldJump ? 12 + 7 : 7 + 7;
+        z80.Run(ticks);
 
         z80.Registers.B.Should().Be(shouldJump ? 0x00 : 0xAB);
         z80.Registers.C.Should().Be(shouldJump ? 0x54 : 0x00);
         z80.Registers.PC.Should().Be(shouldJump ? 0x0006 : 0x0004);
-        z80.Clock.TotalStates.Should().Be(states);
+        z80.Clock.TotalTicks.Should().Be(ticks);
 
         // Backward jump
         z80 = new Z80Builder()
@@ -115,19 +115,19 @@ public class Z80JumpInstructionsTests
                 $"JR {condition},-4")
             .Build();
 
-        states = shouldJump ? 12 + 7 : 7;
-        z80.Run(states);
+        ticks = shouldJump ? 12 + 7 : 7;
+        z80.Run(ticks);
 
         z80.Registers.A.Should().Be(shouldJump ? 0x47 : 0xFF);
         z80.Registers.PC.Should().Be(shouldJump ? 0x0002 : 0x0004);
-        z80.Clock.TotalStates.Should().Be(states);
+        z80.Clock.TotalTicks.Should().Be(ticks);
     }
 
     [Theory]
     [InlineData("HL", 0x07, 10 + 4 + 7)]
     [InlineData("IX", 0x09, 14 + 8 + 7)]
     [InlineData("IY", 0x09, 14 + 8 + 7)]
-    public void When_JP_RR_InstructionIsExecuted_CodeAtJumpLocationIsExecuted(string register, int address, int states)
+    public void When_JP_RR_InstructionIsExecuted_CodeAtJumpLocationIsExecuted(string register, int address, int ticks)
     {
         var z80 = new Z80Builder()
             .Code(
@@ -138,9 +138,9 @@ public class Z80JumpInstructionsTests
                 "LD A,0x55")
             .Build();
 
-        z80.Run(states);
+        z80.Run(ticks);
         z80.Registers.A.Should().Be(0x55);
-        z80.Clock.TotalStates.Should().Be(states);
+        z80.Clock.TotalTicks.Should().Be(ticks);
     }
 
     [Fact]
@@ -158,7 +158,7 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(0x20);
         z80.Registers.B.Should().Be(0);
-        z80.Clock.TotalStates.Should().Be(553);
+        z80.Clock.TotalTicks.Should().Be(553);
 
         z80 = new Z80Builder()
             .Code(
@@ -174,6 +174,6 @@ public class Z80JumpInstructionsTests
 
         z80.Registers.A.Should().Be(0xFF);
         z80.Registers.B.Should().Be(0);
-        z80.Clock.TotalStates.Should().Be(7388);
+        z80.Clock.TotalTicks.Should().Be(7388);
     }
 }

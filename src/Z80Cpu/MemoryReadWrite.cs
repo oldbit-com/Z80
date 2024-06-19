@@ -9,24 +9,24 @@ partial class Z80
     /// The operation costs 4 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>An 8-bit value representing the opcode.</returns>
-    private byte FetchOpCode() => FetchByte(states: 4);
+    private byte FetchOpCode() => FetchByte(ticks: 4);
 
     /// <summary>
     /// Reads an 8-bit value from the location specified by current PC value.
     /// It costs 3 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>A data byte at the current PC address.</returns>
-    private byte FetchByte() => FetchByte(states: 3);
+    private byte FetchByte() => FetchByte(ticks: 3);
 
     /// <summary>
     /// Reads an 8-bit value from the location specified by current PC value.
     /// PC is incremented by 1.
     /// </summary>
-    /// <param name="states">The number of T-states to add.</param>
+    /// <param name="ticks">The number of T-states to add.</param>
     /// <returns>A data byte at the current PC address.</returns>
-    private byte FetchByte(int states)
+    private byte FetchByte(int ticks)
     {
-        var value = ReadByte(Registers.PC, states);
+        var value = ReadByte(Registers.PC, ticks);
 
         Registers.PC += 1;
 
@@ -38,11 +38,11 @@ partial class Z80
     /// PC is not changed.
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
-    /// <param name="states">The number of T-states to add. The default is 3.</param>
+    /// <param name="ticks">The number of T-states to add. The default is 3.</param>
     /// <returns>A byte value.</returns>
-    private byte ReadByte(Word address, int states = 3)
+    private byte ReadByte(Word address, int ticks = 3)
     {
-        Clock.Add(states);
+        Clock.Add(ticks);
 
         var value = _memory.Read(address);
 
@@ -92,16 +92,16 @@ partial class Z80
     /// Calculates the value of the HL, IX+d or IY+d register depending
     /// on the current context (offset will be read and added if needed).
     /// </summary>
-    /// <param name="extraIndexStates">Extra T-states to add when index register is used.</param>
+    /// <param name="extraIndexTicks">Extra T-states to add when index register is used.</param>
     /// <returns>Value of HL, IX+d or IY+d register.</returns>
-    private Word CalculateExtendedHL(int extraIndexStates)
+    private Word CalculateExtendedHL(int extraIndexTicks)
     {
         sbyte offset = 0;
 
         if (Registers.Context != RegisterContext.HL)
         {
             offset = (sbyte)FetchByte();
-            Clock.Add(extraIndexStates);
+            Clock.Add(extraIndexTicks);
         }
 
         return (Word)(Registers.XHL + offset);
@@ -112,5 +112,5 @@ partial class Z80
     /// of current HL context, e.g. will use IX / IY pair and offset if applicable.
     /// </summary>
     /// <returns>A byte value located at the address provided in the HL (or IX/IY) register.</returns>
-    private byte ReadByteAtExtendedHL(int extraIndexStates) => ReadByte(CalculateExtendedHL(extraIndexStates));
+    private byte ReadByteAtExtendedHL(int extraIndexTicks) => ReadByte(CalculateExtendedHL(extraIndexTicks));
 }

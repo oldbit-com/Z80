@@ -71,21 +71,21 @@ partial class Z80
         _opCodes["LD L,H"] = () => Registers.XL = Registers.XH;
         _opCodes["LD L,L"] = () => { };
 
-        _opCodes["LD A,(HL)"] = () => Registers.A = ReadByteAtExtendedHL(extraIndexStates: 5);
-        _opCodes["LD B,(HL)"] = () => Registers.B = ReadByteAtExtendedHL(extraIndexStates: 5);
-        _opCodes["LD C,(HL)"] = () => Registers.C = ReadByteAtExtendedHL(extraIndexStates: 5);
-        _opCodes["LD D,(HL)"] = () => Registers.D = ReadByteAtExtendedHL(extraIndexStates: 5);
-        _opCodes["LD E,(HL)"] = () => Registers.E = ReadByteAtExtendedHL(extraIndexStates: 5);
-        _opCodes["LD H,(HL)"] = () => Registers.H = ReadByteAtExtendedHL(extraIndexStates: 5);
-        _opCodes["LD L,(HL)"] = () => Registers.L = ReadByteAtExtendedHL(extraIndexStates: 5);
+        _opCodes["LD A,(HL)"] = () => Registers.A = ReadByteAtExtendedHL(extraIndexTicks: 5);
+        _opCodes["LD B,(HL)"] = () => Registers.B = ReadByteAtExtendedHL(extraIndexTicks: 5);
+        _opCodes["LD C,(HL)"] = () => Registers.C = ReadByteAtExtendedHL(extraIndexTicks: 5);
+        _opCodes["LD D,(HL)"] = () => Registers.D = ReadByteAtExtendedHL(extraIndexTicks: 5);
+        _opCodes["LD E,(HL)"] = () => Registers.E = ReadByteAtExtendedHL(extraIndexTicks: 5);
+        _opCodes["LD H,(HL)"] = () => Registers.H = ReadByteAtExtendedHL(extraIndexTicks: 5);
+        _opCodes["LD L,(HL)"] = () => Registers.L = ReadByteAtExtendedHL(extraIndexTicks: 5);
 
-        _opCodes["LD (HL),A"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.A); };
-        _opCodes["LD (HL),B"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.B); };
-        _opCodes["LD (HL),C"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.C); };
-        _opCodes["LD (HL),D"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.D); };
-        _opCodes["LD (HL),E"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.E); };
-        _opCodes["LD (HL),H"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.H); };
-        _opCodes["LD (HL),L"] = () => { WriteByte(CalculateExtendedHL(extraIndexStates: 5), Registers.L); };
+        _opCodes["LD (HL),A"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.A); };
+        _opCodes["LD (HL),B"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.B); };
+        _opCodes["LD (HL),C"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.C); };
+        _opCodes["LD (HL),D"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.D); };
+        _opCodes["LD (HL),E"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.E); };
+        _opCodes["LD (HL),H"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.H); };
+        _opCodes["LD (HL),L"] = () => { WriteByte(CalculateExtendedHL(extraIndexTicks: 5), Registers.L); };
         _opCodes["LD (HL),n"] = () =>
         {
             var address = CalculateExtendedHL();

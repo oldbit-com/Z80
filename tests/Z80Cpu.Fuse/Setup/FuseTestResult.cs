@@ -26,7 +26,7 @@ public class FuseTestResult
     public bool IFF2 { get; set; }
     public byte IM { get; set; }
     public bool Halted { get; set; }
-    public int States { get; set; }
+    public int Ticks { get; set; }
 
     public static FuseTestResult Parse(List<string> testLines)
     {
@@ -81,7 +81,7 @@ public class FuseTestResult
         testResult.IFF2 = registers2[3] != "0";
         testResult.IM = Convert.ToByte(registers2[4], 16);
         testResult.Halted = registers2[5] != "0";
-        testResult.States = Convert.ToInt32(registers2[6]);
+        testResult.Ticks = Convert.ToInt32(registers2[6]);
 
         return testResult;
     }

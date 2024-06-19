@@ -24,7 +24,7 @@ public class FuseTestCase
     public bool IFF2 { get; set; }
     public byte IM { get; set; }
     public bool Halted { get; set; }
-    public int States { get; set; }
+    public int Ticks { get; set; }
 
     public List<(Word, byte)> Memory { get; } = [];
 
@@ -62,7 +62,7 @@ public class FuseTestCase
             IFF2 = registers2[3] != "0",
             IM = Convert.ToByte(registers2[4]),
             Halted = registers2[5] != "0",
-            States = Convert.ToInt32(registers2[6]),
+            Ticks = Convert.ToInt32(registers2[6]),
         };
 
         foreach (var memoryLine in testLines.Skip(3))

@@ -15,7 +15,7 @@ public class FuseTests
     {
         var z80 = SetupTest(testCase);
 
-        z80.Run(testCase.States);
+        z80.Run(testCase.Ticks);
 
         z80.Registers.A.Should().Be((byte)(testResult.AF >> 8));
         if (testCase.TestId is "37_1" or "3f" or "cb46_2" or "cb46_3" or "cb46_3" or "cb46_4" or "cb46_5"
@@ -51,7 +51,7 @@ public class FuseTests
         z80.IFF2.Should().Be(testResult.IFF2);
         z80.IsHalted.Should().Be(testResult.Halted);
 
-        z80.Clock.TotalStates.Should().Be(testResult.States);
+        z80.Clock.TotalTicks.Should().Be(testResult.Ticks);
 
         _events.Count.Should().Be(testResult.Events.Count);
         _events.Should().BeEquivalentTo(testResult.Events, options => options.WithStrictOrdering());

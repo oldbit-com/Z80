@@ -64,10 +64,10 @@ public partial class Z80
     /// <summary>
     /// Executes the Z80 CPU instructions.
     /// </summary>
-    /// <param name="statesToExecute">Specifies the number of T-states to execute. Zero means no limit.</param>
-    public void Run(int statesToExecute = 0)
+    /// <param name="ticksToRun">Specifies the number of T-states to execute. Zero means no limit.</param>
+    public void Run(int ticksToRun = 0)
     {
-        Clock.Limit(statesToExecute);
+        Clock.Limit(ticksToRun);
 
         var isRunning = true;
         while (isRunning)

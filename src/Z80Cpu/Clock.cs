@@ -3,10 +3,10 @@ using OldBit.Z80Cpu.Contention;
 namespace OldBit.Z80Cpu;
 
 /// <summary>
-/// Utility class to count the number of T-states executed.
+/// Clock that counts the number of T-states executed.
 /// </summary>
 /// <param name="contentionProvider">Provides contention states data.</param>
-public sealed class StatesCounter(IContentionProvider contentionProvider)
+public sealed class Clock(IContentionProvider contentionProvider)
 {
     private int _statesLimit;
 

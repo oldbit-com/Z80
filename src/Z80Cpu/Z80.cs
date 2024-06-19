@@ -44,7 +44,7 @@ public partial class Z80
     /// <summary>
     /// Gets the clock that keeps track of the number of T-states executed.
     /// </summary>
-    public StatesCounter Clock { get; }
+    public Clock Clock { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Z80"/> class.
@@ -53,7 +53,7 @@ public partial class Z80
     /// <param name="contentionProvider">Specifies contention provider to</param>
     public Z80(IMemory memory, IContentionProvider? contentionProvider = null)
     {
-        Clock = new StatesCounter(contentionProvider ?? new ZeroContentionProvider());
+        Clock = new Clock(contentionProvider ?? new ZeroContentionProvider());
 
         Reset();
         SetupInstructions();

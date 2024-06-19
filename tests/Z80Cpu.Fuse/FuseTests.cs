@@ -90,8 +90,8 @@ public class FuseTests
             IsHalted = testCase.Halted
         };
 
-        _testMemory.States = z80.Clock;
-        testContentionProvider.States = z80.Clock;
+        _testMemory.Clock = z80.Clock;
+        testContentionProvider.Clock = z80.Clock;
         z80.AddBus(new TestBus(_events, z80.Clock));
 
         return z80;

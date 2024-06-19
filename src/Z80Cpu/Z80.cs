@@ -43,7 +43,7 @@ public partial class Z80
     /// <summary>
     /// Gets the clock that keeps track of the number of T-states executed.
     /// </summary>
-    public StatesCounter Clock { get; } = new();
+    public Clock Clock { get; } = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Z80"/> class.

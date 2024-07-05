@@ -58,15 +58,20 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Executes the Z80 CPU instructions.
+    /// Executes the Z80 CPU instructions for the specified number of T-states.
     /// </summary>
-    /// <param name="ticksToRun">Specifies the number of T-states to execute. Zero means no limit.</param>
-    public void Run(int ticksToRun = 0)
+    /// <param name="ticks">Specifies the number of T-states to execute. Zero means no limit.</param>
+    /// <param name="runMode">Specifies one of the execution modes: Absolute or Incremental.</param>
+    public void Run(int ticks = 0, RunMode runMode = RunMode.Absolute)
     {
-        Clock.Limit(ticksToRun);
+        if (runMode == RunMode.Incremental && Clock.FrameTicks >= ticks)
+        {
+            return;
+        }
 
-        var isRunning = true;
-        while (isRunning)
+        Clock.Limit(ticks, runMode);
+
+        while (true)
         {
             if (IsHalted)
             {
@@ -75,7 +80,6 @@ public partial class Z80
             }
 
             var opCode = FetchOpCode();
-            IncrementR();
 
             switch (opCode)
             {
@@ -104,7 +108,10 @@ public partial class Z80
             _isExtendedInstruction = false;
             _indexRegisterOffset = 0;
 
-            isRunning = !Clock.IsComplete;
+            if (Clock.IsComplete)
+            {
+                break;
+            }
         }
     }
 
@@ -211,7 +218,6 @@ public partial class Z80
         else
         {
             opCode = FetchOpCode();
-            IncrementR();
         }
 
         _opCodes.Execute(0xCB00 | opCode);

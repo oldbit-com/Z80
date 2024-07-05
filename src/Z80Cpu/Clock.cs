@@ -14,7 +14,7 @@ public sealed class Clock
     public void Add(int ticks)
     {
         TotalTicks += ticks;
-        CurrentTicks += ticks;
+        FrameTicks += ticks;
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ public sealed class Clock
     /// </summary>
     public void Halt()
     {
-        var remaining = _ticksLimit - CurrentTicks;
+        var remaining = _ticksLimit - FrameTicks;
         Add(remaining >= 4 ? 4 : remaining);
     }
 
@@ -30,17 +30,22 @@ public sealed class Clock
     /// Limits the number of T-states that should be executed.
     /// </summary>
     /// <param name="ticksLimit">The maximum number of T-states to execute.</param>
-    public void Limit(int ticksLimit)
+    /// <param name="runMode">When true, new frame will be started.</param>
+    public void Limit(int ticksLimit, RunMode runMode)
     {
-        var remaining = _ticksLimit - CurrentTicks;
+        var remaining = _ticksLimit - FrameTicks;
         _ticksLimit = ticksLimit + remaining;
-        CurrentTicks = 0;
+
+        if (runMode == RunMode.Absolute)
+        {
+            FrameTicks = 0;
+        }
     }
 
     /// <summary>
     /// Returns true if number of executed T-states reached the maximum.
     /// </summary>
-    public bool IsComplete => _ticksLimit != 0 && CurrentTicks >= _ticksLimit;
+    public bool IsComplete => _ticksLimit != 0 && FrameTicks >= _ticksLimit;
 
     /// <summary>
     /// Gets the total number of T-states since boot or hard reset.
@@ -48,7 +53,7 @@ public sealed class Clock
     public long TotalTicks { get; private set; }
 
     /// <summary>
-    /// Gets the number of T-states executed in the current run.
+    /// Gets the number of T-states executed in the current frame execution.
     /// </summary>
-    public int CurrentTicks { get; private set; }
+    public int FrameTicks { get; private set; }
 }

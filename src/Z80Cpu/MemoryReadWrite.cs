@@ -9,7 +9,14 @@ partial class Z80
     /// The operation costs 4 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>An 8-bit value representing the opcode.</returns>
-    private byte FetchOpCode() => FetchByte(ticks: 4);
+    private byte FetchOpCode()
+    {
+        var opCode = FetchByte(ticks: 4);
+
+        IncrementR();
+
+        return opCode;
+    }
 
     /// <summary>
     /// Reads an 8-bit value from the location specified by current PC value.

@@ -30,10 +30,10 @@ public sealed class Clock(IContentionProvider contentionProvider)
     {
         for (var i = 0; i < repeat; i++)
         {
-            var contentionStates = contentionProvider.GetMemoryContention(CurrentTicks, address);
+            var contentionStates = contentionProvider.GetMemoryContention(FrameTicks, address);
 
             TotalTicks += ticks + contentionStates;
-            CurrentTicks += ticks + contentionStates;
+            FrameTicks += ticks + contentionStates;
         }
     }
 
@@ -41,10 +41,10 @@ public sealed class Clock(IContentionProvider contentionProvider)
     {
         for (var i = 0; i < repeat; i++)
         {
-            var contentionStates = contentionProvider.GetPortContention(CurrentTicks, port);
+            var contentionStates = contentionProvider.GetPortContention(FrameTicks, port);
 
             TotalTicks += ticks + contentionStates;
-            CurrentTicks += ticks + contentionStates;
+            FrameTicks += ticks + contentionStates;
         }
     }
 

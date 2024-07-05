@@ -5,12 +5,12 @@ public class TestBus(List<InputOutputEvent> events, Clock clock) : IBus
     public byte Read(Word port)
     {
         var value = (byte)(port >> 8);
-        events.Add(new InputOutputEvent(clock.CurrentTicks, "PR", port, value));
+        events.Add(new InputOutputEvent(clock.FrameTicks, "PR", port, value));
         return value;
     }
 
     public void Write(Word port, byte data)
     {
-        events.Add(new InputOutputEvent(clock.CurrentTicks, "PW", port, data));
+        events.Add(new InputOutputEvent(clock.FrameTicks, "PW", port, data));
     }
 }

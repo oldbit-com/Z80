@@ -6,6 +6,7 @@ namespace OldBit.Z80Cpu;
 public sealed class Clock
 {
     private int _ticksLimit;
+    private int _extraFrameTicks;
 
     /// <summary>
     /// Adds the specified number of T-states.
@@ -30,16 +31,18 @@ public sealed class Clock
     /// Limits the number of T-states that should be executed.
     /// </summary>
     /// <param name="ticksLimit">The maximum number of T-states to execute.</param>
-    /// <param name="runMode">When true, new frame will be started.</param>
-    public void Limit(int ticksLimit, RunMode runMode)
+    public void SetLimit(int ticksLimit)
     {
-        var remaining = _ticksLimit - FrameTicks;
-        _ticksLimit = ticksLimit + remaining;
+        _ticksLimit = ticksLimit + _extraFrameTicks;
+    }
 
-        if (runMode == RunMode.Absolute)
-        {
-            FrameTicks = 0;
-        }
+    /// <summary>
+    /// Resets the clock to the beginning of the frame.
+    /// </summary>
+    public void NewFrame()
+    {
+        _extraFrameTicks = _ticksLimit - FrameTicks;
+        FrameTicks = 0;
     }
 
     /// <summary>

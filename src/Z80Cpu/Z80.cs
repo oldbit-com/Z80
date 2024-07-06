@@ -69,7 +69,7 @@ public partial class Z80
             return;
         }
 
-        Clock.Limit(ticks, runMode);
+        Clock.SetLimit(ticks);
 
         while (true)
         {

@@ -99,6 +99,5 @@ public class FuseTests
 
     public static IEnumerable<object[]> TestData =>
         FuseTestLoader.Load()
-            //.Where(x => x.TestCase.TestId == "01")
             .Select(x => new object[] { x.TestCase, x.TestResult });
 }

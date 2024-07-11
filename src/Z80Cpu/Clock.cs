@@ -3,6 +3,26 @@ using OldBit.Z80Cpu.Contention;
 namespace OldBit.Z80Cpu;
 
 /// <summary>
+/// Event arguments for the TicksAdded event.
+/// </summary>
+/// <param name="previousFrameTicks">Specifies the number of ticks before the update.</param>
+/// <param name="currentFrameTicks">Specifies the number of ticks after the update.</param>
+public class TicksAddedEventArgs(int previousFrameTicks, int currentFrameTicks)
+{
+    /// <summary>
+    /// Gets the number of ticks before the update.
+    /// </summary>
+    public int PreviousFrameTicks { get; } = previousFrameTicks;
+
+    /// <summary>
+    /// Gets the number of ticks after the update.
+    /// </summary>
+    public int CurrentFrameTicks { get; } = currentFrameTicks;
+}
+
+public delegate void TicksAddedEventHandler(TicksAddedEventArgs e);
+
+/// <summary>
 /// Clock that counts the number of T-states executed.
 /// </summary>
 /// <param name="contentionProvider">Provides contention states data.</param>
@@ -12,13 +32,22 @@ public sealed class Clock(IContentionProvider contentionProvider)
     private int _extraFrameTicks;
 
     /// <summary>
+    /// Event raised when T-states are added.
+    /// </summary>
+    public event TicksAddedEventHandler? TicksAdded;
+
+    /// <summary>
     /// Adds the specified number of T-states.
     /// </summary>
     /// <param name="ticks">The number of T-states to add.</param>
     public void Add(int ticks)
     {
+        var previousFrameTicks = FrameTicks;
+
         TotalTicks += ticks;
         FrameTicks += ticks;
+
+        TicksAdded?.Invoke(new TicksAddedEventArgs(previousFrameTicks, FrameTicks));
     }
 
     /// <summary>

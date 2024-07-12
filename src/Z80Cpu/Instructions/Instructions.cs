@@ -21,5 +21,7 @@ partial class Z80
         AddBitSetResetTestInstructions();
         AddInputOutputInstructions();
         AddUndocumentedInstructions();
+
+        _opCodes.BuildFastIndex();
     }
 }

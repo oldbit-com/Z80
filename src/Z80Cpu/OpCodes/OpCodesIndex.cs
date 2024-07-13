@@ -19,11 +19,12 @@ internal sealed class OpCodesIndex
 
     internal void BuildFastIndex()
     {
-        Array.Fill(_fastOpCodeIndex, () => { });    // Unknown opcodes will be NOPs
+        // Unknown opcodes will be NOPs
+        Array.Fill(_fastOpCodeIndex, this["NOP"]);
 
-        foreach (var (key, action) in _opCodeIndex)
+        foreach (var (opCode, action) in _opCodeIndex)
         {
-            _fastOpCodeIndex[key] = action;
+            _fastOpCodeIndex[opCode] = action;
         }
     }
 

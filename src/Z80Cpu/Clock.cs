@@ -39,10 +39,10 @@ public sealed class Clock(IContentionProvider contentionProvider)
     }
 
     /// <summary>
-    /// Adds the specified number of T-states respecting contention.
+    /// Adds the specified number of T-states respecting memory contention.
     /// </summary>
     /// <param name="address">The address of the memory that might be contended.</param>
-    /// <param name="repeat">The number of repeated conentions to repeat.</param>
+    /// <param name="repeat">The number of contentions to repeat.</param>
     /// <param name="ticks">The number of T-states to add. Default is 1.</param>
     public void MemoryContention(Word address, int repeat, int ticks = 1)
     {
@@ -50,19 +50,23 @@ public sealed class Clock(IContentionProvider contentionProvider)
         {
             var contentionStates = contentionProvider.GetMemoryContention(FrameTicks, address);
 
-            TotalTicks += ticks + contentionStates;
-            FrameTicks += ticks + contentionStates;
+            Add(ticks + contentionStates);
         }
     }
 
+    /// <summary>
+    /// Adds the specified number of T-states respecting port contention.
+    /// </summary>
+    /// <param name="port">The address of the port that might be contended.</param>
+    /// <param name="repeat">The number of contentions to repeat.</param>
+    /// <param name="ticks">The number of T-states to add. Default is 1.</param>
     public void PortContention(Word port, int repeat, int ticks = 1)
     {
         for (var i = 0; i < repeat; i++)
         {
             var contentionStates = contentionProvider.GetPortContention(FrameTicks, port);
 
-            TotalTicks += ticks + contentionStates;
-            FrameTicks += ticks + contentionStates;
+            Add(ticks + contentionStates);
         }
     }
 

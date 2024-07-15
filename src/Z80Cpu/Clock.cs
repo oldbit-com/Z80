@@ -29,8 +29,11 @@ public sealed class Clock(IContentionProvider contentionProvider)
     {
         var previousFrameTicks = FrameTicks;
 
-        TotalTicks += ticks;
-        FrameTicks += ticks;
+        unchecked
+        {
+            TotalTicks += ticks;
+            FrameTicks += ticks;
+        }
 
         TicksAdded?.Invoke(previousFrameTicks, FrameTicks);
     }

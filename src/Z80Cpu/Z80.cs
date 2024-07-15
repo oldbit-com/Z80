@@ -61,14 +61,8 @@ public partial class Z80
     /// Executes the Z80 CPU instructions for the specified number of T-states.
     /// </summary>
     /// <param name="ticks">Specifies the number of T-states to execute. Zero means no limit.</param>
-    /// <param name="runMode">Specifies one of the execution modes: Absolute or Incremental.</param>
-    public void Run(int ticks = 0, RunMode runMode = RunMode.Absolute)
+    public void Run(int ticks = 0)
     {
-        if (runMode == RunMode.Incremental && Clock.FrameTicks >= ticks)
-        {
-            return;
-        }
-
         Clock.SetLimit(ticks);
 
         while (true)

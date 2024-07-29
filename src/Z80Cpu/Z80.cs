@@ -16,6 +16,16 @@ public partial class Z80
     private IBus? _bus;
 
     /// <summary>
+    /// Delegate for the BeforeFetch event.
+    /// </summary>
+    public delegate void BeforeFetchEvent(Word pc);
+
+    /// <summary>
+    /// Event raised before an instruction is fetched.
+    /// </summary>
+    public event BeforeFetchEvent? BeforeFetch;
+
+    /// <summary>
     /// Gets the Registers of the Z80 CPU.
     /// </summary>
     public RegisterSet Registers { get; private set; } = new();
@@ -72,6 +82,8 @@ public partial class Z80
                 Clock.Halt();
                 break;
             }
+
+            BeforeFetch?.Invoke(Registers.PC);
 
             var opCode = FetchOpCode();
 

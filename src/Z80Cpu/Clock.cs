@@ -14,7 +14,7 @@ public sealed class Clock(IContentionProvider contentionProvider)
     /// <summary>
     /// Delegate for the TicksAdded event.
     /// </summary>
-    public delegate void TicksAddedEvent(int previousFrameTicks, int currentFrameTicks);
+    public delegate void TicksAddedEvent(int addedTicks, int previousFrameTicks, int currentFrameTicks);
 
     /// <summary>
     /// Event raised when T-states are added.
@@ -35,7 +35,7 @@ public sealed class Clock(IContentionProvider contentionProvider)
             FrameTicks += ticks;
         }
 
-        TicksAdded?.Invoke(previousFrameTicks, FrameTicks);
+        TicksAdded?.Invoke(ticks, previousFrameTicks, FrameTicks);
     }
 
     /// <summary>

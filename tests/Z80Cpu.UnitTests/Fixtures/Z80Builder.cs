@@ -12,6 +12,9 @@ internal sealed class Z80Builder
     private Word _startAddress;
     private bool? _iff1;
     private bool? _iff2;
+    private bool? _halt;
+    private InterruptMode? _im;
+    private byte? _i;
     private Word? _af;
     private Word? _afPrime;
     private Word? _bc;
@@ -20,6 +23,7 @@ internal sealed class Z80Builder
     private Word? _dePrime;
     private Word? _hl;
     private Word? _hlPrime;
+    private Word? _sp;
 
     internal TestMemory? Memory { get; private set; }
 
@@ -40,6 +44,20 @@ internal sealed class Z80Builder
     internal Z80Builder Iff2(bool value)
     {
         _iff2 = value;
+
+        return this;
+    }
+
+    internal Z80Builder Halt(bool value)
+    {
+        _halt = value;
+
+        return this;
+    }
+
+    internal Z80Builder Im(InterruptMode mode)
+    {
+        _im = mode;
 
         return this;
     }
@@ -94,6 +112,20 @@ internal sealed class Z80Builder
     {
         _hl = hl;
         _hlPrime = hlPrime;
+
+        return this;
+    }
+
+    internal Z80Builder SetSP(Word sp)
+    {
+        _sp = sp;
+
+        return this;
+    }
+
+    internal Z80Builder SetI(byte i)
+    {
+        _i = i;
 
         return this;
     }
@@ -156,6 +188,16 @@ internal sealed class Z80Builder
             z80.Registers.Prime.HL = _hlPrime.Value;
         }
 
+        if (_sp != null)
+        {
+            z80.Registers.SP = _sp.Value;
+        }
+
+        if (_i != null)
+        {
+            z80.Registers.I = _i.Value;
+        }
+
         if (_iff1 != null)
         {
             z80.IFF1 = _iff1.Value;
@@ -164,6 +206,16 @@ internal sealed class Z80Builder
         if (_iff2 != null)
         {
             z80.IFF2 = _iff2.Value;
+        }
+
+        if (_halt != null)
+        {
+            z80.IsHalted = _halt.Value;
+        }
+
+        if (_im != null)
+        {
+            z80.IM = _im.Value;
         }
 
         return z80;

@@ -39,6 +39,22 @@ internal class AssemblyParser
             return result;
         }
 
+        if (instruction.Mnemonic.Equals("BLOCK"))
+        {
+            var result = new List<int>();
+            var length = Operand.Parse(instruction.Operands[0]).Value;
+            var value = 0;
+
+            if (instruction.Operands.Length > 1)
+            {
+                value = (byte)Operand.Parse(instruction.Operands[1]).Value;
+            }
+
+            result.AddRange(Enumerable.Repeat(value,length));
+
+            return result;
+        }
+
         var opCodes = GetSimpleOpCode(instruction.Mnemonic);
 
         if (opCodes != null)

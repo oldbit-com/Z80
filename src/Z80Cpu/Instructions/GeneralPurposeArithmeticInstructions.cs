@@ -54,9 +54,6 @@ partial class Z80
         _opCodes["CCF"] = () =>
         {
             var oldCarry = (Registers.F & C) == C;
-            // Registers.F &= (P | Z | S);
-            // Registers.F |= oldCarry ? H : C;
-            // Registers.F |= (Y | X) & (Flags)Registers.A;
             Registers.F = (Registers.F & (S | Z | P | C) | (Y | X) & (Flags)Registers.A) ^ C;
             Registers.F |= oldCarry ? H : 0;
         };

@@ -34,7 +34,7 @@ public partial class Z80
     /// <summary>
     /// Gets a value indicating whether the CPU is halted.
     /// </summary>
-    public bool IsHalted { get; internal set; }
+    public bool IsHalted { get; set; }
 
     /// <summary>
     /// Gets or sets a value of the Interrupt Flip-Flop 1.
@@ -130,7 +130,7 @@ public partial class Z80
     /// </summary>
     /// <param name="data">The data byte associated with the interrupt.
     /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
-    public void MaskableInterrupt(byte data)
+    public void INT(byte data)
     {
         if (IsHalted)
         {
@@ -149,6 +149,7 @@ public partial class Z80
         switch (IM)
         {
             case InterruptMode.Mode0:
+                // TODO: Implement Mode 0
             case InterruptMode.Mode1:
                 PushPC();
                 Registers.PC = RST38;
@@ -168,7 +169,7 @@ public partial class Z80
     /// <summary>
     /// Executes a Non-Maskable Interrupt.
     /// </summary>
-    public void NonMaskableInterrupt()
+    public void NMI()
     {
         if (IsHalted)
         {
@@ -178,7 +179,10 @@ public partial class Z80
 
         IFF1 = false;
         IFF2 = false;
+
         PushPC();
+
+
         Registers.PC = 0x66;
 
         Clock.Add(5);
@@ -235,7 +239,13 @@ public partial class Z80
         _opCodes.Execute(0xCB00 | opCode);
     }
 
-    private void PushPC() => Execute_PUSH((byte)(Registers.PC >> 8), (byte)(Registers.PC & 0xFF));
+    private void PushPC()
+    {
+        Registers.SP -= 1;
+        WriteByte(Registers.SP, (byte)(Registers.PC >> 8));
+        Registers.SP -= 1;
+        WriteByte(Registers.SP, (byte)(Registers.PC & 0xFF));
+    }
 
     private void IncrementR() => Registers.R = (byte)((Registers.R & 0x80) | ((Registers.R + 1) & 0x7F));
 }

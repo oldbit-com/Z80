@@ -130,7 +130,7 @@ public partial class Z80
     /// </summary>
     /// <param name="data">The data byte associated with the interrupt.
     /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
-    public void Int(byte data)
+    public void MaskableInterrupt(byte data)
     {
         if (IsHalted)
         {
@@ -168,7 +168,7 @@ public partial class Z80
     /// <summary>
     /// Executes a Non-Maskable Interrupt.
     /// </summary>
-    public void Nmi()
+    public void NonMaskableInterrupt()
     {
         if (IsHalted)
         {

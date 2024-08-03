@@ -76,7 +76,7 @@ public sealed class Clock(IContentionProvider contentionProvider)
     public void Halt()
     {
         var remaining = _ticksLimit - FrameTicks;
-        Add(remaining >= 4 ? 4 : remaining);
+        Add(remaining > 4 ? remaining : 4 - remaining);
     }
 
     /// <summary>

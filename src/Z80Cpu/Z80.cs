@@ -182,7 +182,6 @@ public partial class Z80
 
         PushPC();
 
-
         Registers.PC = 0x66;
 
         Clock.Add(5);

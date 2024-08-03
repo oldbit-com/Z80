@@ -41,7 +41,7 @@ public sealed class Clock
     public void Halt()
     {
         var remaining = _ticksLimit - FrameTicks;
-        Add(remaining >= 4 ? 4 : remaining);
+        Add(remaining > 4 ? remaining : 4 - remaining);
     }
 
     /// <summary>

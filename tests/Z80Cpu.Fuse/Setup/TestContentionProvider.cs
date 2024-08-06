@@ -6,14 +6,14 @@ public class TestContentionProvider(List<InputOutputEvent> events) : IContention
 {
     internal Clock Clock { get; set; } = null!;
 
-    public int GetMemoryContention(int currentStates, Word address)
+    public int GetMemoryContention(int ticks, Word address)
     {
         events.Add(new InputOutputEvent(Clock.FrameTicks, "MC", address, 0));
 
         return 0;
     }
 
-    public int GetPortContention(int currentStates, Word port)
+    public int GetPortContention(int ticks, Word port)
     {
         events.Add(new InputOutputEvent(Clock.FrameTicks, "PC", port, 0));
 

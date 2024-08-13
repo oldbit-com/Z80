@@ -16,7 +16,7 @@ public class InterruptTests
                 "db 0x42,0x78");
         var z80 = builder.Build();
 
-        z80.INT(0);
+        z80.TriggerInt(0);
 
         z80.Registers.SP.Should().Be(0x04);
         z80.Registers.PC.Should().Be(0x1234);
@@ -40,7 +40,7 @@ public class InterruptTests
         var z80 = builder.Build();
         var memory = builder.Memory!;
 
-        z80.INT(0);
+        z80.TriggerInt(0);
 
         z80.Registers.SP.Should().Be(0x02);
         z80.Registers.PC.Should().Be(0x38);
@@ -72,7 +72,7 @@ public class InterruptTests
         var z80 = builder.Build();
         var memory = builder.Memory!;
 
-        z80.INT(0x44);
+        z80.TriggerInt(0x44);
 
         z80.Registers.SP.Should().Be(0x02);
         z80.Registers.PC.Should().Be(0x7842);
@@ -98,7 +98,7 @@ public class InterruptTests
         var z80 = builder.Build();
         var memory = builder.Memory!;
 
-        z80.NMI();
+        z80.TriggerNmi();
 
         z80.Registers.SP.Should().Be(0x02);
         z80.Registers.PC.Should().Be(0x66);

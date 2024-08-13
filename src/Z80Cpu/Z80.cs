@@ -126,11 +126,11 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Executes a Maskable Interrupt.
+    /// Triggers a Maskable Interrupt (INT).
     /// </summary>
     /// <param name="data">The data byte associated with the interrupt.
     /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
-    public void INT(byte data)
+    public void TriggerInt(byte data)
     {
         if (IsHalted)
         {
@@ -167,9 +167,9 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Executes a Non-Maskable Interrupt.
+    /// Executes a Non-Maskable Interrupt (NMI).
     /// </summary>
-    public void NMI()
+    public void TriggerNmi()
     {
         if (IsHalted)
         {
@@ -188,6 +188,9 @@ public partial class Z80
         IncrementR();
     }
 
+    /// <summary>
+    /// Resets the Z80 CPU to its initial state.
+    /// </summary>
     public void Reset()
     {
         Registers = new RegisterSet

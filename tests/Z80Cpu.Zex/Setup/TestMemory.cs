@@ -8,8 +8,6 @@ internal class TestMemory : IMemory
 
     public void Write(Word address, byte data) => _memory[address] = data;
 
-    internal void CopyFrom(byte[] data, Word startAddress)
-    {
+    internal void CopyFrom(byte[] data, Word startAddress) =>
         Array.Copy(data, 0, _memory, startAddress, data.Length);
-    }
 }

@@ -3,14 +3,15 @@
 ![Build](https://github.com/oldbit-com/Z80Cpu/actions/workflows/build.yml/badge.svg)
 
 ## Introduction
-This is a Z80 CPU emulator written in C#. There are many Z80 emulators out there, but this one is mine :)
-I tried to write as clean and readable code as possible, so it can be used as a reference for anyone who 
-wants to learn how to write a CPU emulator. This is just a fun project for me, so I don't have any plans for it
-apart from using it in my other projects.
+This is a Z80 CPU emulator written in C#. I have created it as a fun project. It is quite generic and possibly can be 
+used in any project that requires a Z80 CPU emulator.
+
+There is also my own fork of this project that adds some features specific to the ZX Spectrum, 
+like memory contention handling. I simply wanted to keep this project as generic as possible.
 
 ## Features
 - Full Z80 instruction set
-- Undocumented instructions
+- Undocumented instructions (at least the most common ones)
 
 ## Implementation
 - The emulator is written in C# 12 and .NET 8
@@ -34,6 +35,43 @@ apart from using it in my other projects.
   - Unit tests (I have written a very basic Z80 assembly parser to help me write these)
   - Fuse tests (tests that come with the Fuse source code)
   - Zex tests (command line runner of the Z80 instruction exerciser)
+
+## Testing
+The emulator has been tested using the following test suites:
+- Fuse tests
+- Zex tests
+- My own unit tests
+
+## Usage
+There are two interfaces that can be used to interact with the emulator:
+- `IMemory`
+- `IBus`
+
+The `IMemory` interface is used to read and write memory, while the `IBus` interface is used to read and write I/O ports.
+
+As a minimum you need to implement `IMemory` to be able to run the emulator. The `IBus` interface is optional.
+
+The following is an example of a simple memory implementation:
+```csharp
+public class Memory : IMemory
+{
+    private readonly byte[] _memory = new byte[65535];
+
+    public byte Read(ushort address) => _memory[address];
+
+    public void Write(ushort address, byte data) => _memory[address] = data;
+}
+```
+Then you can create an instance of the `Z80` class:
+```csharp
+var memory = new Memory();
+
+memory.Write(0, 0x3E); // LD A, 0x12
+memory.Write(1, 0x12);
+
+var cpu = new Z80(memory);
+cpu.Run(7); // Run for 7 cycles
+```
 
 ## References
 - [Z80 CPU User Manual](http://www.zilog.com/docs/z80/um0080.pdf)

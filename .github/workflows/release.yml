@@ -23,7 +23,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build -c Release /p:Version=${VERSION
+        run: dotnet build -c Release /p:Version=${VERSION}
 
       - name: Test
         run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal

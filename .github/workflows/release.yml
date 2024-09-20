@@ -1,3 +1,5 @@
+name: Release NuGet package
+
 on:
   push:
     tags:

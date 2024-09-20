@@ -24,7 +24,7 @@ jobs:
         run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal
 
       - name: Pack
-        run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${VERSION} -p:PackageID=OldBit.Z80Cpu --no-restore --output .
+        run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${VERSION} -p:PackageID=${{ vars.PACKAGE_NAME }} --no-restore --output .
 
       - name: Push
         run: dotnet nuget push ${{ vars.PACKAGE_NAME }}.${VERSION}.nupkg --source https://nuget.pkg.github.com/oldbit-com/index.json --api-key ${{ secrets.GITHUB_TOKEN }}

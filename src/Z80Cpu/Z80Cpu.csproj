@@ -6,17 +6,17 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>OldBit.Z80Cpu</PackageId>
-        <Version>0.9.2</Version>
+        <Version>0.9.3</Version>
         <Title>Z80 CPU emulator</Title>
         <Authors>Wojciech Sobieszek</Authors>
-        <Copyright>Wojciech Sobieszek</Copyright>
-        <RepositoryUrl>https://github.com/oldbit-com/Z80Cpu</RepositoryUrl>
+        <RepositoryUrl>https://github.com/oldbit-com/Z80</RepositoryUrl>
         <PackageTags>Z80 CPU</PackageTags>
-        <Description>Z80 CPU emulator written in .NET</Description>
+        <Description>Z80 CPU emulator written in dotnet</Description>
         <AssemblyName>OldBit.Z80Cpu</AssemblyName>
         <RootNamespace>OldBit.Z80Cpu</RootNamespace>
         <PackageProjectUrl>https://github.com/oldbit-com/Z80</PackageProjectUrl>
-        <PackageIcon>Z80.png</PackageIcon>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Z80.png" Pack="true" PackagePath=""/>
+        <None Include="icon.png" Pack="true" PackagePath=""/>
+        <None Include="../../README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 </Project>

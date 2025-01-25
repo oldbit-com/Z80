@@ -20,6 +20,6 @@ public class FlagsTests
     {
         var result = flags.IsSet(flag);
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 }

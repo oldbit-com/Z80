@@ -13,9 +13,9 @@ public class Z80ControlInstructionsTests
 
         z80.Run(4);
 
-        z80.Registers.PC.Should().Be(0);
-        z80.IsHalted.Should().BeTrue();
-        z80.Clock.TotalTicks.Should().Be(4);
+        z80.Registers.PC.ShouldBe(0);
+        z80.IsHalted.ShouldBeTrue();
+        z80.Clock.TotalTicks.ShouldBe(4);
     }
 
     [Fact]
@@ -29,10 +29,10 @@ public class Z80ControlInstructionsTests
 
         z80.Run(8);
 
-        z80.Registers.PC.Should().Be(2);
-        z80.IFF1.Should().BeFalse();
-        z80.IFF2.Should().BeFalse();
-        z80.Clock.TotalTicks.Should().Be(8);
+        z80.Registers.PC.ShouldBe(2);
+        z80.IFF1.ShouldBeFalse();
+        z80.IFF2.ShouldBeFalse();
+        z80.Clock.TotalTicks.ShouldBe(8);
     }
 
     [Fact]
@@ -46,10 +46,10 @@ public class Z80ControlInstructionsTests
 
         z80.Run(8);
 
-        z80.Registers.PC.Should().Be(2);
-        z80.IFF1.Should().BeTrue();
-        z80.IFF2.Should().BeTrue();
-        z80.Clock.TotalTicks.Should().Be(8);
+        z80.Registers.PC.ShouldBe(2);
+        z80.IFF1.ShouldBeTrue();
+        z80.IFF2.ShouldBeTrue();
+        z80.Clock.TotalTicks.ShouldBe(8);
     }
 
     [Fact]
@@ -63,9 +63,9 @@ public class Z80ControlInstructionsTests
 
         z80.Run(16);
 
-        z80.Registers.PC.Should().Be(4);
-        z80.IM.Should().Be(InterruptMode.Mode0);
-        z80.Clock.TotalTicks.Should().Be(16);
+        z80.Registers.PC.ShouldBe(4);
+        z80.IM.ShouldBe(InterruptMode.Mode0);
+        z80.Clock.TotalTicks.ShouldBe(16);
     }
 
     [Fact]
@@ -77,9 +77,9 @@ public class Z80ControlInstructionsTests
 
         z80.Run(8);
 
-        z80.Registers.PC.Should().Be(2);
-        z80.IM.Should().Be(InterruptMode.Mode1);
-        z80.Clock.TotalTicks.Should().Be(8);
+        z80.Registers.PC.ShouldBe(2);
+        z80.IM.ShouldBe(InterruptMode.Mode1);
+        z80.Clock.TotalTicks.ShouldBe(8);
     }
 
     [Fact]
@@ -91,8 +91,8 @@ public class Z80ControlInstructionsTests
 
         z80.Run(8);
 
-        z80.Registers.PC.Should().Be(2);
-        z80.IM.Should().Be(InterruptMode.Mode2);
-        z80.Clock.TotalTicks.Should().Be(8);
+        z80.Registers.PC.ShouldBe(2);
+        z80.IM.ShouldBe(InterruptMode.Mode2);
+        z80.Clock.TotalTicks.ShouldBe(8);
     }
 }

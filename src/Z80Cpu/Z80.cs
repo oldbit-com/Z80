@@ -72,21 +72,12 @@ public partial class Z80
     }
 
     /// <summary>
-    /// Executes the Z80 CPU instructions for the specified number of T-states.
+    /// Executes a single Z80 CPU instruction.
     /// </summary>
-    /// <param name="ticks">Specifies the number of T-states to execute. Zero means no limit.</param>
-    public void Run(int ticks = 0)
+    public void Step()
     {
-        Clock.SetLimit(ticks);
-
         while (true)
         {
-            if (IsHalted)
-            {
-                Clock.Halt();
-                break;
-            }
-
             BeforeFetch?.Invoke(Registers.PC);
 
             var opCode = FetchOpCode();
@@ -117,6 +108,28 @@ public partial class Z80
             Registers.Context = RegisterContext.HL;
             _isExtendedInstruction = false;
             _indexRegisterOffset = 0;
+
+            break;
+        }
+    }
+
+    /// <summary>
+    /// Executes the Z80 CPU instructions for the specified number of T-states.
+    /// </summary>
+    /// <param name="ticks">Specifies the number of T-states to execute. Zero means no limit.</param>
+    public void Run(int ticks = 0)
+    {
+        Clock.SetLimit(ticks);
+
+        while (true)
+        {
+            if (IsHalted)
+            {
+                Clock.Halt();
+                break;
+            }
+
+            Step();
 
             if (Clock.IsComplete)
             {

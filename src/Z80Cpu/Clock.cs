@@ -83,7 +83,7 @@ public sealed class Clock(IContentionProvider contentionProvider)
     /// Limits the number of T-states that should be executed.
     /// </summary>
     /// <param name="ticksLimit">The maximum number of T-states to execute.</param>
-    public void SetLimit(int ticksLimit)
+    internal void SetLimit(int ticksLimit)
     {
         _ticksLimit = ticksLimit + _extraFrameTicks;
     }

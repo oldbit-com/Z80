@@ -18,10 +18,10 @@ public class InterruptTests
 
         z80.TriggerInt(0);
 
-        z80.Registers.SP.Should().Be(0x04);
-        z80.Registers.PC.Should().Be(0x1234);
+        z80.Registers.SP.ShouldBe(0x04);
+        z80.Registers.PC.ShouldBe(0x1234);
 
-        z80.Clock.TotalTicks.Should().Be(0);
+        z80.Clock.TotalTicks.ShouldBe(0);
     }
 
     [Fact]
@@ -42,17 +42,17 @@ public class InterruptTests
 
         z80.TriggerInt(0);
 
-        z80.Registers.SP.Should().Be(0x02);
-        z80.Registers.PC.Should().Be(0x38);
+        z80.Registers.SP.ShouldBe(0x02);
+        z80.Registers.PC.ShouldBe(0x38);
 
-        memory.Read(0x03).Should().Be(0x12);
-        memory.Read(0x02).Should().Be(0x35);
+        memory.Read(0x03).ShouldBe(0x12);
+        memory.Read(0x02).ShouldBe(0x35);
 
-        z80.IsHalted.Should().BeFalse();
-        z80.IFF1.Should().BeFalse();
-        z80.IFF2.Should().BeFalse();
+        z80.IsHalted.ShouldBeFalse();
+        z80.IFF1.ShouldBeFalse();
+        z80.IFF2.ShouldBeFalse();
 
-        z80.Clock.TotalTicks.Should().Be(13);
+        z80.Clock.TotalTicks.ShouldBe(13);
     }
 
     [Fact]
@@ -74,17 +74,17 @@ public class InterruptTests
 
         z80.TriggerInt(0x44);
 
-        z80.Registers.SP.Should().Be(0x02);
-        z80.Registers.PC.Should().Be(0x7842);
+        z80.Registers.SP.ShouldBe(0x02);
+        z80.Registers.PC.ShouldBe(0x7842);
 
-        memory.Read(0x03).Should().Be(0x12);
-        memory.Read(0x02).Should().Be(0x35);
+        memory.Read(0x03).ShouldBe(0x12);
+        memory.Read(0x02).ShouldBe(0x35);
 
-        z80.IsHalted.Should().BeFalse();
-        z80.IFF1.Should().BeFalse();
-        z80.IFF2.Should().BeFalse();
+        z80.IsHalted.ShouldBeFalse();
+        z80.IFF1.ShouldBeFalse();
+        z80.IFF2.ShouldBeFalse();
 
-        z80.Clock.TotalTicks.Should().Be(19);
+        z80.Clock.TotalTicks.ShouldBe(19);
     }
 
     [Fact]
@@ -100,16 +100,16 @@ public class InterruptTests
 
         z80.TriggerNmi();
 
-        z80.Registers.SP.Should().Be(0x02);
-        z80.Registers.PC.Should().Be(0x66);
+        z80.Registers.SP.ShouldBe(0x02);
+        z80.Registers.PC.ShouldBe(0x66);
 
-        memory.Read(0x03).Should().Be(0x12);
-        memory.Read(0x02).Should().Be(0x34);
+        memory.Read(0x03).ShouldBe(0x12);
+        memory.Read(0x02).ShouldBe(0x34);
 
-        z80.IsHalted.Should().BeFalse();
-        z80.IFF1.Should().BeFalse();
-        z80.IFF2.Should().BeFalse();
+        z80.IsHalted.ShouldBeFalse();
+        z80.IFF1.ShouldBeFalse();
+        z80.IFF2.ShouldBeFalse();
 
-        z80.Clock.TotalTicks.Should().Be(11);
+        z80.Clock.TotalTicks.ShouldBe(11);
     }
 }

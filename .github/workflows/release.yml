@@ -40,16 +40,16 @@ jobs:
           preRelease=${{ steps.version_step.outputs.preReleaseTag }}
           
           if [ ${{ inputs.publishPreRelease }} ]; then
-            echo "VERSION=$version-preRelease" >> $GITHUB_ENV
+            echo "PACKAGE_VERSION=$version-preRelease" >> $GITHUB_ENV
           else
-            echo "VERSION=$version" >> $GITHUB_ENV
+            echo "PACKAGE_VERSION=$version" >> $GITHUB_ENV
           fi
 
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build
-        run: dotnet build -c Release /p:Version=${VERSION}
+        run: dotnet build -c Release /p:Version=${PACKAGE_VERSION}
 
 #      - name: Test
 #        run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal

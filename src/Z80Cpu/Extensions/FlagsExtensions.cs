@@ -2,6 +2,9 @@ using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu.Extensions;
 
+/// <summary>
+/// Extension methods for the Flags enumeration.
+/// </summary>
 public static class FlagsExtensions
 {
     /// <summary>

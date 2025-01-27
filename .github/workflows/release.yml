@@ -51,11 +51,11 @@ jobs:
       - name: Build
         run: dotnet build -c Release /p:Version=${PACKAGE_VERSION}
 
-#      - name: Test
-#        run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal
+      - name: Test
+        run: dotnet test -c Release /p:Version=${PACKAGE_VERSION} --no-restore --verbosity normal
 
-#      - name: Pack
-#        run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${VERSION} -p:PackageID=${{ vars.PACKAGE_NAME }} --no-restore --output .
+      - name: Pack
+        run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${PACKAGE_VERSION} -p:PackageID=${PACKAGE_NAME} --no-restore --output .
 
 #      - name: Push
-#        run: dotnet nuget push ${{ vars.PACKAGE_NAME }}.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+#        run: dotnet nuget push ${PACKAGE_NAME}.${PACKAGE_VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}

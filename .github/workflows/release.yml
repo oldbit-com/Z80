@@ -27,11 +27,10 @@ jobs:
 
       - name: Set package name
         run: |
-          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          if [ "$branch" == "spectron" ]; then
+          if [ "${{ steps.version_step.outputs.branchName }}" == "spectron" ]; then
             echo "PACKAGE_NAME=OldBit.Z80Cpu.Spectron" >> $GITHUB_ENV
           else
-             echo "PACKAGE_NAME=OldBit.Z80Cpu" >> $GITHUB_ENV
+            echo "PACKAGE_NAME=OldBit.Z80Cpu" >> $GITHUB_ENV
           fi
 
       - name: Set package version

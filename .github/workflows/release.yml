@@ -34,16 +34,16 @@ jobs:
              echo "PACKAGE_NAME=OldBit.Z80Cpu" >> $GITHUB_ENV
           fi
 
-      # ${{ steps.version_step.outputs.fullSemVer }}
+      - name: Set version
+        run: |
+          version=${{ steps.version_step.outputs.majorMinorPatch }}
+          echo "VERSION=$version" >> $GITHUB_ENV
 
-#      - name: Set VERSION variable from tag
-#        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Restore dependencies
+        run: dotnet restore
 
-#      - name: Restore dependencies
-#        run: dotnet restore
-
-#      - name: Build
-#        run: dotnet build -c Release /p:Version=${VERSION}
+      - name: Build
+        run: dotnet build -c Release /p:Version=${VERSION}
 
 #      - name: Test
 #        run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal

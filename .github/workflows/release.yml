@@ -1,35 +1,55 @@
-name: Release NuGet package
+name: Publish NuGet package
 
 on:
-  push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      publishPreRelease:
+        description: 'Publish pre-release'
+        type: boolean
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Verify commit exists in origin/main
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.1.11
+        with:
+          versionSpec: '6.0.x'
+
+      - name: Determine version
+        id: version_step
+        uses: gittools/actions/gitversion/execute@v3.1.11
+
+      - name: Set package name
         run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-          git branch --remote --contains | grep origin/main
+          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          if [ "$branch" == "spectron" ];
+            echo "PACKAGE_NAME=OldBit.Z80Cpu.Spectron" >> $GITHUB_ENV
+          else
+             echo "PACKAGE_NAME=OldBit.Z80Cpu" >> $GITHUB_ENV
+          fi
 
-      - name: Set VERSION variable from tag
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      # ${{ steps.version_step.outputs.fullSemVer }}
 
-      - name: Restore dependencies
-        run: dotnet restore
+#      - name: Set VERSION variable from tag
+#        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
-      - name: Build
-        run: dotnet build -c Release /p:Version=${VERSION}
+#      - name: Restore dependencies
+#        run: dotnet restore
 
-      - name: Test
-        run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal
+#      - name: Build
+#        run: dotnet build -c Release /p:Version=${VERSION}
 
-      - name: Pack
-        run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${VERSION} -p:PackageID=${{ vars.PACKAGE_NAME }} --no-restore --output .
+#      - name: Test
+#        run: dotnet test -c Release /p:Version=${VERSION} --no-restore --verbosity normal
 
-      - name: Push
-        run: dotnet nuget push ${{ vars.PACKAGE_NAME }}.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+#      - name: Pack
+#        run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${VERSION} -p:PackageID=${{ vars.PACKAGE_NAME }} --no-restore --output .
+
+#      - name: Push
+#        run: dotnet nuget push ${{ vars.PACKAGE_NAME }}.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}

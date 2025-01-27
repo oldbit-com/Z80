@@ -34,18 +34,18 @@ jobs:
              echo "PACKAGE_NAME=OldBit.Z80Cpu" >> $GITHUB_ENV
           fi
 
-      - name: Set version
+      - name: Set package version
         run: |
           version=${{ steps.version_step.outputs.majorMinorPatch }}
           preRelease=${{ steps.version_step.outputs.preReleaseTag }}
           
-          if [ ${{ inputs.publishPreRelease }} ]; then
+          if [ "${{ inputs.publishPreRelease }}" == "true" ]; then
             echo "PACKAGE_VERSION=$version-pre.${{ steps.version_step.outputs.preReleaseNumber }}" >> $GITHUB_ENV
           else
             echo "PACKAGE_VERSION=$version" >> $GITHUB_ENV
           fi
 
-      - name: Restore dependencies
+      - name: Restore
         run: dotnet restore
 
       - name: Build

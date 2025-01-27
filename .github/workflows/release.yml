@@ -37,7 +37,13 @@ jobs:
       - name: Set version
         run: |
           version=${{ steps.version_step.outputs.majorMinorPatch }}
-          echo "VERSION=$version" >> $GITHUB_ENV
+          preRelease=${{ steps.version_step.outputs.preReleaseTag }}
+          
+          if [ ${{ inputs.publishPreRelease }} ]; then
+            echo "VERSION=$version-preRelease" >> $GITHUB_ENV
+          else
+            echo "VERSION=$version" >> $GITHUB_ENV
+          fi
 
       - name: Restore dependencies
         run: dotnet restore

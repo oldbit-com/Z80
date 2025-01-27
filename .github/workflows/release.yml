@@ -56,5 +56,5 @@ jobs:
       - name: Pack
         run: dotnet pack ./src/Z80Cpu/Z80Cpu.csproj -c Release /p:Version=${PACKAGE_VERSION} -p:PackageID=${PACKAGE_NAME} --no-restore --output .
 
-#      - name: Push
-#        run: dotnet nuget push ${PACKAGE_NAME}.${PACKAGE_VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+      - name: Push
+        run: dotnet nuget push ${PACKAGE_NAME}.${PACKAGE_VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}

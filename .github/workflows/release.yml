@@ -40,7 +40,7 @@ jobs:
           preRelease=${{ steps.version_step.outputs.preReleaseTag }}
           
           if [ ${{ inputs.publishPreRelease }} ]; then
-            echo "PACKAGE_VERSION=$version-preRelease" >> $GITHUB_ENV
+            echo "PACKAGE_VERSION=$version-pre${{ steps.version_step.outputs.preReleaseNumber }}" >> $GITHUB_ENV
           else
             echo "PACKAGE_VERSION=$version" >> $GITHUB_ENV
           fi

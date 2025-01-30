@@ -1,4 +1,5 @@
 using OldBit.Z80Cpu.Contention;
+using OldBit.Z80Cpu.Events;
 using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu;
@@ -17,14 +18,14 @@ public partial class Z80
     private IBus? _bus;
 
     /// <summary>
-    /// Delegate for the BeforeFetch event.
+    /// Delegate for the BeforeInstruction event.
     /// </summary>
-    public delegate void BeforeFetchEvent(Word pc);
+    public delegate void BeforeInstructionEvent(BeforeInstructionEventArgs e);
 
     /// <summary>
     /// Event raised before an instruction is fetched.
     /// </summary>
-    public event BeforeFetchEvent? BeforeFetch;
+    public event BeforeInstructionEvent? BeforeInstruction;
 
     /// <summary>
     /// Gets the Registers of the Z80 CPU.
@@ -78,8 +79,6 @@ public partial class Z80
     {
         while (true)
         {
-            BeforeFetch?.Invoke(Registers.PC);
-
             var opCode = FetchOpCode();
 
             switch (opCode)
@@ -126,6 +125,15 @@ public partial class Z80
             if (IsHalted)
             {
                 Clock.Halt();
+                break;
+            }
+
+            // Avoid creating many new instances of BeforeInstructionEventArgs
+            BeforeInstructionEventArgs.Instance.PC = Registers.PC;
+            BeforeInstruction?.Invoke(BeforeInstructionEventArgs.Instance);
+
+            if (BeforeInstructionEventArgs.Instance.Break)
+            {
                 break;
             }
 

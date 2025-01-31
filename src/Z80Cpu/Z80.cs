@@ -124,11 +124,8 @@ public partial class Z80
                 break;
             }
 
-            // Avoid creating many new instances of BeforeInstructionEventArgs
-            BeforeInstructionEventArgs.Instance.PC = Registers.PC;
-            BeforeInstruction?.Invoke(BeforeInstructionEventArgs.Instance);
-
-            if (BeforeInstructionEventArgs.Instance.Break)
+            var isBreakpoint = OnBeforeInstruction();
+            if (isBreakpoint)
             {
                 break;
             }
@@ -140,6 +137,26 @@ public partial class Z80
                 break;
             }
         }
+    }
+
+    private bool OnBeforeInstruction()
+    {
+        // Event handler will be called thousands of times,
+        // so we want to avoid creating a new object each time
+        var args = BeforeInstructionEventArgs.Instance;
+        args.PC = Registers.PC;
+
+        BeforeInstruction?.Invoke(args);
+
+        if (!args.IsBreakpoint)
+        {
+            return false;
+        }
+
+        // Reset the breakpoint flag once it's handled, so it doesn't break again
+        args.IsBreakpoint = false;
+
+        return true;
     }
 
     /// <summary>
@@ -167,6 +184,7 @@ public partial class Z80
         {
             case InterruptMode.Mode0:
                 // TODO: Implement Mode 0
+
             case InterruptMode.Mode1:
                 PushPC();
                 Registers.PC = RST38;
@@ -230,6 +248,7 @@ public partial class Z80
     public Z80 AddBus(IBus? bus)
     {
         _bus = bus;
+
         return this;
     }
 
@@ -241,6 +260,7 @@ public partial class Z80
     private void ExecuteBitOpCodes()
     {
         byte opCode;
+
         if (Registers.UseIndexRegister)
         {
             _indexRegisterOffset = (sbyte)FetchByte();
@@ -260,6 +280,7 @@ public partial class Z80
     {
         Registers.SP -= 1;
         WriteByte(Registers.SP, (byte)(Registers.PC >> 8));
+
         Registers.SP -= 1;
         WriteByte(Registers.SP, (byte)(Registers.PC & 0xFF));
     }

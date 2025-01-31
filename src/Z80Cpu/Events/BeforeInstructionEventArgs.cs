@@ -13,7 +13,7 @@ public class BeforeInstructionEventArgs : EventArgs
     /// <summary>
     /// Gets or sets a value indicating whether to break the execution.
     /// </summary>
-    public bool Break { get; set; }
+    public bool IsBreakpoint { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BeforeInstructionEventArgs"/>
@@ -24,6 +24,7 @@ public class BeforeInstructionEventArgs : EventArgs
 
     /// <summary>
     /// Gets the singleton instance of the <see cref="BeforeInstructionEventArgs"/> class.
+    /// Shared instance is used to avoid unnecessary object creation.
     /// </summary>
     public static BeforeInstructionEventArgs Instance { get; } = new(0);
 }

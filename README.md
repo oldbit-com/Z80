@@ -6,8 +6,8 @@
 This is a Z80 CPU emulator written in C#. I have created it as a fun project. It is quite generic and possibly can be 
 used in any project that requires a Z80 CPU emulator.
 
-There is also my own fork of this project that adds some features specific to the ZX Spectrum, 
-like memory contention handling. I simply wanted to keep this project as generic as possible.
+There is also a branch that adds some features specifically for to the ZX Spectrum emulator, e.g.
+memory contention. Main beanch is quite generic.
 
 ## Features
 - Full Z80 instruction set
@@ -40,7 +40,7 @@ like memory contention handling. I simply wanted to keep this project as generic
 The emulator has been tested using the following test suites:
 - Fuse tests
 - Zex tests
-- My own unit tests
+- Unit tests
 
 ## Usage
 There are two interfaces that can be used to interact with the emulator:
@@ -55,7 +55,7 @@ The following is an example of a simple memory implementation:
 ```csharp
 public class Memory : IMemory
 {
-    private readonly byte[] _memory = new byte[65535];
+    private readonly byte[] _memory = new byte[65536];
 
     public byte Read(ushort address) => _memory[address];
 

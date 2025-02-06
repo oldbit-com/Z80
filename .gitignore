@@ -400,3 +400,4 @@ FodyWeavers.xsd
 .idea/
 .DS_Store
 Z80.net.sln.DotSettings.user
+.aider*

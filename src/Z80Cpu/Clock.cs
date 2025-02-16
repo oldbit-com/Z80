@@ -24,15 +24,15 @@ public sealed class Clock
     /// <param name="ticks">The number of T-states to add.</param>
     public void Add(int ticks)
     {
-        var previousFrameTicks = FrameTicks;
+        var previousFrameTicks = CurrentFrameTicks;
 
         unchecked
         {
             TotalTicks += ticks;
-            FrameTicks += ticks;
+            CurrentFrameTicks += ticks;
         }
 
-        TicksAdded?.Invoke(ticks, previousFrameTicks, FrameTicks);
+        TicksAdded?.Invoke(ticks, previousFrameTicks, CurrentFrameTicks);
     }
 
     /// <summary>
@@ -40,17 +40,16 @@ public sealed class Clock
     /// </summary>
     public void Halt()
     {
-        var remaining = _ticksLimit - FrameTicks;
+        var remaining = _ticksLimit - CurrentFrameTicks;
         Add(remaining > 4 ? remaining : 4 - remaining);
     }
 
     /// <summary>
-    /// Limits the number of T-states that should be executed.
+    /// Limits the number of T-states that should be executed in the frame.
     /// </summary>
-    /// <param name="ticksLimit">The maximum number of T-states to execute.</param>
-    internal void SetLimit(int ticksLimit)
+    internal void InitFrameLimiter()
     {
-        _ticksLimit = ticksLimit + _extraFrameTicks;
+        _ticksLimit = DefaultFrameTicks + _extraFrameTicks;
     }
 
     /// <summary>
@@ -58,14 +57,14 @@ public sealed class Clock
     /// </summary>
     public void NewFrame()
     {
-        _extraFrameTicks = _ticksLimit - FrameTicks;
-        FrameTicks = 0;
+        _extraFrameTicks = _ticksLimit - CurrentFrameTicks;
+        CurrentFrameTicks = 0;
     }
 
     /// <summary>
     /// Returns true if number of executed T-states reached the maximum.
     /// </summary>
-    public bool IsComplete => _ticksLimit != 0 && FrameTicks >= _ticksLimit;
+    public bool IsComplete => _ticksLimit != 0 && CurrentFrameTicks >= _ticksLimit;
 
     /// <summary>
     /// Gets the total number of T-states since boot or hard reset.
@@ -75,5 +74,10 @@ public sealed class Clock
     /// <summary>
     /// Gets the number of T-states executed in the current frame execution.
     /// </summary>
-    public int FrameTicks { get; private set; }
+    public int CurrentFrameTicks { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the default number of T-states executed in the frame.
+    /// </summary>
+    public int DefaultFrameTicks { get; set; }
 }

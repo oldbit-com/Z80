@@ -20,14 +20,14 @@ public class TestMemory : IMemory
     {
         var value = _memory[address];
 
-        _events.Add(new InputOutputEvent(Clock.FrameTicks, "MR", address, value));
+        _events.Add(new InputOutputEvent(Clock.CurrentFrameTicks, "MR", address, value));
 
         return value;
     }
 
     public void Write(Word address, byte data)
     {
-        _events.Add(new InputOutputEvent(Clock.FrameTicks, "MW", address, data));
+        _events.Add(new InputOutputEvent(Clock.CurrentFrameTicks, "MW", address, data));
 
         _memory[address] = data;
     }

@@ -48,7 +48,7 @@ public sealed class Clock(IContentionProvider contentionProvider)
     {
         for (var i = 0; i < repeat; i++)
         {
-            var contentionStates = contentionProvider.GetMemoryContention(FrameTicks, address);
+            var contentionStates = contentionProvider.GetMemoryContention(CurrentFrameTicks, address);
 
             Add(ticks + contentionStates);
         }
@@ -64,7 +64,7 @@ public sealed class Clock(IContentionProvider contentionProvider)
     {
         for (var i = 0; i < repeat; i++)
         {
-            var contentionStates = contentionProvider.GetPortContention(FrameTicks, port);
+            var contentionStates = contentionProvider.GetPortContention(CurrentFrameTicks, port);
 
             Add(ticks + contentionStates);
         }

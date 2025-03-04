@@ -63,7 +63,7 @@ partial class Z80
             var value = ReadByte(Registers.HL);
             var newValue = (byte)((value << 4) | (Registers.A & 0x0F));
 
-            Clock.MemoryContention(Registers.HL, 4);
+            Clock.AddMemoryContention(Registers.HL, 4);
 
             Registers.A = (byte)((value >> 4) | (Registers.A & 0xF0));
             WriteByte(Registers.HL, newValue);
@@ -82,7 +82,7 @@ partial class Z80
             var value = ReadByte(Registers.HL);
             var newValue = (byte)((value >> 4) | (Registers.A << 4));
 
-            Clock.MemoryContention(Registers.HL, 4);
+            Clock.AddMemoryContention(Registers.HL, 4);
 
             Registers.A = (byte)((value & 0x0F) | (Registers.A & 0xF0));
             WriteByte(Registers.HL, newValue);
@@ -176,7 +176,7 @@ partial class Z80
             address = (Word)(Registers.XHL + _indexRegisterOffset);
             value = ReadByte(address);
 
-            Clock.MemoryContention(address, 1);
+            Clock.AddMemoryContention(address, 1);
         }
 
         var result = operation switch

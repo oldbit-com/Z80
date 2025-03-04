@@ -287,7 +287,7 @@ public partial class Z80
 
             opCode = FetchByte();
 
-            Clock.MemoryContention(pc, 2);
+            Clock.AddMemoryContention(pc, 2);
         }
         else
         {

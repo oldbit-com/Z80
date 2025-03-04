@@ -48,7 +48,7 @@ public sealed class Clock
     /// <param name="address">The address of the memory that might be contended.</param>
     /// <param name="repeat">The number of contentions to repeat.</param>
     /// <param name="ticks">The number of T-states to add. Default is 1.</param>
-    internal void MemoryContention(Word address, int repeat, int ticks = 1)
+    internal void AddMemoryContention(Word address, int repeat, int ticks = 1)
     {
         for (var i = 0; i < repeat; i++)
         {
@@ -63,7 +63,7 @@ public sealed class Clock
         }
     }
 
-    internal void PrePortContention(Word port)
+    internal void AddPortPreContention(Word port)
     {
         var contention = 0;
 
@@ -77,7 +77,7 @@ public sealed class Clock
         Add(1 + contention);
     }
 
-    internal void PostPortContention(Word port)
+    internal void AddPortPostContention(Word port)
     {
         if ((port & 0x01) != 0)
         {
@@ -111,7 +111,7 @@ public sealed class Clock
     /// <summary>
     /// Handles the HALT instruction where normally CPU executes NOPs.
     /// </summary>
-    public void Halt(Word pc) => MemoryContention((Word)(pc + 1), 1, 0);
+    public void Halt(Word pc) => AddMemoryContention((Word)(pc + 1), 1, 0);
 
     /// <summary>
     /// Limits the number of T-states that should be executed in the frame.

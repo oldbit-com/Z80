@@ -1,17 +1,9 @@
 namespace OldBit.Z80Cpu.Fuse.Setup;
 
-public class InputOutputEvent
+public class InputOutputEvent(int time, string type, Word address, byte value)
 {
-    public string Time { get; set; }
-    public string Type { get; set; }
-    public string Address { get; set; }
-    public string Value { get; set; }
-
-    public InputOutputEvent(int time, string type, Word address, byte value)
-    {
-        Time = time.ToString();
-        Type = type;
-        Address = address.ToString("X4");
-        Value = value.ToString("X2");
-    }
+    public string Time { get; set; } = time.ToString();
+    public string Type { get; set; } = type;
+    public string Address { get; set; } = address.ToString("X4");
+    public string Value { get; set; } = value.ToString("X2");
 }

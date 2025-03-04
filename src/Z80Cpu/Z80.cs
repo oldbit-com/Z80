@@ -1,4 +1,3 @@
-using OldBit.Z80Cpu.Contention;
 using OldBit.Z80Cpu.Events;
 using OldBit.Z80Cpu.Registers;
 
@@ -62,10 +61,9 @@ public partial class Z80
     /// Initializes a new instance of the <see cref="Z80"/> class.
     /// </summary>
     /// <param name="memory">An instance of IMemory that represents the memory used by the Z80 CPU.</param>
-    /// <param name="contentionProvider">Specifies contention provider to</param>
-    public Z80(IMemory memory, IContentionProvider? contentionProvider = null)
+    public Z80(IMemory memory)
     {
-        Clock = new Clock(contentionProvider ?? new ZeroContentionProvider());
+        Clock = new Clock();
 
         Reset();
         SetupInstructions();
@@ -124,11 +122,12 @@ public partial class Z80
         {
             if (IsHalted)
             {
-                Clock.Halt();
-                break;
+                Clock.Halt(Registers.PC);
             }
-
-            _isEIPending = false;
+            else
+            {
+                _isEIPending = false;
+            }
 
             var isBreakpoint = OnBeforeInstruction();
 

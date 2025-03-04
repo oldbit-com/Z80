@@ -61,8 +61,12 @@ public class FuseTests
         _testMemory = new TestMemory(testCase.Memory, _events);
         var testContentionProvider = new TestContentionProvider(_events);
 
-        var z80 = new Z80(_testMemory, testContentionProvider)
+        var z80 = new Z80(_testMemory)
         {
+            Clock =
+            {
+                ContentionProvider = testContentionProvider
+            },
             Registers =
             {
                 AF = testCase.AF,

@@ -19,4 +19,8 @@ public class TestContentionProvider(List<InputOutputEvent> events) : IContention
 
         return 0;
     }
+
+    public bool IsAddressContended(Word address) => true;
+
+    public bool IsPortContended(Word port) => (port & 0xC000) == 0x4000;
 }

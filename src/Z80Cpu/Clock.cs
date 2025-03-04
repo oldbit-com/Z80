@@ -5,11 +5,15 @@ namespace OldBit.Z80Cpu;
 /// <summary>
 /// Clock that counts the number of T-states executed.
 /// </summary>
-/// <param name="contentionProvider">Provides contention states data.</param>
-public sealed class Clock(IContentionProvider contentionProvider)
+public sealed class Clock
 {
     private int _ticksLimit;
     private int _extraFrameTicks;
+
+    /// <summary>
+    /// Gets or sets the contention provider that provides contention data.
+    /// </summary>
+    public IContentionProvider ContentionProvider { get; set; } = new ZeroContentionProvider();
 
     /// <summary>
     /// Delegate for the TicksAdded event.
@@ -44,48 +48,76 @@ public sealed class Clock(IContentionProvider contentionProvider)
     /// <param name="address">The address of the memory that might be contended.</param>
     /// <param name="repeat">The number of contentions to repeat.</param>
     /// <param name="ticks">The number of T-states to add. Default is 1.</param>
-    public void MemoryContention(Word address, int repeat, int ticks = 1)
+    internal void MemoryContention(Word address, int repeat, int ticks = 1)
     {
         for (var i = 0; i < repeat; i++)
         {
-            var contentionStates = contentionProvider.GetMemoryContention(CurrentFrameTicks, address);
+            var contention = 0;
 
-            Add(ticks + contentionStates);
+            if (ContentionProvider.IsAddressContended(address))
+            {
+                contention = ContentionProvider.GetMemoryContention(CurrentFrameTicks, address);
+            }
+
+            Add(ticks + contention);
         }
     }
 
-    /// <summary>
-    /// Adds the specified number of T-states respecting port contention.
-    /// </summary>
-    /// <param name="port">The address of the port that might be contended.</param>
-    /// <param name="repeat">The number of contentions to repeat.</param>
-    /// <param name="ticks">The number of T-states to add. Default is 1.</param>
-    public void PortContention(Word port, int repeat, int ticks = 1)
+    internal void PrePortContention(Word port)
     {
-        for (var i = 0; i < repeat; i++)
-        {
-            var contentionStates = contentionProvider.GetPortContention(CurrentFrameTicks, port);
+        var contention = 0;
 
-            Add(ticks + contentionStates);
+        if (ContentionProvider.IsPortContended(port))
+        {
+            // C:1, C:3 or C:1, C:1, C:1, C:1 pattern match
+            contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+        }
+
+        // N:1, C:3 or N:4 pattern match
+        Add(1 + contention);
+    }
+
+    internal void PostPortContention(Word port)
+    {
+        if ((port & 0x01) != 0)
+        {
+            if (ContentionProvider.IsPortContended(port))
+            {
+                // C:1, C:1, C:1, C:1
+                var contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+                Add(1 + contention);
+
+                contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+                Add(1 + contention);
+
+                contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+                Add(1 + contention);
+            }
+            else
+            {
+                // N:4
+                Add(3);
+            }
+        }
+        else
+        {
+            // N:1, C:3 or C:1, C:3
+            var contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+
+            Add(3 + contention);
         }
     }
 
     /// <summary>
     /// Handles the HALT instruction where normally CPU executes NOPs.
     /// </summary>
-    public void Halt()
-    {
-        var remaining = _ticksLimit - CurrentFrameTicks;
-        Add(remaining > 4 ? remaining : 4 - remaining);
-    }
+    public void Halt(Word pc) => MemoryContention((Word)(pc + 1), 1, 0);
 
     /// <summary>
     /// Limits the number of T-states that should be executed in the frame.
     /// </summary>
-    internal void InitFrameLimiter()
-    {
+    internal void InitFrameLimiter() =>
         _ticksLimit = DefaultFrameTicks + _extraFrameTicks;
-    }
 
     /// <summary>
     /// Resets the clock to the beginning of the frame.

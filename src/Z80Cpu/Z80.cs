@@ -12,6 +12,7 @@ public partial class Z80
 
     private bool _isExtendedInstruction;
     private sbyte _indexRegisterOffset;
+    private bool _isEIPending;
 
     private readonly IMemory _memory;
     private IBus? _bus;
@@ -123,7 +124,10 @@ public partial class Z80
                 break;
             }
 
+            _isEIPending = false;
+
             var isBreakpoint = OnBeforeInstruction();
+
             if (isBreakpoint)
             {
                 break;
@@ -177,15 +181,15 @@ public partial class Z80
     /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
     public void TriggerInt(byte data)
     {
+        if (!IFF1 || _isEIPending)
+        {
+            return;
+        }
+
         if (IsHalted)
         {
             IsHalted = false;
             Registers.PC += 1;
-        }
-
-        if (!IFF1)
-        {
-            return;
         }
 
         IFF1 = false;

@@ -22,6 +22,7 @@ partial class Z80
         {
             IFF1 = true;
             IFF2 = true;
+            _isEIPending = true;
         };
 
         _opCodes["IM 0"] = () => IM = InterruptMode.Mode0;

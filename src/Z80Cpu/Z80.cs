@@ -257,6 +257,7 @@ public partial class Z80
         IFF1 = false;
         IFF2 = false;
         IsHalted = false;
+        _isEIPending = false;
     }
 
     /// <summary>

@@ -120,6 +120,12 @@ public sealed class Clock
         _ticksLimit = DefaultFrameTicks + _extraFrameTicks;
 
     /// <summary>
+    /// Gets a value indicating whether the current T-state is within the interrupt window.
+    /// </summary>
+    internal bool IsInterruptWindow =>
+        CurrentFrameTicks >= 0 && CurrentFrameTicks -_extraFrameTicks < InterruptDuration;
+
+    /// <summary>
     /// Resets the clock to the beginning of the frame.
     /// </summary>
     public void NewFrame()
@@ -147,4 +153,9 @@ public sealed class Clock
     /// Gets or sets the default number of T-states executed in the frame.
     /// </summary>
     public int DefaultFrameTicks { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of T-states the interrupt can last.
+    /// </summary>
+    public int InterruptDuration { get; set; }
 }

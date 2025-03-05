@@ -120,6 +120,11 @@ public partial class Z80
 
         while (true)
         {
+            if (IFF1 && !_isEIPending && Clock.IsInterruptWindow)
+            {
+                TriggerInt(0xFF);
+            }
+
             if (IsHalted)
             {
                 Clock.Halt(Registers.PC);

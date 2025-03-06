@@ -450,19 +450,22 @@ public class Z808BitLoadInstructionsTests
     }
 
 
-    [Fact]
-    public void When_LD_A_R_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet()
+    [Theory]
+    [InlineData(true, All, C | P)]
+    [InlineData(true, None, P)]
+    [InlineData(false, None, None)]
+    public void When_LD_A_R_InstructionIsExecuted_AccumulatorIsUpdatedAndFlagsSet(bool iff2, Flags flags, Flags expectedFlags)
     {
         var z80 = new Z80Builder()
-            .Flags(All)
-            .Iff2(true)
+            .Flags(flags)
+            .Iff2(iff2)
             .Code("LD A,R")
             .Build();
 
         z80.Run(9);
 
         z80.Registers.A.ShouldBe(2);
-        z80.Registers.F.ShouldBe(C | P | S);
+        z80.Registers.F.ShouldBe(expectedFlags);
         z80.Clock.TotalTicks.ShouldBe(9);
     }
 }

@@ -131,7 +131,7 @@ partial class Z80
         {
             Clock.AddMemoryContention(Registers.IR, 1);
             Registers.A = Registers.R;
-            Registers.F &= C | S;
+            Registers.F &= C;
             Registers.F |= Registers.A == 0 ? Z : 0;
             Registers.F |= IFF2 ? P : 0;
             Registers.F |= (Flags)Registers.A & (S | Y | X);

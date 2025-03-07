@@ -8,7 +8,6 @@ namespace OldBit.Z80Cpu;
 public sealed class Clock
 {
     private int _ticksLimit;
-    private int _extraFrameTicks;
 
     /// <summary>
     /// Gets or sets the contention provider that provides contention data.
@@ -116,8 +115,7 @@ public sealed class Clock
     /// <summary>
     /// Limits the number of T-states that should be executed in the frame.
     /// </summary>
-    internal void InitFrameLimiter() =>
-        _ticksLimit = DefaultFrameTicks + _extraFrameTicks;
+    internal void InitFrameLimiter() => _ticksLimit = DefaultFrameTicks;
 
     /// <summary>
     /// Gets a value indicating whether the current T-state is within the interrupt window.
@@ -128,11 +126,7 @@ public sealed class Clock
     /// <summary>
     /// Resets the clock to the beginning of the frame.
     /// </summary>
-    public void NewFrame()
-    {
-        _extraFrameTicks = _ticksLimit - CurrentFrameTicks;
-        CurrentFrameTicks = 0;
-    }
+    public void NewFrame() => CurrentFrameTicks = CurrentFrameTicks - _ticksLimit;
 
     /// <summary>
     /// Returns true if number of executed T-states reached the maximum.

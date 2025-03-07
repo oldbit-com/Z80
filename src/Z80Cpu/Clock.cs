@@ -121,7 +121,7 @@ public sealed class Clock
     /// Gets a value indicating whether the current T-state is within the interrupt window.
     /// </summary>
     internal bool IsInterruptWindow =>
-        CurrentFrameTicks >= 0 && CurrentFrameTicks -_extraFrameTicks < InterruptDuration;
+        CurrentFrameTicks >= 0 && CurrentFrameTicks < InterruptDuration;
 
     /// <summary>
     /// Resets the clock to the beginning of the frame.

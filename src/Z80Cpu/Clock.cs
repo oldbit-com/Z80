@@ -6,7 +6,6 @@ namespace OldBit.Z80Cpu;
 public sealed class Clock
 {
     private int _ticksLimit;
-    private int _extraFrameTicks;
 
     /// <summary>
     /// Delegate for the TicksAdded event.
@@ -47,19 +46,12 @@ public sealed class Clock
     /// <summary>
     /// Limits the number of T-states that should be executed in the frame.
     /// </summary>
-    internal void InitFrameLimiter()
-    {
-        _ticksLimit = DefaultFrameTicks + _extraFrameTicks;
-    }
+    internal void InitFrameLimiter() => _ticksLimit = DefaultFrameTicks;
 
     /// <summary>
     /// Resets the clock to the beginning of the frame.
     /// </summary>
-    public void NewFrame()
-    {
-        _extraFrameTicks = _ticksLimit - CurrentFrameTicks;
-        CurrentFrameTicks = 0;
-    }
+    public void NewFrame() => CurrentFrameTicks = CurrentFrameTicks - _ticksLimit;
 
     /// <summary>
     /// Returns true if number of executed T-states reached the maximum.

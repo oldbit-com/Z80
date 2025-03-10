@@ -189,7 +189,6 @@ public partial class Z80
         if (IsHalted)
         {
             IsHalted = false;
-            Registers.PC += 1;
         }
 
         IFF1 = false;
@@ -224,7 +223,6 @@ public partial class Z80
         if (IsHalted)
         {
             IsHalted = false;
-            Registers.PC += 1;
         }
 
         IFF1 = false;

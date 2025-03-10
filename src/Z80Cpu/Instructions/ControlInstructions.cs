@@ -6,11 +6,7 @@ partial class Z80
     {
         _opCodes["NOP"] = () => { };
 
-        _opCodes["HALT"] = () =>
-        {
-            IsHalted = true;
-            Registers.PC -= 1;
-        };
+        _opCodes["HALT"] = () => IsHalted = true;
 
         _opCodes["DI"] = () =>
         {

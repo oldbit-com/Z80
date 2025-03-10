@@ -133,7 +133,7 @@ public partial class Z80
 
                 if (Clock.IsFrameComplete)
                 {
-                    Clock.SetFrameTicks();
+                    Clock.SetLimit();
                     break;
                 }
 

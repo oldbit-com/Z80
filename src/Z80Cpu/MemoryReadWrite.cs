@@ -49,7 +49,7 @@ partial class Z80
     /// <returns>A byte value.</returns>
     private byte ReadByte(Word address, int ticks = 3)
     {
-        Clock.Add(ticks);
+        Clock.AddTicks(ticks);
 
         var value = _memory.Read(address);
 
@@ -78,7 +78,7 @@ partial class Z80
     /// <param name="data">The value to write to the memory.</param>
     private void WriteByte(Word address, byte data)
     {
-        Clock.Add(3);
+        Clock.AddTicks(3);
 
         _memory.Write(address, data);
     }
@@ -108,7 +108,7 @@ partial class Z80
         if (Registers.Context != RegisterContext.HL)
         {
             offset = (sbyte)FetchByte();
-            Clock.Add(extraIndexTicks);
+            Clock.AddTicks(extraIndexTicks);
         }
 
         return (Word)(Registers.XHL + offset);

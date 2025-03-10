@@ -98,12 +98,12 @@ partial class Z80
 
         _opCodes["LD I,A"] = () =>
         {
-            Clock.Add(1);
+            Clock.AddTicks(1);
             Registers.I = Registers.A;
         };
         _opCodes["LD A,I"] = () =>
         {
-            Clock.Add(1);
+            Clock.AddTicks(1);
             Registers.A = Registers.I;
             Registers.F &= C;
             Registers.F |= Registers.A == 0 ? Z : 0;
@@ -113,12 +113,12 @@ partial class Z80
 
         _opCodes["LD R,A"] = () =>
         {
-            Clock.Add(1);
+            Clock.AddTicks(1);
             Registers.R = Registers.A;
         };
         _opCodes["LD A,R"] = () =>
         {
-            Clock.Add(1);
+            Clock.AddTicks(1);
             Registers.A = Registers.R;
             Registers.F &= C;
             Registers.F |= Registers.A == 0 ? Z : 0;

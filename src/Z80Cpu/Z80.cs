@@ -114,7 +114,7 @@ public partial class Z80
     /// </summary>
     public void Run()
     {
-        Clock.InitFrameLimiter();
+        Clock.SetFrameTicks();
 
         while (true)
         {
@@ -135,9 +135,9 @@ public partial class Z80
 
             Step();
 
-            if (Clock.IsComplete)
+            if (Clock.IsFrameComplete)
             {
-                Clock.InitFrameLimiter();
+                Clock.SetFrameTicks();
                 break;
             }
         }
@@ -211,7 +211,7 @@ public partial class Z80
                 break;
         }
 
-        Clock.Add(7);
+        Clock.AddTicks(7);
         IncrementR();
     }
 
@@ -232,7 +232,7 @@ public partial class Z80
 
         Registers.PC = 0x66;
 
-        Clock.Add(5);
+        Clock.AddTicks(5);
         IncrementR();
     }
 
@@ -280,7 +280,7 @@ public partial class Z80
             _indexRegisterOffset = (sbyte)FetchByte();
             opCode = FetchByte();
 
-            Clock.Add(2);
+            Clock.AddTicks(2);
         }
         else
         {

@@ -114,7 +114,7 @@ public partial class Z80
     /// </summary>
     public void Run()
     {
-        Clock.SetFrameTicksLimit();
+        Clock.SetLimit();
 
         while (true)
         {
@@ -137,7 +137,7 @@ public partial class Z80
 
             if (Clock.IsFrameComplete)
             {
-                Clock.SetFrameTicksLimit();
+                Clock.SetLimit();
                 break;
             }
         }

@@ -46,7 +46,7 @@ public sealed class Clock
     /// <summary>
     /// Sets the number of T-states executed in the frame.
     /// </summary>
-    internal void SetFrameTicksLimit() => _ticksLimit = DefaultFrameTicks;
+    internal void SetLimit() => _ticksLimit = DefaultFrameTicks;
 
     /// <summary>
     /// Resets the clock to the beginning of the frame.

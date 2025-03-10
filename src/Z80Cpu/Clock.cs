@@ -58,7 +58,7 @@ public sealed class Clock
                 contention = ContentionProvider.GetMemoryContention(CurrentFrameTicks, address);
             }
 
-            Add(ticks + contention);
+            AddTicks(ticks + contention);
         }
     }
 
@@ -73,7 +73,7 @@ public sealed class Clock
         }
 
         // N:1, C:3 or N:4 pattern match
-        Add(1 + contention);
+        AddTicks(1 + contention);
     }
 
     internal void AddPortPostContention(Word port)
@@ -84,18 +84,18 @@ public sealed class Clock
             {
                 // C:1, C:1, C:1, C:1
                 var contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
-                Add(1 + contention);
+                AddTicks(1 + contention);
 
                 contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
-                Add(1 + contention);
+                AddTicks(1 + contention);
 
                 contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
-                Add(1 + contention);
+                AddTicks(1 + contention);
             }
             else
             {
                 // N:4
-                Add(3);
+                AddTicks(3);
             }
         }
         else
@@ -103,7 +103,7 @@ public sealed class Clock
             // N:1, C:3 or C:1, C:3
             var contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
 
-            Add(3 + contention);
+            AddTicks(3 + contention);
         }
     }
 

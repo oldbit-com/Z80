@@ -131,9 +131,9 @@ public partial class Z80
 
                 IncrementR();
 
-                if (Clock.IsComplete)
+                if (Clock.IsFrameComplete)
                 {
-                    Clock.InitFrameLimiter();
+                    Clock.SetFrameTicks();
                     break;
                 }
 

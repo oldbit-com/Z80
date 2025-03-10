@@ -46,7 +46,7 @@ public class InterruptTests
         z80.Registers.PC.ShouldBe(0x38);
 
         memory.Read(0x03).ShouldBe(0x12);
-        memory.Read(0x02).ShouldBe(0x35);
+        memory.Read(0x02).ShouldBe(0x34);
 
         z80.IsHalted.ShouldBeFalse();
         z80.IFF1.ShouldBeFalse();
@@ -78,7 +78,7 @@ public class InterruptTests
         z80.Registers.PC.ShouldBe(0x7842);
 
         memory.Read(0x03).ShouldBe(0x12);
-        memory.Read(0x02).ShouldBe(0x35);
+        memory.Read(0x02).ShouldBe(0x34);
 
         z80.IsHalted.ShouldBeFalse();
         z80.IFF1.ShouldBeFalse();

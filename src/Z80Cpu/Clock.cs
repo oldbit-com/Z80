@@ -110,7 +110,7 @@ public sealed class Clock
     /// <summary>
     /// Sets the number of T-states executed in the frame.
     /// </summary>
-    internal void SetFrameTicksLimit() => _ticksLimit = DefaultFrameTicks;
+    internal void SetLimit() => _ticksLimit = DefaultFrameTicks;
 
     /// <summary>
     /// Gets a value indicating whether the current T-state is within the interrupt window.

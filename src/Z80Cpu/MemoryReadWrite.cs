@@ -50,7 +50,7 @@ partial class Z80
     private byte ReadByte(Word address, int ticks = 3)
     {
         Clock.AddMemoryContention(address, 1, 0);
-        Clock.Add(ticks);
+        Clock.AddTicks(ticks);
 
         var value = _memory.Read(address);
 
@@ -80,7 +80,7 @@ partial class Z80
     private void WriteByte(Word address, byte data)
     {
         Clock.AddMemoryContention(address, 1, 0);
-        Clock.Add(3);
+        Clock.AddTicks(3);
 
         _memory.Write(address, data);
     }

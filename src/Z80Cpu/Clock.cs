@@ -28,7 +28,7 @@ public sealed class Clock
     /// Adds the specified number of T-states.
     /// </summary>
     /// <param name="ticks">The number of T-states to add.</param>
-    public void Add(int ticks)
+    public void AddTicks(int ticks)
     {
         var previousFrameTicks = CurrentFrameTicks;
 
@@ -108,9 +108,9 @@ public sealed class Clock
     }
 
     /// <summary>
-    /// Limits the number of T-states that should be executed in the frame.
+    /// Sets the number of T-states executed in the frame.
     /// </summary>
-    internal void InitFrameLimiter() => _ticksLimit = DefaultFrameTicks;
+    internal void SetFrameTicks() => _ticksLimit = DefaultFrameTicks;
 
     /// <summary>
     /// Gets a value indicating whether the current T-state is within the interrupt window.
@@ -124,9 +124,9 @@ public sealed class Clock
     public void NewFrame() => CurrentFrameTicks = CurrentFrameTicks - _ticksLimit;
 
     /// <summary>
-    /// Returns true if number of executed T-states reached the maximum.
+    /// Gets a value indicating whether the frame is complete.
     /// </summary>
-    public bool IsComplete => _ticksLimit != 0 && CurrentFrameTicks >= _ticksLimit;
+    public bool IsFrameComplete => _ticksLimit != 0 && CurrentFrameTicks >= _ticksLimit;
 
     /// <summary>
     /// Gets the total number of T-states since boot or hard reset.

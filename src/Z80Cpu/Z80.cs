@@ -127,16 +127,22 @@ public partial class Z80
 
             if (IsHalted)
             {
-                Clock.Halt(Registers.PC);
-            }
-            else
-            {
-                _isEIPending = false;
+                ReadByte(Registers.PC, ticks: 4);
+
+                IncrementR();
+
+                if (Clock.IsComplete)
+                {
+                    Clock.InitFrameLimiter();
+                    break;
+                }
+
+                continue;
             }
 
-            var isBreakpoint = OnBeforeInstruction();
+            _isEIPending = false;
 
-            if (isBreakpoint)
+            if (IsBreakpoint())
             {
                 break;
             }
@@ -162,7 +168,7 @@ public partial class Z80
         Run();
     }
 
-    private bool OnBeforeInstruction()
+    private bool IsBreakpoint()
     {
         // Event handler will be called thousands of times,
         // so we want to avoid creating a new object each time

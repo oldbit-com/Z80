@@ -108,11 +108,6 @@ public sealed class Clock
     }
 
     /// <summary>
-    /// Handles the HALT instruction where normally CPU executes NOPs.
-    /// </summary>
-    public void Halt(Word pc) => AddMemoryContention((Word)(pc + 1), 1, 0);
-
-    /// <summary>
     /// Limits the number of T-states that should be executed in the frame.
     /// </summary>
     internal void InitFrameLimiter() => _ticksLimit = DefaultFrameTicks;

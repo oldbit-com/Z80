@@ -131,7 +131,6 @@ public partial class Z80
 
                 if (Clock.IsFrameComplete)
                 {
-                    Clock.SetLimit();
                     break;
                 }
 

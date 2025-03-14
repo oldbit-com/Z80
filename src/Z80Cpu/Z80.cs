@@ -116,8 +116,6 @@ public partial class Z80
     /// </summary>
     public void Run()
     {
-        Clock.SetLimit();
-
         while (true)
         {
             if (IFF1 && !_isEIPending && Clock.IsInterruptWindow)
@@ -151,7 +149,6 @@ public partial class Z80
 
             if (Clock.IsFrameComplete)
             {
-                Clock.SetLimit();
                 break;
             }
         }
@@ -160,11 +157,10 @@ public partial class Z80
     /// <summary>
     /// Executes the Z80 CPU instructions for the specified number of T-states.
     /// </summary>
-    /// <param name="ticks">Specifies the number of T-states to execute. Zero means no limit.</param>
-    public void Run(int ticks)
+    /// <param name="frameTicks">Specifies the number of T-states to execute per frame. Zero means no limit.</param>
+    public void Run(int frameTicks)
     {
-        Clock.DefaultFrameTicks = ticks;
-
+        Clock.NewFrame(frameTicks);
         Run();
     }
 

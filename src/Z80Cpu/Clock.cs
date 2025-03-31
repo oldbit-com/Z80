@@ -23,15 +23,11 @@ public sealed class Clock
     /// <param name="ticks">The number of T-states to add.</param>
     public void AddTicks(int ticks)
     {
-        var previousFrameTicks = CurrentFrameTicks;
+        var previousFrameTicks = FrameTicks;
 
-        unchecked
-        {
-            TotalTicks += ticks;
-            CurrentFrameTicks += ticks;
-        }
+        FrameTicks += ticks;
 
-        TicksAdded?.Invoke(ticks, previousFrameTicks, CurrentFrameTicks);
+        TicksAdded?.Invoke(ticks, previousFrameTicks, FrameTicks);
     }
 
     /// <summary>
@@ -39,7 +35,7 @@ public sealed class Clock
     /// </summary>
     public void Halt()
     {
-        var remaining = _ticksLimit - CurrentFrameTicks;
+        var remaining = _ticksLimit - FrameTicks;
         AddTicks(remaining > 4 ? remaining : 4 - remaining);
     }
 
@@ -49,22 +45,17 @@ public sealed class Clock
     /// </summary>
     public void NewFrame(int frameTicks)
     {
-        CurrentFrameTicks -= _ticksLimit;
+        FrameTicks -= _ticksLimit;
         _ticksLimit = frameTicks;
     }
 
     /// <summary>
     /// Gets a value indicating whether the frame is complete.
     /// </summary>
-    public bool IsFrameComplete => _ticksLimit != 0 && CurrentFrameTicks >= _ticksLimit;
-
-    /// <summary>
-    /// Gets the total number of T-states since boot or hard reset.
-    /// </summary>
-    public long TotalTicks { get; private set; }
+    public bool IsFrameComplete => _ticksLimit != 0 && FrameTicks >= _ticksLimit;
 
     /// <summary>
     /// Gets the number of T-states executed in the current frame execution.
     /// </summary>
-    public int CurrentFrameTicks { get; private set; }
+    public int FrameTicks { get; private set; }
 }

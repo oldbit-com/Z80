@@ -19,7 +19,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
 
@@ -44,7 +44,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedResult);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x30);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | H | C);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -105,7 +105,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x35);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -120,7 +120,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x35);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -135,7 +135,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x34);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(P | X | H | Y | S);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Theory]
@@ -176,7 +176,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedResult);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x41);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -214,7 +214,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x80);
         z80.Registers.F.ShouldBe(S | H | P);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -237,7 +237,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x36);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -254,7 +254,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x36);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -271,7 +271,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x35);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -288,7 +288,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | N);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(Z)
@@ -302,7 +302,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x70);
         z80.Registers.F.ShouldBe(Y | P | N);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -319,7 +319,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | Y | H | X | N | C);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -340,7 +340,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | Y | X | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -363,7 +363,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x10);
         z80.Registers.F.ShouldBe(N);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -378,7 +378,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x10);
         z80.Registers.F.ShouldBe(N);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -393,7 +393,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x10);
         z80.Registers.F.ShouldBe(N);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -411,7 +411,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | Y | H | X | N | C);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
 
         z80 = new Z80Builder()
             .Flags(C)
@@ -425,7 +425,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xFE);
         z80.Registers.F.ShouldBe(S | Y | X | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
 
         z80 = new Z80Builder()
             .Flags(C)
@@ -438,7 +438,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | Y | H | X | N | C);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Fact]
@@ -455,7 +455,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | N);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -476,7 +476,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x7F);
         z80.Registers.F.ShouldBe(Y | H | X | P | N);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -498,7 +498,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x10);
         z80.Registers.F.ShouldBe(N);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -513,7 +513,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x0F);
         z80.Registers.F.ShouldBe(H | X | N);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -528,7 +528,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x0F);
         z80.Registers.F.ShouldBe(H | X | N);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -546,7 +546,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | H | P);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -563,7 +563,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x83);
         z80.Registers.F.ShouldBe(S | H);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -584,7 +584,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x81);
         z80.Registers.F.ShouldBe(S | H | P);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -607,7 +607,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x08);
         z80.Registers.F.ShouldBe(H | X);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -622,7 +622,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x01);
         z80.Registers.F.ShouldBe(H);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -637,7 +637,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x01);
         z80.Registers.F.ShouldBe(H);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -655,7 +655,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | P);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -672,7 +672,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x31);
         z80.Registers.F.ShouldBe(Y);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -693,7 +693,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x8F);
         z80.Registers.F.ShouldBe(S | X);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -716,7 +716,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x88);
         z80.Registers.F.ShouldBe(S | X | P);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -731,7 +731,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x13);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -746,7 +746,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x13);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -764,7 +764,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | P);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -781,7 +781,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x10);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -802,7 +802,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x90);
         z80.Registers.F.ShouldBe(S | P);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -825,7 +825,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x80);
         z80.Registers.F.ShouldBe(S);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -840,7 +840,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x02);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -855,7 +855,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x02);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -872,7 +872,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x20);
         z80.Registers.F.ShouldBe(Z | Y | N);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(Z)
@@ -886,7 +886,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(S | H | N | C);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -903,7 +903,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x90);
         z80.Registers.F.ShouldBe(Y | P | N);
-        z80.Clock.TotalTicks.ShouldBe(14);
+        z80.Clock.FrameTicks.ShouldBe(14);
     }
 
     [Fact]
@@ -924,7 +924,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x7F);
         z80.Registers.F.ShouldBe(S | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(28);
+        z80.Clock.FrameTicks.ShouldBe(28);
     }
 
     [Theory]
@@ -947,7 +947,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x7F);
         z80.Registers.F.ShouldBe(S | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(40);
+        z80.Clock.FrameTicks.ShouldBe(40);
 
         // IXL or IYL
         z80 = new Z80Builder()
@@ -962,7 +962,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x7F);
         z80.Registers.F.ShouldBe(S | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
 
         // IXH or IYH
         z80 = new Z80Builder()
@@ -977,7 +977,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x7F);
         z80.Registers.F.ShouldBe(S | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -994,7 +994,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x01);
         z80.Registers.F.ShouldBe(C);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(All ^ Z)
@@ -1007,7 +1007,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.C.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | H | C);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(N)
@@ -1020,7 +1020,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.D.ShouldBe(0x80);
         z80.Registers.F.ShouldBe(S | H | P);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(None)
@@ -1033,7 +1033,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.B.ShouldBe(0x93);
         z80.Registers.F.ShouldBe(S);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(None)
@@ -1046,7 +1046,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.E.ShouldBe(0x11);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Fact]
@@ -1063,7 +1063,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.IXH.ShouldBe(0x9A);
         z80.Registers.F.ShouldBe(S | X);
-        z80.Clock.TotalTicks.ShouldBe(19);
+        z80.Clock.FrameTicks.ShouldBe(19);
     }
 
     [Fact]
@@ -1080,7 +1080,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.IYL.ShouldBe(0xAC);
         z80.Registers.F.ShouldBe(S | Y | X);
-        z80.Clock.TotalTicks.ShouldBe(19);
+        z80.Clock.FrameTicks.ShouldBe(19);
     }
 
     [Theory]
@@ -1105,7 +1105,7 @@ public class Z808BitArithmeticInstructionsTests
 
         memory[0x05].ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(21);
+        z80.Clock.FrameTicks.ShouldBe(21);
     }
 
     [Theory]
@@ -1127,7 +1127,7 @@ public class Z808BitArithmeticInstructionsTests
 
         memory[0x08].ShouldBe(0x40);
         z80.Registers.F.ShouldBe(H);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
 
         builder = new Z80Builder()
             .Flags(None)
@@ -1143,7 +1143,7 @@ public class Z808BitArithmeticInstructionsTests
 
         memory[0x08].ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | Y | X);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Fact]
@@ -1160,7 +1160,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0x00);
         z80.Registers.F.ShouldBe(Z | N);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(All ^ (Z | H | N))
@@ -1173,7 +1173,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.C.ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | H | Y | X | N | C);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(Z | S)
@@ -1186,7 +1186,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.D.ShouldBe(0x7F);
         z80.Registers.F.ShouldBe(Y | H | X | P | N);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
 
         z80 = new Z80Builder()
             .Flags(All)
@@ -1199,7 +1199,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.B.ShouldBe(0xAA);
         z80.Registers.F.ShouldBe(S | Y | X | N | C);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Fact]
@@ -1216,7 +1216,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.IXH.ShouldBe(0x98);
         z80.Registers.F.ShouldBe(S | X | N);
-        z80.Clock.TotalTicks.ShouldBe(19);
+        z80.Clock.FrameTicks.ShouldBe(19);
     }
 
     [Fact]
@@ -1233,7 +1233,7 @@ public class Z808BitArithmeticInstructionsTests
 
         z80.Registers.IYL.ShouldBe(0xAA);
         z80.Registers.F.ShouldBe(S | Y | X | N);
-        z80.Clock.TotalTicks.ShouldBe(19);
+        z80.Clock.FrameTicks.ShouldBe(19);
     }
 
     [Theory]
@@ -1257,7 +1257,7 @@ public class Z808BitArithmeticInstructionsTests
 
         memory[0x05].ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(21);
+        z80.Clock.FrameTicks.ShouldBe(21);
     }
 
     [Theory]
@@ -1279,7 +1279,7 @@ public class Z808BitArithmeticInstructionsTests
 
         memory![0x08].ShouldBe(0x3E);
         z80.Registers.F.ShouldBe(Y | X | N);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
 
         builder = new Z80Builder()
             .Flags(None)
@@ -1295,6 +1295,6 @@ public class Z808BitArithmeticInstructionsTests
 
         memory![0x08].ShouldBe(0xFF);
         z80.Registers.F.ShouldBe(S | Y | H | X | N);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 }

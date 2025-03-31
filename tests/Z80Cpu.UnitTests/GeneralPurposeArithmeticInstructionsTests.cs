@@ -27,7 +27,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedResult);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(0xA4);
         z80.Registers.F.ShouldBe(H | Y | N);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Theory]
@@ -66,7 +66,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedResult);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
         z80.Run(4);
 
         z80.Registers.F.ShouldBe(S | Z | Y | X | P | C);
-        z80.Clock.TotalTicks.ShouldBe(4);
+        z80.Clock.FrameTicks.ShouldBe(4);
     }
 
     [Theory]
@@ -97,6 +97,6 @@ public class Z80GeneralPurposeArithmeticInstructionsTests
         z80.Run(4);
 
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(4);
+        z80.Clock.FrameTicks.ShouldBe(4);
     }
 }

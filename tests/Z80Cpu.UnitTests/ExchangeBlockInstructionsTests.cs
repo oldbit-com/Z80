@@ -18,7 +18,7 @@ public class Z80ExchangeBlockInstructionsTests
 
         z80.Registers.HL.ShouldBe(0x0403);
         z80.Registers.DE.ShouldBe(0x0201);
-        z80.Clock.TotalTicks.ShouldBe(24);
+        z80.Clock.FrameTicks.ShouldBe(24);
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class Z80ExchangeBlockInstructionsTests
 
         z80.Registers.AF.ShouldBe(0x5555);
         z80.Registers.Prime.AF.ShouldBe(0xCC35);
-        z80.Clock.TotalTicks.ShouldBe(4);
+        z80.Clock.FrameTicks.ShouldBe(4);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.Prime.DE.ShouldBe(0x0304);
         z80.Registers.HL.ShouldBe(0x1516);
         z80.Registers.Prime.HL.ShouldBe(0x0506);
-        z80.Clock.TotalTicks.ShouldBe(4);
+        z80.Clock.FrameTicks.ShouldBe(4);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.HL.ShouldBe(0x2211);
         builder.Memory![0x08].ShouldBe(0x12);
         builder.Memory![0x09].ShouldBe(0x70);
-        z80.Clock.TotalTicks.ShouldBe(39);
+        z80.Clock.FrameTicks.ShouldBe(39);
     }
 
     [Fact]
@@ -94,7 +94,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.IX.ShouldBe(0x2211);
         builder.Memory![0x0A].ShouldBe(0x12);
         builder.Memory![0x0B].ShouldBe(0x70);
-        z80.Clock.TotalTicks.ShouldBe(47);
+        z80.Clock.FrameTicks.ShouldBe(47);
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.IY.ShouldBe(0x2211);
         builder.Memory![0x0A].ShouldBe(0x12);
         builder.Memory![0x0B].ShouldBe(0x70);
-        z80.Clock.TotalTicks.ShouldBe(47);
+        z80.Clock.FrameTicks.ShouldBe(47);
     }
 
     [Fact]
@@ -138,7 +138,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.DE.ShouldBe(0x0E);
         z80.Registers.HL.ShouldBe(0x0D);
         z80.Registers.F.ShouldBe(S | Z | C);
-        z80.Clock.TotalTicks.ShouldBe(46);
+        z80.Clock.FrameTicks.ShouldBe(46);
 
         builder = new Z80Builder()
             .Flags(None)
@@ -158,7 +158,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.DE.ShouldBe(0x0E);
         z80.Registers.HL.ShouldBe(0x0D);
         z80.Registers.F.ShouldBe(P);
-        z80.Clock.TotalTicks.ShouldBe(46);
+        z80.Clock.FrameTicks.ShouldBe(46);
     }
 
     [Fact]
@@ -185,7 +185,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.DE.ShouldBe(0x12);
         z80.Registers.HL.ShouldBe(0x0F);
         z80.Registers.F.ShouldBe(S | Z | C);
-        z80.Clock.TotalTicks.ShouldBe(88);
+        z80.Clock.FrameTicks.ShouldBe(88);
     }
 
     [Fact]
@@ -209,7 +209,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.DE.ShouldBe(0x0C);
         z80.Registers.HL.ShouldBe(0x0B);
         z80.Registers.F.ShouldBe(S | Z | C);
-        z80.Clock.TotalTicks.ShouldBe(46);
+        z80.Clock.FrameTicks.ShouldBe(46);
 
         builder = new Z80Builder()
             .Flags(None)
@@ -229,7 +229,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.DE.ShouldBe(0x0C);
         z80.Registers.HL.ShouldBe(0x0B);
         z80.Registers.F.ShouldBe(P);
-        z80.Clock.TotalTicks.ShouldBe(46);
+        z80.Clock.FrameTicks.ShouldBe(46);
     }
 
     [Fact]
@@ -256,7 +256,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.DE.ShouldBe(0x0E);
         z80.Registers.HL.ShouldBe(0x0B);
         z80.Registers.F.ShouldBe(S | Z | Y | C);
-        z80.Clock.TotalTicks.ShouldBe(88);
+        z80.Clock.FrameTicks.ShouldBe(88);
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.BC.ShouldBe(0x02);
         z80.Registers.HL.ShouldBe(0x0C);
         z80.Registers.F.ShouldBe(Z | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(43);
+        z80.Clock.FrameTicks.ShouldBe(43);
 
         builder = new Z80Builder()
             .Flags(None)
@@ -296,7 +296,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.BC.ShouldBe(0x00);
         z80.Registers.HL.ShouldBe(0x0C);
         z80.Registers.F.ShouldBe(S | Y | H | X | N);
-        z80.Clock.TotalTicks.ShouldBe(43);
+        z80.Clock.FrameTicks.ShouldBe(43);
     }
 
     [Fact]
@@ -318,7 +318,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.BC.ShouldBe(0xFB);
         z80.Registers.HL.ShouldBe(0x0F);
         z80.Registers.F.ShouldBe(Z | P | N);
-        z80.Clock.TotalTicks.ShouldBe(106);
+        z80.Clock.FrameTicks.ShouldBe(106);
     }
 
     [Fact]
@@ -340,7 +340,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.BC.ShouldBe(0x02);
         z80.Registers.HL.ShouldBe(0x0A);
         z80.Registers.F.ShouldBe(Z | P | N | C);
-        z80.Clock.TotalTicks.ShouldBe(43);
+        z80.Clock.FrameTicks.ShouldBe(43);
 
         builder = new Z80Builder()
             .Flags(None)
@@ -358,7 +358,7 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.BC.ShouldBe(0x00);
         z80.Registers.HL.ShouldBe(0x0A);
         z80.Registers.F.ShouldBe(S | Y | H | X | N);
-        z80.Clock.TotalTicks.ShouldBe(43);
+        z80.Clock.FrameTicks.ShouldBe(43);
     }
 
     [Fact]
@@ -380,6 +380,6 @@ public class Z80ExchangeBlockInstructionsTests
         z80.Registers.BC.ShouldBe(0xFD);
         z80.Registers.HL.ShouldBe(0x0D);
         z80.Registers.F.ShouldBe(Z | P | N);
-        z80.Clock.TotalTicks.ShouldBe(64);
+        z80.Clock.FrameTicks.ShouldBe(64);
     }
 }

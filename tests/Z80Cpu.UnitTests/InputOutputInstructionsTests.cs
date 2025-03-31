@@ -23,7 +23,7 @@ public class Z80InputOutputInstructionsTests
         z80.Run(7 + 11);
 
         z80.Registers.A.ShouldBe(0xFF);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class Z80InputOutputInstructionsTests
         z80.Run(7 + 11);
 
         z80.Registers.A.ShouldBe(data);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Theory]
@@ -71,7 +71,7 @@ public class Z80InputOutputInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(data);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(22);
+        z80.Clock.FrameTicks.ShouldBe(22);
     }
 
     [Fact]
@@ -91,7 +91,7 @@ public class Z80InputOutputInstructionsTests
         z80.Run(10 + 12);
 
         z80.Registers.F.ShouldBe(S);
-        z80.Clock.TotalTicks.ShouldBe(22);
+        z80.Clock.FrameTicks.ShouldBe(22);
     }
 
     [Fact]
@@ -117,7 +117,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x0A);
         z80.Registers.F.ShouldBe(Z | P);
-        z80.Clock.TotalTicks.ShouldBe(36);
+        z80.Clock.FrameTicks.ShouldBe(36);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x0E);
         z80.Registers.F.ShouldBe(Z);
-        z80.Clock.TotalTicks.ShouldBe(120);
+        z80.Clock.FrameTicks.ShouldBe(120);
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x08);
         z80.Registers.F.ShouldBe(Z);
-        z80.Clock.TotalTicks.ShouldBe(36);
+        z80.Clock.FrameTicks.ShouldBe(36);
     }
 
     [Fact]
@@ -209,7 +209,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x08);
         z80.Registers.F.ShouldBe(P | Z);
-        z80.Clock.TotalTicks.ShouldBe(120);
+        z80.Clock.FrameTicks.ShouldBe(120);
     }
 
     [Fact]
@@ -226,7 +226,7 @@ public class Z80InputOutputInstructionsTests
         z80.Run(7 + 11);
 
         _mockBus.Received().Write(To.Word(z80.Registers.A, 0x24), z80.Registers.A);
-        z80.Clock.TotalTicks.ShouldBe(18);
+        z80.Clock.FrameTicks.ShouldBe(18);
     }
 
     [Theory]
@@ -251,7 +251,7 @@ public class Z80InputOutputInstructionsTests
         z80.Run(7 + 10 + 12);
 
         _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), expectedData);
-        z80.Clock.TotalTicks.ShouldBe(29);
+        z80.Clock.FrameTicks.ShouldBe(29);
     }
 
     [Fact]
@@ -268,7 +268,7 @@ public class Z80InputOutputInstructionsTests
         z80.Run(10 + 10 + 12);
 
         _mockBus.Received().Write(To.Word(z80.Registers.B, z80.Registers.C), 0);
-        z80.Clock.TotalTicks.ShouldBe(32);
+        z80.Clock.FrameTicks.ShouldBe(32);
     }
 
     [Fact]
@@ -291,7 +291,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x0A);
         z80.Registers.F.ShouldBe(Z | N);
-        z80.Clock.TotalTicks.ShouldBe(36);
+        z80.Clock.FrameTicks.ShouldBe(36);
     }
 
     [Fact]
@@ -317,7 +317,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x0E);
         z80.Registers.F.ShouldBe(Z | P);
-        z80.Clock.TotalTicks.ShouldBe(120);
+        z80.Clock.FrameTicks.ShouldBe(120);
     }
 
     [Fact]
@@ -340,7 +340,7 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x08);
         z80.Registers.F.ShouldBe(Z | N);
-        z80.Clock.TotalTicks.ShouldBe(36);
+        z80.Clock.FrameTicks.ShouldBe(36);
     }
 
     [Fact]
@@ -366,6 +366,6 @@ public class Z80InputOutputInstructionsTests
         z80.Registers.BC.ShouldBe(0x34);
         z80.Registers.HL.ShouldBe(0x08);
         z80.Registers.F.ShouldBe(Z);
-        z80.Clock.TotalTicks.ShouldBe(120);
+        z80.Clock.FrameTicks.ShouldBe(120);
     }
 }

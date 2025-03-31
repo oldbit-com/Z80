@@ -11,9 +11,12 @@ partial class Z80
     /// <returns>An 8-bit value representing the opcode.</returns>
     private byte FetchOpCode()
     {
-        var opCode = FetchByte(ticks: 4);
+        BeforeFetch?.Invoke(Registers.PC);
 
+        var opCode = FetchByte(ticks: 4);
         IncrementR();
+
+        AfterFetch?.Invoke(Registers.PC);
 
         return opCode;
     }

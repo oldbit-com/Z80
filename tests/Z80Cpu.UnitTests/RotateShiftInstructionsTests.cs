@@ -25,7 +25,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Theory]
@@ -47,7 +47,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Theory]
@@ -69,7 +69,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Theory]
@@ -91,7 +91,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.A.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 
     [Theory]
@@ -113,7 +113,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.C.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -137,7 +137,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0x55);
         z80.Registers.F.ShouldBe(P | C);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x02);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -175,7 +175,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0x02);
         z80.Registers.F.ShouldBe(None);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -196,7 +196,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0x02);
         z80.Registers.F.ShouldBe(None);
         z80.Registers.L.ShouldBe(0x02);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -218,7 +218,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.D.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -242,7 +242,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0x55);
         z80.Registers.F.ShouldBe(P | C);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -260,7 +260,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x02);
         z80.Registers.F.ShouldBe(C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -280,7 +280,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0x05);
         z80.Registers.F.ShouldBe(P);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -301,7 +301,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0x05);
         z80.Registers.F.ShouldBe(P);
         z80.Registers.H.ShouldBe(0x05);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -323,7 +323,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.D.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -347,7 +347,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0x55);
         z80.Registers.F.ShouldBe(P);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -365,7 +365,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x80);
         z80.Registers.F.ShouldBe(S | C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -385,7 +385,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0xBF);
         z80.Registers.F.ShouldBe(S | Y | X | C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -406,7 +406,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0xBF);
         z80.Registers.F.ShouldBe(S | Y | X | C);
         z80.Registers.A.ShouldBe(0xBF);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -428,7 +428,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.L.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -452,7 +452,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0xD5);
         z80.Registers.F.ShouldBe(S);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -470,7 +470,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x40);
         z80.Registers.F.ShouldBe(C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -490,7 +490,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0xCC);
         z80.Registers.F.ShouldBe(S | X | P | C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -511,7 +511,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0xCC);
         z80.Registers.F.ShouldBe(S | X | P | C);
         z80.Registers.D.ShouldBe(0xCC);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -533,7 +533,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.B.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -557,7 +557,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0x54);
         z80.Registers.F.ShouldBe(C);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -575,7 +575,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x02);
         z80.Registers.F.ShouldBe(C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -595,7 +595,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0x32);
         z80.Registers.F.ShouldBe(Y | C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -616,7 +616,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0x32);
         z80.Registers.F.ShouldBe(Y | C);
         z80.Registers.C.ShouldBe(0x32);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -637,7 +637,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.D.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -661,7 +661,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0xD5);
         z80.Registers.F.ShouldBe(S);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -679,7 +679,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0xC0);
         z80.Registers.F.ShouldBe(S | P | C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -699,7 +699,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0xCC);
         z80.Registers.F.ShouldBe(S | X | P | C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -720,7 +720,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0xCC);
         z80.Registers.F.ShouldBe(S | X | P | C);
         z80.Registers.E.ShouldBe(0xCC);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -741,7 +741,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.H.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -765,7 +765,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0x55);
         z80.Registers.F.ShouldBe(P);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -783,7 +783,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x40);
         z80.Registers.F.ShouldBe(C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -803,7 +803,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0x4C);
         z80.Registers.F.ShouldBe(X | C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -824,7 +824,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0x4C);
         z80.Registers.F.ShouldBe(X | C);
         z80.Registers.E.ShouldBe(0x4C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -846,7 +846,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.H.ShouldBe(expectedValue);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -870,7 +870,7 @@ public class Z80RotateShiftInstructionsTests
 
         z80.Registers.ValueOf(register).ShouldBe(0x55);
         z80.Registers.F.ShouldBe(P | C);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Fact]
@@ -888,7 +888,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x06].ShouldBe(0x03);
         z80.Registers.F.ShouldBe(P | C);
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -908,7 +908,7 @@ public class Z80RotateShiftInstructionsTests
 
         builder.Memory![0x09].ShouldBe(0x33);
         z80.Registers.F.ShouldBe(Y | P | C);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -929,7 +929,7 @@ public class Z80RotateShiftInstructionsTests
         builder.Memory![0x09].ShouldBe(0x33);
         z80.Registers.F.ShouldBe(Y | P | C);
         z80.Registers.B.ShouldBe(0x33);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -953,7 +953,7 @@ public class Z80RotateShiftInstructionsTests
         z80.Registers.A.ShouldBe(expectedA);
         builder.Memory![0x08].ShouldBe(expectedMem);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(35);
+        z80.Clock.FrameTicks.ShouldBe(35);
     }
 
     [Theory]
@@ -977,6 +977,6 @@ public class Z80RotateShiftInstructionsTests
         z80.Registers.A.ShouldBe(expectedA);
         builder.Memory![0x08].ShouldBe(expectedMem);
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(35);
+        z80.Clock.FrameTicks.ShouldBe(35);
     }
 }

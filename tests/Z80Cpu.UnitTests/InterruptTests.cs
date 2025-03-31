@@ -21,7 +21,7 @@ public class InterruptTests
         z80.Registers.SP.ShouldBe(0x04);
         z80.Registers.PC.ShouldBe(0x1234);
 
-        z80.Clock.TotalTicks.ShouldBe(0);
+        z80.Clock.FrameTicks.ShouldBe(0);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class InterruptTests
         z80.IFF1.ShouldBeFalse();
         z80.IFF2.ShouldBeFalse();
 
-        z80.Clock.TotalTicks.ShouldBe(13);
+        z80.Clock.FrameTicks.ShouldBe(13);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class InterruptTests
         z80.IFF1.ShouldBeFalse();
         z80.IFF2.ShouldBeFalse();
 
-        z80.Clock.TotalTicks.ShouldBe(19);
+        z80.Clock.FrameTicks.ShouldBe(19);
     }
 
     [Fact]
@@ -110,6 +110,6 @@ public class InterruptTests
         z80.IFF1.ShouldBeFalse();
         z80.IFF2.ShouldBeFalse();
 
-        z80.Clock.TotalTicks.ShouldBe(11);
+        z80.Clock.FrameTicks.ShouldBe(11);
     }
 }

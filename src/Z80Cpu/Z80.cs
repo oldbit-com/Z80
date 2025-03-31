@@ -23,9 +23,29 @@ public partial class Z80
     public delegate void BeforeInstructionEvent(BeforeInstructionEventArgs e);
 
     /// <summary>
+    /// Delegate for the AfterOpCodeFetch event.
+    /// </summary>
+    public delegate void AfterFetchEvent(Word pc);
+
+    /// <summary>
+    /// Delegate for the BeforeOpCodeFetch event.
+    /// </summary>
+    public delegate void BeforeFetchEvent(Word pc);
+
+    /// <summary>
     /// Event raised before an instruction is fetched.
     /// </summary>
     public event BeforeInstructionEvent? BeforeInstruction;
+
+    /// <summary>
+    /// Event raised after an op code is fetched.
+    /// </summary>
+    public event AfterFetchEvent? AfterFetch;
+
+    /// <summary>
+    /// Event raised before an op code is fetched.
+    /// </summary>
+    public event BeforeFetchEvent? BeforeFetch;
 
     /// <summary>
     /// Gets the Registers of the Z80 CPU.
@@ -165,12 +185,19 @@ public partial class Z80
 
     private bool IsBreakpoint()
     {
+        var beforeInstruction = BeforeInstruction;
+
+        if (beforeInstruction == null)
+        {
+            return false;
+        }
+
         // Event handler will be called thousands of times,
         // so we want to avoid creating a new object each time
         var args = BeforeInstructionEventArgs.Instance;
         args.PC = Registers.PC;
 
-        BeforeInstruction?.Invoke(args);
+        beforeInstruction.Invoke(args);
 
         if (!args.IsBreakpoint)
         {
@@ -310,5 +337,5 @@ public partial class Z80
         WriteByte(Registers.SP, (byte)(Registers.PC & 0xFF));
     }
 
-    private void IncrementR() => Registers.R = (byte)((Registers.R & 0x80) | ((Registers.R + 1) & 0x7F));
+    private void IncrementR() => Registers.R = (byte)(Registers.R & 0x80 | (Registers.R + 1 & 0x7F));
 }

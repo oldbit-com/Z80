@@ -23,7 +23,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(7 + 8);
 
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -40,7 +40,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(7 + 8);
 
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -66,7 +66,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(10 + 12);
 
         z80.Registers.F.ShouldBe(expectedFlags);
-        z80.Clock.TotalTicks.ShouldBe(22);
+        z80.Clock.FrameTicks.ShouldBe(22);
     }
 
     [Theory]
@@ -86,7 +86,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(14 + 20);
 
         z80.Registers.F.ShouldBe(H);
-        z80.Clock.TotalTicks.ShouldBe(34);
+        z80.Clock.FrameTicks.ShouldBe(34);
     }
 
     [Theory]
@@ -103,7 +103,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(7 + 8);
 
         z80.Registers.ValueOf(register).ShouldBe((byte)(1 << bit));
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -129,7 +129,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(10 + 15);
 
         memory[5].ShouldBe((byte)(1 << bit));
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -153,7 +153,7 @@ public class Z80BitSetResetTestInstructionsTests
 
         memory[9].ShouldBe(0b00000100);
         z80.Registers.ValueOf(result).ShouldBe(0x04);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     [Theory]
@@ -170,7 +170,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(7 + 8);
 
         z80.Registers.ValueOf(register).ShouldBe((byte)(0xFF & ~(1 << bit)));
-        z80.Clock.TotalTicks.ShouldBe(15);
+        z80.Clock.FrameTicks.ShouldBe(15);
     }
 
     [Theory]
@@ -196,7 +196,7 @@ public class Z80BitSetResetTestInstructionsTests
         z80.Run(10 + 15);
 
         memory[5].ShouldBe((byte)(0xFF & ~(1 << bit)));
-        z80.Clock.TotalTicks.ShouldBe(25);
+        z80.Clock.FrameTicks.ShouldBe(25);
     }
 
     [Theory]
@@ -220,7 +220,7 @@ public class Z80BitSetResetTestInstructionsTests
 
         memory[9].ShouldBe(0b11111011);
         z80.Registers.ValueOf(result).ShouldBe(0xFB);
-        z80.Clock.TotalTicks.ShouldBe(37);
+        z80.Clock.FrameTicks.ShouldBe(37);
     }
 
     public static IEnumerable<object[]> BitTestData()

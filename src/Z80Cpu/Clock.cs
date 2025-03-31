@@ -51,7 +51,7 @@ public sealed class Clock
 
             if (ContentionProvider.IsAddressContended(address))
             {
-                contention = ContentionProvider.GetMemoryContention(CurrentFrameTicks, address);
+                contention = ContentionProvider.GetMemoryContention(FrameTicks, address);
             }
 
             AddTicks(ticks + contention);
@@ -65,7 +65,7 @@ public sealed class Clock
         if (ContentionProvider.IsPortContended(port))
         {
             // C:1, C:3 or C:1, C:1, C:1, C:1 pattern match
-            contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+            contention = ContentionProvider.GetPortContention(FrameTicks, port);
         }
 
         // N:1, C:3 or N:4 pattern match
@@ -79,13 +79,13 @@ public sealed class Clock
             if (ContentionProvider.IsPortContended(port))
             {
                 // C:1, C:1, C:1, C:1
-                var contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+                var contention = ContentionProvider.GetPortContention(FrameTicks, port);
                 AddTicks(1 + contention);
 
-                contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+                contention = ContentionProvider.GetPortContention(FrameTicks, port);
                 AddTicks(1 + contention);
 
-                contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+                contention = ContentionProvider.GetPortContention(FrameTicks, port);
                 AddTicks(1 + contention);
             }
             else
@@ -97,7 +97,7 @@ public sealed class Clock
         else
         {
             // N:1, C:3 or C:1, C:3
-            var contention = ContentionProvider.GetPortContention(CurrentFrameTicks, port);
+            var contention = ContentionProvider.GetPortContention(FrameTicks, port);
 
             AddTicks(3 + contention);
         }

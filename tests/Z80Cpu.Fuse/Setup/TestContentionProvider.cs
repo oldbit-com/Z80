@@ -8,14 +8,14 @@ public class TestContentionProvider(List<InputOutputEvent> events) : IContention
 
     public int GetMemoryContention(int ticks, Word address)
     {
-        events.Add(new InputOutputEvent(Clock.CurrentFrameTicks, "MC", address, 0));
+        events.Add(new InputOutputEvent(Clock.FrameTicks, "MC", address, 0));
 
         return 0;
     }
 
     public int GetPortContention(int ticks, Word port)
     {
-        events.Add(new InputOutputEvent(Clock.CurrentFrameTicks, "PC", port, 0));
+        events.Add(new InputOutputEvent(Clock.FrameTicks, "PC", port, 0));
 
         return 0;
     }

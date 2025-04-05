@@ -108,7 +108,7 @@ public class InterruptTests
 
         z80.IsHalted.ShouldBeFalse();
         z80.IFF1.ShouldBeFalse();
-        z80.IFF2.ShouldBeFalse();
+        z80.IFF2.ShouldBeTrue();
 
         z80.Clock.FrameTicks.ShouldBe(11);
     }

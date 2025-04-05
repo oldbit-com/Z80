@@ -248,8 +248,8 @@ public partial class Z80
             IsHalted = false;
         }
 
+        IFF2 = IFF1;
         IFF1 = false;
-        IFF2 = false;
 
         PushPC();
 

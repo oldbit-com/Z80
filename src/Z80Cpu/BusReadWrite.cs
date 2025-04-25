@@ -13,8 +13,9 @@ partial class Z80
         var port = (Word)((topHalf << 8) | bottomHalf);
 
         Clock.AddPortPreContention(port);
-        var value = _bus?.Read(port) ?? 0xFF;
         Clock.AddPortPostContention(port);
+
+        var value = _bus?.Read(port) ?? 0xFF;
 
         return value;
     }

@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace OldBit.Z80Cpu;
 
 partial class Z80
@@ -8,6 +10,7 @@ partial class Z80
     /// <param name="topHalf">The top 8 bits of the data bus address (A8-A15).</param>
     /// <param name="bottomHalf">The bottom 8 bits of the data bus address (A0-A7).</param>
     /// <returns>The value from the data bus.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private byte ReadBus(byte topHalf, byte bottomHalf)
     {
         var port = (Word)((topHalf << 8) | bottomHalf);
@@ -26,6 +29,7 @@ partial class Z80
     /// <param name="topHalf">The top 8 bits of the data bus address (A8-A15).</param>
     /// <param name="bottomHalf">The bottom 8 bits of the data bus address (A0-A7).</param>
     /// <param name="data">The data to be written</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void WriteBus(byte topHalf, byte bottomHalf, byte data)
     {
         var port = (Word)((topHalf << 8) | bottomHalf);

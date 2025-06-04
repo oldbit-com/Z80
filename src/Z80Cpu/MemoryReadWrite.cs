@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu;
@@ -9,6 +10,7 @@ partial class Z80
     /// The operation costs 4 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>An 8-bit value representing the opcode.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private byte FetchOpCode()
     {
         BeforeFetch?.Invoke(Registers.PC);
@@ -26,6 +28,7 @@ partial class Z80
     /// It costs 3 T-states and PC is incremented by 1.
     /// </summary>
     /// <returns>A data byte at the current PC address.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private byte FetchByte() => FetchByte(ticks: 3);
 
     /// <summary>
@@ -34,6 +37,7 @@ partial class Z80
     /// </summary>
     /// <param name="ticks">The number of T-states to add.</param>
     /// <returns>A data byte at the current PC address.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private byte FetchByte(int ticks)
     {
         var value = ReadByte(Registers.PC, ticks);
@@ -50,6 +54,7 @@ partial class Z80
     /// <param name="address">The address of the data to read.</param>
     /// <param name="ticks">The number of T-states to add. The default is 3.</param>
     /// <returns>A byte value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private byte ReadByte(Word address, int ticks = 3)
     {
         Clock.AddMemoryContention(address, 1, 0);
@@ -64,6 +69,7 @@ partial class Z80
     /// Reads a 16-bit value from the location specified by current PC value.
     /// The operation takes 6 T-states and PC is incremented by 2.
     /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Word FetchWord() => (Word)(FetchByte() | (FetchByte() << 8));
 
     /// <summary>
@@ -72,6 +78,7 @@ partial class Z80
     /// </summary>
     /// <param name="address">The address of the data to read.</param>
     /// <returns>A word value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Word ReadWord(Word address) => (Word)(ReadByte(address) | ReadByte((Word)(address + 1)) << 8);
 
     /// <summary>
@@ -80,6 +87,7 @@ partial class Z80
     /// </summary>
     /// <param name="address">The address to write to.</param>
     /// <param name="data">The value to write to the memory.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void WriteByte(Word address, byte data)
     {
         Clock.AddMemoryContention(address, 1, 0);
@@ -94,6 +102,7 @@ partial class Z80
     /// </summary>
     /// <param name="address">The address to write to.</param>
     /// <param name="data">The value to write to the memory.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void WriteWord(Word address, Word data)
     {
         WriteByte(address, (byte)data);
@@ -106,6 +115,7 @@ partial class Z80
     /// </summary>
     /// <param name="extraIndexTicks">Extra T-states to add when index register is used.</param>
     /// <returns>Value of HL, IX+d or IY+d register.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Word CalculateExtendedHL(int extraIndexTicks = 0)
     {
         sbyte offset = 0;
@@ -125,5 +135,6 @@ partial class Z80
     /// of current HL context, e.g. will use IX / IY pair and offset if applicable.
     /// </summary>
     /// <returns>A byte value located at the address provided in the HL (or IX/IY) register.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private byte ReadByteAtExtendedHL(int extraIndexTicks) => ReadByte(CalculateExtendedHL(extraIndexTicks));
 }

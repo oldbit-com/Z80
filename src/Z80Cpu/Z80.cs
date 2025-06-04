@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using OldBit.Z80Cpu.Events;
 using OldBit.Z80Cpu.Registers;
 
@@ -328,6 +329,7 @@ public partial class Z80
         _opCodes.Execute(0xCB00 | opCode);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void PushPC()
     {
         Registers.SP -= 1;
@@ -337,5 +339,6 @@ public partial class Z80
         WriteByte(Registers.SP, (byte)(Registers.PC & 0xFF));
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void IncrementR() => Registers.R = (byte)(Registers.R & 0x80 | (Registers.R + 1 & 0x7F));
 }

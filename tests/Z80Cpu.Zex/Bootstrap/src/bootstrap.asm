@@ -1,50 +1,57 @@
-// Helper bootstrapper to load test .com file which uses couple CP/M functions
-// to output the result to the screen. It is using OUT instruction to capture the
-// output. This way zexdoc/zexall can be easily executed.
+; Helper bootstrapper to load test .com file which uses couple CP/M functions
+; to output the result to the screen. It is using OUT instruction to capture the
+; output. This way zexdoc/zexall can be easily executed.
 
-        device NOSLOT64K
+        DEVICE NOSLOT64K
 
-        org $0000
-        jp boot
-        org $0005       // fixed CP/M bdos entry point
-        jp bdos
+        ORG $0000
+        JP boot
+        ORG $0005       ; fixed CP/M bdos entry point
+        JP bdos
 
 
-        org $0100       // *.com programs will load at this address
+        ORG $0100       ; *.com program content will load at this address
 prog:
-        halt            // will be replaced with the *.com file
+        HALT            ; will be replaced with the *.com file
 
-
-        org $F000       // Boot and bdos routies implementation
+        ORG $F000       ; Boot and bdos routies implementation
 boot:
-        nop             // will be modified to halt instruction to prevent infinite execution in case of jp 0
-        ld hl,boot
-        ld (hl),HALT    // modify nop to halt
-        ld sp,$ffff     // initiate stack to top memory address
-        jp prog         // and execute loaded program
+        LD HL,exit
+        LD ($0001),HL
+        LD SP,$ffff     ; initiate stack to top memory address
+        JP prog         ; and execute loaded program
+
 bdos:
-        ld a,c
-        cp C_WRITE
-        jr nz,is_write_str
-        ld a,e
-        out (PORT),a     // will be captured by the handler
-        ret
+        LD A,C
+        CP C_WRITE
+        JR NZ,is_write_str
+        LD A,E
+        OUT (TEXT_OUT_PORT),A     ; will be captured by the handler
+        RET
+
 is_write_str:
-        cp C_WRITESTR
-        ret nz
+        CP C_WRITESTR
+        RET nz
+
 write_str:
-        ld a,(de)
-        cp '$'          // end of string?
-        ret z
-        out (PORT),a    // will be captured by the handler
-        inc de
-        jr write_str
-        ret
+        LD A,(DE)
+        CP '$'                   ; end of string?
+        RET Z
+        OUT (TEXT_OUT_PORT),A    ; will be captured by the handler
+        INC DE
+        JR write_str
+        RET
 
-C_WRITE = 2         // BDOS function 2 (C_WRITE) - Console output
-C_WRITESTR = 9      // BDOS function 9 (C_WRITESTR) - Output string
-PORT = 5            // port used to output text
-HALT = $76          // halt instruction opcode
+exit:
+        LD A,$A5
+        OUT (EXIT_PORT),A
+        HALT
 
-        // create boot.com file
+
+C_WRITE = 2         ; BDOS function 2 (C_WRITE) - Console output
+C_WRITESTR = 9      ; BDOS function 9 (C_WRITESTR) - Output string
+TEXT_OUT_PORT = 5   ; port used to output text
+EXIT_PORT = 6       ; port used to detect end of tests
+
+        ; create boot.com file
         savebin "bootstrap.bin", $0000, $FFFF

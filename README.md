@@ -7,7 +7,7 @@ This is a Z80 CPU emulator written in C#. I have created it as a fun project. It
 used in any project that requires a Z80 CPU emulator.
 
 There is also a branch that adds some features specifically for to the ZX Spectrum emulator, e.g.
-memory contention. Main beanch is quite generic.
+memory contention. Main branch is quite generic.
 
 ## Features
 - Full Z80 instruction set

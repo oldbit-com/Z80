@@ -14,9 +14,10 @@ public static class Runner
         memory.CopyFrom(bootstrapFile, 0);
         memory.CopyFrom(testFile, 0x100);
 
-        var bus = new TestBus();
+        var z80 = new Z80(memory);
+        var bus = new TestBus(() => z80.Clock.NewFrame(1));
 
-        var z80 = new Z80(memory).AddBus(bus);
+        z80.AddBus(bus);
         z80.Run();
     }
 

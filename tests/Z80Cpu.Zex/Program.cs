@@ -62,6 +62,7 @@ void Run(string fileName)
     Runner.Run(fileName);
     stopWatch.Stop();
 
+    Console.WriteLine();
     Console.WriteLine("Elapsed time: " + stopWatch.Elapsed);
 }
 

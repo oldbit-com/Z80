@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>OldBit.Z80Cpu</PackageId>
-        <Version>0.9.3</Version>
+        <Version>1.0.0</Version>
         <Title>Z80 CPU emulator</Title>
         <Authors>Wojciech Sobieszek</Authors>
         <RepositoryUrl>https://github.com/oldbit-com/Z80</RepositoryUrl>

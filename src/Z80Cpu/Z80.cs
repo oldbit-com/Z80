@@ -1,4 +1,3 @@
-using OldBit.Z80Cpu.Events;
 using OldBit.Z80Cpu.Registers;
 
 namespace OldBit.Z80Cpu;
@@ -13,6 +12,7 @@ public partial class Z80
     private bool _isExtendedInstruction;
     private sbyte _indexRegisterOffset;
     private bool _isEIPending;
+    private bool _isBreakpoint;
 
     private readonly IMemory _memory;
     private IBus? _bus;
@@ -20,7 +20,7 @@ public partial class Z80
     /// <summary>
     /// Delegate for the BeforeInstruction event.
     /// </summary>
-    public delegate void BeforeInstructionEvent(BeforeInstructionEventArgs e);
+    public delegate void BeforeInstructionEvent(Word pc);
 
     /// <summary>
     /// Delegate for the AfterOpCodeFetch event.
@@ -144,10 +144,11 @@ public partial class Z80
 
             _isEIPending = false;
 
-            var isBreakpoint = OnBeforeInstruction();
+            BeforeInstruction?.Invoke(Registers.PC);
 
-            if (isBreakpoint)
+            if (_isBreakpoint)
             {
+                _isBreakpoint = false;
                 break;
             }
 
@@ -170,32 +171,10 @@ public partial class Z80
         Run();
     }
 
-    private bool OnBeforeInstruction()
-    {
-        var beforeInstruction = BeforeInstruction;
-
-        if (beforeInstruction == null)
-        {
-            return false;
-        }
-
-        // Event handler will be called thousands of times,
-        // so we want to avoid creating a new object each time
-        var args = BeforeInstructionEventArgs.Instance;
-        args.PC = Registers.PC;
-
-        beforeInstruction.Invoke(args);
-
-        if (!args.IsBreakpoint)
-        {
-            return false;
-        }
-
-        // Reset the breakpoint flag once it's handled, so it doesn't break again
-        args.IsBreakpoint = false;
-
-        return true;
-    }
+    /// <summary>
+    /// Sets the Z80 CPU breakpoint flag, pausing execution at the next opportunity.
+    /// </summary>
+    public void Break() => _isBreakpoint = true;
 
     /// <summary>
     /// Triggers a Maskable Interrupt (INT).

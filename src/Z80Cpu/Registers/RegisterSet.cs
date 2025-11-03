@@ -8,7 +8,41 @@ namespace OldBit.Z80Cpu.Registers;
 /// </summary>
 public sealed class RegisterSet : StandardRegisterSet
 {
-    internal RegisterContext Context { get; set; }
+    private readonly WordRegister _ix = new();
+    private readonly WordRegister _iy = new();
+
+    private RegisterContext _context;
+
+    private WordRegister _active;
+
+    public RegisterSet()
+    {
+        _active = HLReg;
+    }
+
+    internal RegisterContext Context
+    {
+        get => _context;
+        set
+        {
+            _context = value;
+
+            switch (_context)
+            {
+                case RegisterContext.IX:
+                    _active = _ix;
+                    break;
+
+                case RegisterContext.IY:
+                    _active = _iy;
+                    break;
+
+                default:
+                    _active = HLReg;
+                    break;
+            }
+        }
+    }
 
     /// <summary>
     /// Gets or sets the value of the I register.
@@ -28,30 +62,30 @@ public sealed class RegisterSet : StandardRegisterSet
     /// <summary>
     /// Gets or sets undocumented IXL register which is a low byte of the IX register.
     /// </summary>
-    public byte IXL { get; set; }
+    public byte IXL { get => _ix.L; set => _ix.L = value; }
 
     /// <summary>
     /// Gets or sets undocumented IXH register which is a high byte of the IX register.
     /// </summary>
-    public byte IXH { get; set; }
+    public byte IXH { get => _ix.H; set  => _ix.H = value; }
 
     /// <summary>
     /// Gets or sets undocumented IYL register which is a low byte of the IY register.
     /// </summary>
-    public byte IYL { get; set; }
+    public byte IYL { get => _iy.L; set  => _iy.L = value; }
 
     /// <summary>
     /// Gets or sets undocumented IYH register which is a high byte of the IY register.
     /// </summary>
-    public byte IYH { get; set; }
+    public byte IYH { get => _iy.H; set  => _iy.H = value; }
 
     /// <summary>
     /// Gets or sets the value of the IX index register.
     /// </summary>
     public Word IX
     {
-        get => Converter.ToWord(IXH, IXL);
-        set => (IXH, IXL) = value;
+        get => _ix.Value;
+        set => _ix.Value = value;
     }
 
     /// <summary>
@@ -59,8 +93,8 @@ public sealed class RegisterSet : StandardRegisterSet
     /// </summary>
     public Word IY
     {
-        get => Converter.ToWord(IYH, IYL);
-        set => (IYH, IYL) = value;
+        get => _iy.Value;
+        set => _iy.Value = value;
     }
 
     /// <summary>
@@ -78,28 +112,8 @@ public sealed class RegisterSet : StandardRegisterSet
     /// </summary>
     internal Word XHL
     {
-        get => Context switch
-        {
-            RegisterContext.IX => IX,
-            RegisterContext.IY => IY,
-            _ => HL
-        };
-        set
-        {
-            switch (Context)
-            {
-                case RegisterContext.IX:
-                    IX = value;
-                    break;
-                case RegisterContext.IY:
-                    IY = value;
-                    break;
-                case RegisterContext.HL:
-                default:
-                    HL = value;
-                    break;
-            }
-        }
+        get => _active.Value;
+        set => _active.Value = value;
     }
 
     /// <summary>
@@ -107,28 +121,8 @@ public sealed class RegisterSet : StandardRegisterSet
     /// </summary>
     internal byte XH
     {
-        get => Context switch
-        {
-            RegisterContext.IX => IXH,
-            RegisterContext.IY => IYH,
-            _ => H
-        };
-        set
-        {
-            switch (Context)
-            {
-                case RegisterContext.IX:
-                    IXH = value;
-                    break;
-                case RegisterContext.IY:
-                    IYH = value;
-                    break;
-                case RegisterContext.HL:
-                default:
-                    H = value;
-                    break;
-            }
-        }
+        get => _active.H;
+        set => _active.H = value;
     }
 
     /// <summary>
@@ -136,28 +130,8 @@ public sealed class RegisterSet : StandardRegisterSet
     /// </summary>
     internal byte XL
     {
-        get => Context switch
-        {
-            RegisterContext.IX => IXL,
-            RegisterContext.IY => IYL,
-            _ => L
-        };
-        set
-        {
-            switch (Context)
-            {
-                case RegisterContext.IX:
-                    IXL = value;
-                    break;
-                case RegisterContext.IY:
-                    IYL = value;
-                    break;
-                case RegisterContext.HL:
-                default:
-                    L = value;
-                    break;
-            }
-        }
+        get => _active.L;
+        set => _active.L = value;
     }
 
     /// <summary>

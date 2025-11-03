@@ -8,6 +8,12 @@ namespace OldBit.Z80Cpu.Registers;
 /// </summary>
 public class StandardRegisterSet
 {
+    private readonly WordRegister _bc = new();
+    private readonly WordRegister _de = new();
+    private readonly WordRegister _hl = new();
+
+    internal WordRegister HLReg => _hl;
+
     /// <summary>
     /// Gets or sets the value of the Accumulator register.
     /// </summary>
@@ -21,32 +27,32 @@ public class StandardRegisterSet
     /// <summary>
     /// Gets or sets the value of the B register.
     /// </summary>
-    public byte B { get; set; }
+    public byte B { get => _bc.H; set => _bc.H = value; }
 
     /// <summary>
     /// Gets or sets the value of the C register.
     /// </summary>
-    public byte C { get; set; }
+    public byte C { get => _bc.L; set  => _bc.L = value; }
 
     /// <summary>
     /// Gets or sets the value of the D register.
     /// </summary>
-    public byte D { get; set; }
+    public byte D { get => _de.H; set  => _de.H = value; }
 
     /// <summary>
     /// Gets or sets the value of the E register.
     /// </summary>
-    public byte E { get; set; }
+    public byte E { get => _de.L; set  => _de.L = value; }
 
     /// <summary>
     /// Gets or sets the value of the H register.
     /// </summary>
-    public byte H { get; set; }
+    public byte H { get => _hl.H; set  => _hl.H = value; }
 
     /// <summary>
     /// Gets or sets the value of the L register.
     /// </summary>
-    public byte L { get; set; }
+    public byte L { get => _hl.L; set   => _hl.L = value; }
 
     /// <summary>
     /// Gets or sets the value of the AF register.
@@ -67,8 +73,8 @@ public class StandardRegisterSet
     /// </summary>
     public Word BC
     {
-        get => Converter.ToWord(B, C);
-        set => (B, C) = value;
+        get => _bc.Value;
+        set => _bc.Value = value;
     }
 
     /// <summary>
@@ -76,8 +82,8 @@ public class StandardRegisterSet
     /// </summary>
     public Word DE
     {
-        get => Converter.ToWord(D, E);
-        set => (D, E) = value;
+        get => _de.Value;
+        set => _de.Value = value;
     }
 
     /// <summary>
@@ -85,7 +91,7 @@ public class StandardRegisterSet
     /// </summary>
     public Word HL
     {
-        get => Converter.ToWord(H, L);
-        set => (H, L) = value;
+        get => _hl.Value;
+        set => _hl.Value = value;
     }
 }

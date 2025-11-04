@@ -30,6 +30,7 @@ partial class Z80
     private void Execute_JP(bool shouldJump = true)
     {
         var pc = FetchWord();
+
         if (!shouldJump)
         {
             return;

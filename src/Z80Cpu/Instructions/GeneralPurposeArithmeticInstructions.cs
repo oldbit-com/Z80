@@ -22,15 +22,28 @@ partial class Z80
                 diff = 0x60;
                 Registers.F |= C;
             }
+
             if (hf != 0 || low4Bits > 0x09)
             {
                 diff += 0x06;
             }
+
             Registers.A = nf == 0 ? Registers.A += diff : Registers.A -= diff;
-            if (Parity.Lookup[Registers.A] != 0) Registers.F |= P;
+            if (Parity.Lookup[Registers.A] != 0)
+            {
+                Registers.F |= P;
+            }
+
             Registers.F |= (S | Y | X) & (Flags)Registers.A;
-            if (Registers.A == 0) Registers.F |= Z;
-            if (nf == 0 && low4Bits > 0x09 || nf != 0 && hf != 0 && low4Bits < 0x06) Registers.F |= H;
+            if (Registers.A == 0)
+            {
+                Registers.F |= Z;
+            }
+
+            if (nf == 0 && low4Bits > 0x09 || nf != 0 && hf != 0 && low4Bits < 0x06)
+            {
+                Registers.F |= H;
+            }
         };
 
         _opCodes["CPL"] = () =>

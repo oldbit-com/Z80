@@ -43,6 +43,7 @@ partial class Z80
     private void Execute_CALL(bool shouldCall = true)
     {
         var pc = FetchWord();
+
         if (!shouldCall)
         {
             return;

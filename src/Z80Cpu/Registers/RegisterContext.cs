@@ -3,7 +3,7 @@ namespace OldBit.Z80Cpu.Registers;
 /// <summary>
 /// Specifies context for the HL register which is either HL, IX or IY.
 /// </summary>
-public enum RegisterContext
+internal enum RegisterContext
 {
     /// <summary>
     /// Use regular HL register.

@@ -101,6 +101,7 @@ partial class Z80
             Clock.AddTicks(1);
             Registers.I = Registers.A;
         };
+
         _opCodes["LD A,I"] = () =>
         {
             Clock.AddTicks(1);
@@ -116,6 +117,7 @@ partial class Z80
             Clock.AddTicks(1);
             Registers.R = Registers.A;
         };
+
         _opCodes["LD A,R"] = () =>
         {
             Clock.AddTicks(1);

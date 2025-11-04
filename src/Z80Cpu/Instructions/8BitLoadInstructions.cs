@@ -112,6 +112,7 @@ partial class Z80
             Clock.AddMemoryContention(Registers.IR, 1);
             Registers.I = Registers.A;
         };
+
         _opCodes["LD A,I"] = () =>
         {
             Clock.AddMemoryContention(Registers.IR, 1);
@@ -127,6 +128,7 @@ partial class Z80
             Clock.AddMemoryContention(Registers.IR, 1);
             Registers.R = Registers.A;
         };
+
         _opCodes["LD A,R"] = () =>
         {
             Clock.AddMemoryContention(Registers.IR, 1);

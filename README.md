@@ -14,7 +14,7 @@ memory contention. Main branch is quite generic.
 - Undocumented instructions (at least the most common ones)
 
 ## Implementation
-- The emulator is written in C# 12 and .NET 8
+- The emulator is using C# 14 and .NET 10
 - Source files are kept small and clean using partial classes
   - The main class is `Z80.cs`
   - Instructions are implemented in a separate files based on logical groups:

@@ -18,7 +18,7 @@ public class FlagsTests
     [InlineData(N | H, N | H, true)]
     public void ShouldCorrectlyCheckIfFlagIsSet(Flags flags, Flags flag, bool expected)
     {
-        var result = flags.IsSet(flag);
+        var result = (flags & flag) == flag;
 
         result.ShouldBe(expected);
     }

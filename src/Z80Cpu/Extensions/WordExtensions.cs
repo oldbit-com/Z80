@@ -1,5 +1,3 @@
-using OldBit.Z80Cpu.Registers;
-
 namespace OldBit.Z80Cpu.Extensions;
 
 /// <summary>

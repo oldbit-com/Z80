@@ -12,7 +12,6 @@ public interface IMemory
     /// <returns>The byte read from the specified memory address.</returns>
     byte Read(Word address);
 
-
     /// <summary>
     /// Writes a byte to the specified memory address.
     /// </summary>

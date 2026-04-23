@@ -34,4 +34,11 @@ public interface IContentionProvider
     /// <param name="port">The port address being accessed.</param>
     /// <returns>A value indicating whether the port is in a contended area.</returns>
     bool IsPortContended(Word port);
+
+    /// <summary>
+    /// Gets a value indicating whether the port is latched.
+    /// </summary>
+    /// <param name="port">The port address being accessed.</param>
+    /// <returns>A value indicating whether the port is latched.</returns>
+    bool IsPortLatched(Word port) => false;
 }

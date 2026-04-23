@@ -25,15 +25,23 @@ partial class Z80
     /// </summary>
     /// <param name="topHalf">The top 8 bits of the data bus address (A8-A15).</param>
     /// <param name="bottomHalf">The bottom 8 bits of the data bus address (A0-A7).</param>
-    /// <param name="data">The data to be written</param>
+    /// <param name="data">The data to be written.</param>
     private void WriteBus(byte topHalf, byte bottomHalf, byte data)
     {
         var port = (Word)((topHalf << 8) | bottomHalf);
+        var isPortLatched = Clock.ContentionProvider.IsPortLatched(port);
 
         Clock.AddPortPreContention(port);
 
-        _bus?.Write(port, data);
-
-        Clock.AddPortPostContention(port);
+        if (!isPortLatched)
+        {
+            _bus?.Write(port, data);
+            Clock.AddPortPostContention(port);
+        }
+        else
+        {
+            Clock.AddPortPostContention(port);
+            _bus?.Write(port, data);
+        }
     }
 }

@@ -119,11 +119,19 @@ public sealed class Clock
 
     /// <summary>
     /// Resets the clock to the beginning of the frame.
-    /// <param name="frameTicks">The number of T-states per frame.</param>
+    /// <param name="frameTicks">The number of T-states per frame. If 0, no frame ticks limit is applied.</param>
     /// </summary>
-    public void NewFrame(int frameTicks)
+    public void NewFrame(int frameTicks = 0)
     {
-        FrameTicks -= _ticksLimit;
+        if (frameTicks == 0)
+        {
+            FrameTicks = 0;     // No frame ticks limit
+        }
+        else
+        {
+            FrameTicks -= _ticksLimit;
+        }
+
         _ticksLimit = frameTicks;
     }
 

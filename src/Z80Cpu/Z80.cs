@@ -146,10 +146,11 @@ public partial class Z80
             if (IsHalted)
             {
                 ReadByte(Registers.PC, ticks: 4);
-
                 IncrementR();
 
-                if (Clock.IsFrameComplete)
+                Clock.IncrementFrameFetches();
+
+                if (Clock.IsFrameComplete || _isBreakpoint)
                 {
                     break;
                 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using OldBit.Z80Cpu.Contention;
 
 namespace OldBit.Z80Cpu;
@@ -8,6 +9,7 @@ namespace OldBit.Z80Cpu;
 public sealed class Clock
 {
     private int _ticksLimit;
+    private int _fetchesLimit;
 
     /// <summary>
     /// Gets or sets the contention provider that provides contention data.
@@ -36,6 +38,11 @@ public sealed class Clock
 
         TicksAdded?.Invoke(ticks, previousFrameTicks, FrameTicks);
     }
+
+    /// <summary>
+    /// Increments the number of frame fetches.
+    /// </summary>
+    internal void IncrementFrameFetches() => FrameFetches += 1;
 
     /// <summary>
     /// Adds the specified number of T-states respecting memory contention.
@@ -120,16 +127,24 @@ public sealed class Clock
     /// <summary>
     /// Resets the clock to the beginning of the frame.
     /// <param name="frameTicks">The number of T-states per frame. If 0, no frame ticks limit is applied.</param>
+    /// <param name="frameFetches">The number of fetches per frame. If 0, no frame fetches limit is applied.</param>
     /// </summary>
-    public void NewFrame(int frameTicks = 0)
+    public void NewFrame(int frameTicks = 0, int frameFetches = 0)
     {
         if (frameTicks == 0)
         {
-            FrameTicks = 0;     // No frame ticks limit
+            FrameTicks = 0;
         }
         else
         {
             FrameTicks -= _ticksLimit;
+        }
+
+        FrameFetches = 0;
+
+        if (frameFetches > 0)
+        {
+            _fetchesLimit = frameFetches;
         }
 
         _ticksLimit = frameTicks;
@@ -138,12 +153,19 @@ public sealed class Clock
     /// <summary>
     /// Gets a value indicating whether the frame is complete.
     /// </summary>
-    public bool IsFrameComplete => _ticksLimit != 0 && FrameTicks >= _ticksLimit;
+    public bool IsFrameComplete =>
+        _ticksLimit != 0 && FrameTicks >= _ticksLimit ||
+        _fetchesLimit != 0 && FrameFetches >= _fetchesLimit;
 
     /// <summary>
     /// Gets the number of T-states executed in the current frame execution.
     /// </summary>
     public int FrameTicks { get; private set; }
+
+    /// <summary>
+    /// Gets the number of fetches executed in the current frame execution.
+    /// </summary>
+    public int FrameFetches { get; private set; }
 
     /// <summary>
     /// Gets or sets the number of T-states the interrupt can last.

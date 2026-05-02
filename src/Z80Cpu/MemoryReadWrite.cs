@@ -16,6 +16,8 @@ partial class Z80
         var opCode = FetchByte(ticks: 4);
         IncrementR();
 
+        Clock.IncrementFrameFetches();
+
         AfterFetch?.Invoke(Registers.PC);
 
         return opCode;

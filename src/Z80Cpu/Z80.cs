@@ -138,7 +138,7 @@ public partial class Z80
     {
         while (true)
         {
-            if (IFF1 && !_isEIPending && Clock.IsInterruptWindow)
+            if (Clock.IsInterruptWindow)
             {
                 TriggerInt(0xFF);
             }

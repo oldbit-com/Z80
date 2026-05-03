@@ -138,7 +138,7 @@ public partial class Z80
     {
         while (true)
         {
-            if (Clock.IsInterruptWindow)
+            if (IFF1 && !_isEIPending && Clock.IsInterruptWindow)
             {
                 TriggerInt(0xFF);
             }
@@ -199,7 +199,7 @@ public partial class Z80
     /// This is used in Mode 2 to form the address of the interrupt service routine.</param>
     public void TriggerInt(byte data)
     {
-        if (!IFF1 || _isEIPending)
+        if (!IFF1)
         {
             return;
         }

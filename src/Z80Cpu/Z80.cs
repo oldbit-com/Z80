@@ -81,9 +81,10 @@ public partial class Z80
     /// Initializes a new instance of the <see cref="Z80"/> class.
     /// </summary>
     /// <param name="memory">An instance of IMemory that represents the memory used by the Z80 CPU.</param>
-    public Z80(IMemory memory)
+    /// <param name="clock">An instance of Clock that keeps track of the number of T-states executed. If null, a new Clock instance will be created.</param>
+    public Z80(IMemory memory, Clock? clock = null)
     {
-        Clock = new Clock();
+        Clock = clock ?? new Clock();
 
         Reset();
         SetupInstructions();

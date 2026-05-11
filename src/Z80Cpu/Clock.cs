@@ -6,7 +6,7 @@ namespace OldBit.Z80Cpu;
 /// <summary>
 /// Clock that counts the number of T-states executed.
 /// </summary>
-public sealed class Clock
+public class Clock
 {
     private int _ticksLimit;
     private int _fetchesLimit;

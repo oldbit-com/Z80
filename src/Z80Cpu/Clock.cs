@@ -151,6 +151,18 @@ public class Clock
     }
 
     /// <summary>
+    /// Resets the clock to the initial state, clearing any frame limits and resetting the frame counters.
+    /// </summary>
+    public void Reset()
+    {
+        _ticksLimit = 0;
+        _fetchesLimit = 0;
+
+        FrameTicks = 0;
+        FrameFetches = 0;
+    }
+
+    /// <summary>
     /// Gets a value indicating whether the frame is complete.
     /// </summary>
     public bool IsFrameComplete =>
